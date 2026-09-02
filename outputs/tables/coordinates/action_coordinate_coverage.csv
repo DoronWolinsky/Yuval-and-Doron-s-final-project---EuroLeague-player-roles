@@ -1,0 +1,11 @@
+action_id,action,row_count,is_shot_attempt,coord_missing_count,coord_missing_percentage,n_unique_coord_pairs,coord_is_constant,zone_missing_percentage
+2FGA,Missed Two Pointer,147240,True,0,0.0,22650,False,0.034
+2FGAB,Missed Two Pointer,5897,True,0,0.0,4178,False,0.1865
+2FGM,Two Pointer,160519,True,0,0.0,21345,False,0.0044
+3FGA,Missed Three Pointer,148262,True,0,0.0,19968,False,0.0074
+3FGAB,Missed Three Pointer,687,True,0,0.0,654,False,0.4367
+3FGM,Three Pointer,84421,True,0,0.0,13693,False,0.0012
+DUNK,Dunk,7079,True,0,0.0,221,False,0.0
+FTM,Free Throw In,140926,False,0,0.0,1,True,100.0
+LAYUPATT,Missed Layup,26029,True,0,0.0,2681,False,0.0231
+LAYUPMD,Layup Made,34085,True,0,0.0,2326,False,0.0117

@@ -1,0 +1,16 @@
+# Data files exceeding GitHub's 100MB per-file limit.
+# Obtain/regenerate these separately; see README.md and docs/project-state.md.
+data/raw/euroleague_points.csv
+data/processed/merged_euroleague_players.csv
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

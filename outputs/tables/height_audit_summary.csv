@@ -1,0 +1,16 @@
+statistic,value
+count,2336.0
+missing_count,27.0
+missing_percentage,1.14
+mean,194.1
+median,199.5
+std,32.18
+min,0.0
+max,229.0
+p1,0.0
+p5,181.75
+p25,192.0
+p50,199.5
+p75,206.0
+p95,212.0
+p99,217.0

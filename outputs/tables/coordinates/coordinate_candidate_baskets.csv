@@ -1,0 +1,4 @@
+label,candidate_x,candidate_y,median_dist_2pt,median_dist_3pt,pct_3pt_farther_than_2pt_median,best_separation_cut,pct_2pt_over_cut,pct_3pt_under_cut,total_misclassification_pct
+Candidate 1: DUNK median,0.0,0.0,176.24,725.28,99.961,640,0.1841,0.1615,0.3456
+Candidate 2: Zone-A centroid,65.58,22.71,183.41,726.8,99.961,595,1.4904,0.4504,1.9407
+Candidate 3: FTM sentinel (negative control),-1.0,-1.0,176.82,725.99,99.961,640,0.1904,0.1581,0.3485

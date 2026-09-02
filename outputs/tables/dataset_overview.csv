@@ -1,0 +1,5 @@
+filename,path,row_count,column_count,estimated_memory_mb
+euroleague_players.csv,data\raw\euroleague_players.csv,6307,50,4.1
+euroleague_points.csv,data\raw\euroleague_points.csv,755145,24,628.91
+players_bio.csv,data\raw\players_bio.csv,2363,14,1.99
+merged_euroleague_players.csv,data\processed\merged_euroleague_players.csv,755145,37,1223.82

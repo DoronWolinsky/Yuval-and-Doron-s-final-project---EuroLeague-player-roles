@@ -1,0 +1,4 @@
+join_name,input_rows,output_rows,match_count,match_percentage,unmatched_count,unmatched_unique_players,row_count_preserved
+euroleague_players.csv + players_bio on player_id,6307,6307,6307,100.0,0,0,True
+euroleague_points.csv + players_bio on player_id,755145,755145,755145,100.0,0,0,True
+euroleague_players.csv vs euroleague_points.csv (season_code+player_id+team_id),6307,6307,5848,92.722371967655,459,406,
