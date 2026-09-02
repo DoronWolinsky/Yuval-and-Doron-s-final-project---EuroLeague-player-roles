@@ -1,8 +1,13 @@
 # Project State
 
-Living document. Read this together with `README.md` and `CLAUDE.md` before starting any
-task. This file is the source of truth for status, decisions, and open questions — update it
-whenever an important decision is made or a task completes.
+Living document. Read this together with `README.md`, `CLAUDE.md`, and `CheckList.md` before
+starting any task. This file is the source of truth for status, decisions, and open
+questions — update it whenever an important decision is made or a task completes.
+
+`CheckList.md` (repository root) is the detailed, stage-by-stage project checklist the user
+maintains, from data understanding through the Hebrew presentation. This file's "Future
+tasks" section is a condensed summary of the same roadmap; `CheckList.md` is the authoritative
+version for what each stage actually involves — see "Project checklist" below.
 
 ## Research goal
 
@@ -233,28 +238,54 @@ player-season-team coverage gap; the `timestamp` placeholder-value concentration
 season-level range/consistency violations found (see notebook Section 6.1). Refer to the
 notebook and the exported tables for exact, measured counts rather than this summary.
 
+## Project checklist
+
+`CheckList.md` breaks the whole project into 16 numbered stages plus a final acceptance
+check, each with concrete checkbox items and a "Result of this stage" or "Decision required
+from this stage" note. As of this update:
+
+- **Stage 1 — Understand and Examine the Data:** checked complete, matching the Data Audit
+  and Coordinate System Analysis work recorded above.
+- **Stage 2 — Build the Player-Season-Team Feature Table:** checked complete, matching the
+  "Player-season-team feature table" section above (6,307 rows x 76 columns).
+- **Stages 3-16** (eligible modeling sample, missing-value handling in that sample, final
+  feature selection, scaling, PCA, K-Means, GMM/BIC, stability checks, cluster
+  interpretation, position comparison, player/season examples, answering the research
+  question, final notebook story, Hebrew presentation) are unchecked — these are the
+  "Future tasks" below, in the same order.
+
+When a future task completes work described in `CheckList.md`, tick the corresponding boxes
+there (and fill in that stage's result/decision note) as part of that task, not just here.
+
 ## Future tasks (not yet approved)
 
-Each requires separate, explicit approval before starting:
+Each requires separate, explicit approval before starting. This list is a condensed summary;
+the corresponding `CheckList.md` stage number(s) are noted in parentheses — see that file for
+the full checkbox-level detail of each stage:
 
-1. **Eligible training-sample selection and imputation** — define the participation
-   threshold (e.g. minimum minutes/games), select the eligible player-season-team rows from
-   `data/processed/player_season_team_features.csv`, and only then apply median height
-   imputation within that sample (never using `position`). This is the natural next step
-   after the completed feature table; resolves open questions 5 and 6 above.
-2. **Final feature selection, scaling, and `X` matrix construction** — decide which
-   `candidate`-tagged columns in the feature dictionary actually go into the clustering
-   input, handle any remaining correlated/redundant columns (e.g. `total_rebounds` vs.
-   offensive+defensive), and build the scaled training matrix. Not started.
-3. PCA (2D visualization, supervisor recommendation 3) and clustering (GMM/BIC or otherwise)
-   on the final feature set — re-evaluate cluster count; do not assume 8 clusters carries
-   over.
-4. Cluster interpretation and role naming (supervisor recommendation 2).
+1. **Eligible training-sample selection and imputation** (CheckList stages 3-4) — define the
+   participation threshold (e.g. minimum minutes/games), select the eligible player-season-
+   team rows from `data/processed/player_season_team_features.csv`, and only then apply
+   median height imputation within that sample (never using `position`). This is the natural
+   next step after the completed feature table; resolves open questions 5 and 6 above.
+2. **Final feature selection, scaling, and `X` matrix construction** (CheckList stages 5-6) —
+   decide which `candidate`-tagged columns in the feature dictionary actually go into the
+   clustering input, handle any remaining correlated/redundant columns (e.g.
+   `total_rebounds` vs. offensive+defensive), and build the scaled training matrix. Not
+   started.
+3. PCA (2D visualization, supervisor recommendation 3), a K-Means baseline, and GMM/BIC
+   clustering (CheckList stages 7-10, including the stability check) on the final feature
+   set — re-evaluate cluster count; do not assume 8 clusters carries over.
+4. Cluster interpretation and role naming (CheckList stage 11; supervisor recommendation 2).
 5. Expand features to include additional playmaking/rebounding/defensive detail if needed
    beyond what is already in the feature table (supervisor recommendation 1 — largely
-   satisfied already by the per-36 rate columns).
-6. Traditional-position comparison/overlap analysis (post-hoc only).
-7. Hebrew 40-minute presentation (separate future deliverable, out of scope until requested).
+   satisfied already by the per-36 rate columns; folded into CheckList stage 5 above rather
+   than its own stage).
+6. Traditional-position comparison/overlap analysis, plus player/season examples (CheckList
+   stages 12-13; post-hoc only).
+7. Answering the research question and finishing the notebook narrative (CheckList stage 14-15).
+8. Hebrew 40-minute presentation (CheckList stage 16; separate future deliverable, out of
+   scope until requested).
 
 ## Files created during the Data Audit task
 
@@ -372,21 +403,22 @@ modified** by this task.
 
 ## Exact instructions for continuing from the current state
 
-1. Read `README.md`, `CLAUDE.md`, and this file.
-2. Read `notebooks/EuroLeague_Player_Roles_Project.ipynb` **from disk, in full** — it has been
-   manually edited by the user and is the authoritative current state, which may not exactly
-   match the description recorded above. `01_data_audit.ipynb` and
-   `02_coordinate_system_analysis.ipynb` are internal source material only; consult them for
-   extra diagnostic detail if needed, but do not present, extend, or pull old wording from
-   them into the main notebook.
-3. Get explicit approval on open questions 2-8 above before starting Feature Engineering.
-4. Only after approval, begin the Feature Engineering task by extending
+1. Read `README.md`, `CLAUDE.md`, `CheckList.md`, and this file.
+2. Read `notebooks/EuroLeague_Player_Roles_Project.ipynb` **from disk, in full** — it may have
+   been manually edited by the user since the last recorded state here, and is always the
+   authoritative current state. `01_data_audit.ipynb` and `02_coordinate_system_analysis.ipynb`
+   are internal source material only; consult them for extra diagnostic detail if needed, but
+   do not present, extend, or pull old wording from them into the main notebook.
+3. The player-season-team feature table (CheckList stages 1-2) is complete — see
+   "Player-season-team feature table" above. The next stage is eligible-training-sample
+   selection and imputation (CheckList stages 3-4, "Future tasks" item 1 above). Get explicit
+   approval before starting it, or any later stage.
+4. Once approved, implement the next stage by extending
    `notebooks/EuroLeague_Player_Roles_Project.ipynb` (continuing directly from its current
-   final cell, with no visible task boundary) — building the player-season-team table from
-   `euroleague_players.csv` totals plus the 11 approved coordinate-derived features. Write it
-   in the same first-person, student-authored voice as the rest of the notebook, and do not
-   announce or propose the step after it inside the notebook (see `CLAUDE.md`). Do not fold
-   PCA, clustering, or cluster interpretation into that same step unless explicitly approved
-   together.
+   final cell, with no visible task boundary), in the same first-person, student-authored
+   voice as the rest of the notebook (see `CLAUDE.md`). Tick the corresponding boxes in
+   `CheckList.md` and update this file as part of that task. Do not fold later CheckList
+   stages (feature selection/scaling, PCA, clustering, interpretation) into the same step
+   unless explicitly approved together.
 5. Do not modify `notebooks/EuroLeague_Unsupervised_Roles.ipynb`, `notebooks/01_data_audit.ipynb`,
    `notebooks/02_coordinate_system_analysis.ipynb`, or any file under `data/raw/`.

@@ -12,8 +12,8 @@ data inventory, decisions, and open questions.
 
 ## Hard rules
 
-- **Read first.** Before every task, read `README.md`, `CLAUDE.md`, and
-  `docs/project-state.md`.
+- **Read first.** Before every task, read `README.md`, `CLAUDE.md`, `docs/project-state.md`,
+  and `CheckList.md`.
 - **One task at a time.** Work only on the explicitly approved active task. Do not start the
   next task without explicit approval, even if it seems like a natural continuation.
 - **Do not silently change the research question**: "Can natural EuroLeague player roles be
@@ -73,8 +73,28 @@ euroleague-player-roles/
 │   └── project-state.md
 ├── README.md
 ├── CLAUDE.md
+├── CheckList.md               # Stage-by-stage project checklist (see below).
 └── requirements.txt
 ```
+
+## `CheckList.md` — the project roadmap
+
+`CheckList.md` is the authoritative, stage-by-stage breakdown of the whole project, from data
+understanding through the final Hebrew presentation, written by the user as a checkbox list.
+Treat it the same way as `docs/project-state.md`: read it before starting a task, and keep it
+in sync with what has actually been done.
+
+- Each stage lists concrete checkbox items plus a short "Result of this stage" or "Decision
+  required from this stage" note.
+- When a task completes items in `CheckList.md`, tick the corresponding boxes (`- [x]`) and,
+  if useful, fill in or update that stage's result/decision note — don't leave it stale.
+- `docs/project-state.md`'s "Future tasks" section is a condensed summary; `CheckList.md` is
+  the detailed source of truth for what each upcoming stage actually involves. If the two
+  ever disagree, treat `CheckList.md` as authoritative for stage scope and
+  `docs/project-state.md` as authoritative for decisions/results already made, and reconcile
+  them rather than picking one silently.
+- Do not renumber or restructure `CheckList.md`'s stages on your own initiative — it reflects
+  the user's own plan. Add detail or tick boxes; don't redesign it without being asked.
 
 ## The project notebook is a student deliverable, not an agent report
 
