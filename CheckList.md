@@ -63,23 +63,23 @@ This is the complete feature table, but it is not yet the final modeling matrix.
 
 ---
 
-## 3. Define the Eligible Modeling Sample
+## 3. Define the Eligible Modeling Sample — Completed
 
-- [ ] Examine the distributions of minutes played, games played, and shot attempts.
-- [ ] Determine how little playing time makes a player-season-team observation too unstable to represent a meaningful role.
-- [ ] Compare several reasonable participation thresholds.
-- [ ] Examine how each threshold changes the number of retained observations.
-- [ ] Check whether the retained sample still represents every EuroLeague season.
-- [ ] Check which kinds of players are removed by each possible threshold.
-- [ ] Select a final participation rule based on both statistical reliability and basketball logic.
-- [ ] Explain why the selected sample is appropriate for discovering player roles.
-- [ ] Keep the complete feature table unchanged and create an eligibility indicator for the modeling sample.
+- [x] Examine the distributions of minutes played, games played, and shot attempts.
+- [x] Determine how little playing time makes a player-season-team observation too unstable to represent a meaningful role.
+- [x] Compare several reasonable participation thresholds.
+- [x] Examine how each threshold changes the number of retained observations.
+- [x] Check whether the retained sample still represents every EuroLeague season.
+- [x] Check which kinds of players are removed by each possible threshold.
+- [x] Select a final participation rule based on both statistical reliability and basketball logic.
+- [x] Explain why the selected sample is appropriate for discovering player roles.
+- [x] Keep the complete feature table unchanged and create an eligibility indicator for the modeling sample.
 
-### Decision required from this stage
+### Result of this stage
 
-We need to decide which player-season-team observations contain enough playing time and activity to represent a reliable playing role.
+We compared four candidate rules (5 games/100 minutes, 10 games/200 minutes, 10 games/300 minutes, 15 games/400 minutes) and selected **5 games and 100 minutes**. It keeps 4,568 of the 6,307 player-season-team rows (72.4%), represents all 19 seasons with 196-273 eligible rows each, and every eligible row already has valid spatial data and at least one field-goal attempt. The stricter alternatives removed substantially more rows, including observations with meaningful minutes, shot attempts, and points, which would have biased the sample toward established rotation players.
 
-The decision should not be based only on choosing a convenient number. We should show how different thresholds affect the data and explain why the selected threshold gives the best balance between reliability and sample coverage.
+The complete 6,307-row feature table is unchanged and now carries a boolean `eligible_for_modeling` column (`data/processed/player_season_team_features.csv`) rather than being replaced by a filtered copy. `10 games / 200 minutes` is kept in reserve as a sensitivity check for Stage 10, after clustering.
 
 ---
 

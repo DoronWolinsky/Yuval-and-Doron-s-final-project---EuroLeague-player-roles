@@ -149,18 +149,22 @@ ended and another began.
 **Completed:**
 - CheckList stage 1 — understanding and examining the data.
 - CheckList stage 2 — building the player-season-team feature table.
+- CheckList stage 3 — defining the eligible modeling sample. Selected rule: **at least 5
+  games and 100 minutes**. Eligible sample: 4,568 of 6,307 rows (72.4%), all 19 seasons
+  represented (196-273 eligible rows each). `10 games / 200 minutes` is reserved as a
+  sensitivity check for Stage 10, after clustering — not run yet.
 
-**Current output:** `data/processed/player_season_team_features.csv` — 6,307
-player-season-team rows, 76 columns. Not yet the final modeling matrix.
+**Current output:** `data/processed/player_season_team_features.csv` — the complete
+6,307-row, 77-column table (unchanged row count), now including the boolean
+`eligible_for_modeling` column. Not yet the final modeling matrix.
 
-**Not yet performed:** eligible-sample selection, final missing-value handling, final feature
+**Next approved work has not started:** CheckList stage 4 — missing-value handling in the
+eligible sample.
+
+**Not yet performed:** missing-value handling in the eligible sample, final feature
 selection, scaling, PCA, K-Means, GMM, cluster interpretation.
 
-**Next approved work has not started:** CheckList stage 3 — defining the eligible modeling
-sample.
-
 **Important unresolved decisions:**
-- Participation threshold for the eligible sample.
 - Whether height will be a clustering feature.
 - Whether shooting efficiency will be a clustering feature.
 - Final feature selection.
