@@ -158,17 +158,29 @@ ended and another began.
 6,307-row, 77-column table (unchanged row count), now including the boolean
 `eligible_for_modeling` column. Not yet the final modeling matrix.
 
-**Next approved work has not started:** CheckList stage 4 — missing-value handling in the
-eligible sample.
+**In progress — CheckList stage 4, missing values in the eligible sample:** the notebook now
+recalculates missingness on the 4,568 eligible rows and separates it into: (a) spatial
+location/spread/shot-selection gaps, all eliminated by the Stage 3 eligibility rule (0
+remaining); (b) a structural-zero ambiguity in the shooting-percentage columns — `0.0` is
+recorded for zero attempts, not a real 0% (443 eligible rows for `three_points_percentage`,
+34 for `free_throws_percentage`); (c) genuinely missing `height_cm` (31 eligible rows); (d)
+comparison-only missing `position` (132 eligible rows). No imputation or exclusion has been
+performed — only the diagnostic. Only items 1-2 of Stage 4 are checked off in `CheckList.md`.
 
-**Not yet performed:** missing-value handling in the eligible sample, final feature
-selection, scaling, PCA, K-Means, GMM, cluster interpretation.
+**Not yet performed:** deciding whether height/shooting efficiency are clustering features,
+imputing height (if used) from the eligible sample only, deciding how to treat the
+shooting-percentage structural zeroes (if used), deciding whether to exclude or otherwise
+handle rows still lacking a needed feature, final feature selection, scaling, PCA, K-Means,
+GMM, cluster interpretation.
 
 **Important unresolved decisions:**
-- Whether height will be a clustering feature.
-- Whether shooting efficiency will be a clustering feature.
+- Whether height will be a clustering feature, and if so how to impute the 31 missing values
+  (from the eligible sample only, never from position).
+- Whether shooting efficiency will be a clustering feature, and if so how to treat rows where
+  a `0.0` percentage means "no attempts" rather than "0% made."
 - Final feature selection.
-- Treatment of rows without valid spatial information.
+- Treatment of rows without valid spatial information (moot within the eligible sample
+  itself — 0 such rows — but still relevant if any non-eligible row is ever reconsidered).
 
 ## Handoff rule
 

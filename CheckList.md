@@ -83,10 +83,10 @@ The complete 6,307-row feature table is unchanged and now carries a boolean `eli
 
 ---
 
-## 4. Handle Missing Values in the Eligible Sample
+## 4. Handle Missing Values in the Eligible Sample — In Progress
 
-- [ ] Recalculate missing-value counts after selecting the eligible sample.
-- [ ] Separate genuinely missing measurements from values that are undefined because a player had no relevant attempts.
+- [x] Recalculate missing-value counts after selecting the eligible sample.
+- [x] Separate genuinely missing measurements from values that are undefined because a player had no relevant attempts.
 - [ ] Decide whether height should be included as a clustering feature.
 - [ ] If height is included, fill missing height values using a method calculated only from the eligible sample.
 - [ ] Do not use traditional position to estimate height or any other clustering feature.
@@ -94,6 +94,10 @@ The complete 6,307-row feature table is unchanged and now carries a boolean `eli
 - [ ] Do not invent average shot-location behavior for players without valid spatial information.
 - [ ] Decide whether observations that still lack required modeling features should be excluded or handled differently.
 - [ ] Explain every imputation or exclusion according to what the missing value means in this project.
+
+### Result so far
+
+Recalculating missingness on the 4,568 eligible rows shows that the participation rule already eliminated every spatial location, spread, and shot-selection gap (all were tied to rows with no recorded field-goal attempts, or, for standard deviations, exactly one shot). Two genuine gaps remain: `height_cm` (31 rows) and `position` (132 rows, comparison-only). We also found that the shooting-percentage columns record `0.0` rather than a missing value when a player had zero attempts of that type (443 eligible rows for three-point percentage, 34 for free-throw percentage) -- not a missing-value count, but a structural-zero ambiguity that needs a decision if shooting efficiency is used as a feature.
 
 ### Decision required from this stage
 
