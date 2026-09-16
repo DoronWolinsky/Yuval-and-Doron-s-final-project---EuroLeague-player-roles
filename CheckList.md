@@ -284,6 +284,18 @@ This comparison should help answer the central research question: whether unsupe
 
 The goal is not to predict the traditional labels. The goal is to determine whether the discovered roles reveal distinctions that the traditional labels do not show.
 
+### Potential five-position comparison source (prepared, not yet adopted)
+
+A separate Wikipedia lookup has produced a `position_wiki` column (Point Guard, Shooting
+Guard, Small Forward, Power Forward, Center) as a more granular comparison source alongside
+the existing coarse `position` field, resolved for 93.0% of unique eligible players (96.4% of
+eligible observations), in
+`data/processed/player_season_team_features_with_wiki_position.csv`. If Doron and Yuval
+approve using it, this stage's comparison could be run against both the coarse `position` and
+the five-position `position_wiki`. It has **not** been adopted into the notebook workflow yet
+— that is a pending team decision. Like `position`, it would only ever be used after
+clustering, for interpretation and comparison, never as a clustering input.
+
 ---
 
 ## 13. Examine Player and Season Examples

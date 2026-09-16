@@ -182,6 +182,24 @@ GMM, cluster interpretation.
 - Treatment of rows without valid spatial information (moot within the eligible sample
   itself — 0 such rows — but still relevant if any non-eligible row is ever reconsidered).
 
+**Separate side task — Wikipedia five-position enrichment (completed, not yet integrated):**
+An independent process looked up each unique player (`player_id`, from `players_bio.csv`) on
+Wikipedia and normalized any playing position found there to exactly one of Point Guard,
+Shooting Guard, Small Forward, Power Forward, or Center, using conservative identity
+verification (an exact birth-year match is required whenever available; ambiguous or
+unverified identities were deliberately left unresolved rather than guessed). The final
+lookup resolves 1,900 of 2,363 players overall; among the eligible modeling observations,
+4,403 of 4,568 (96.4%) have a resolved Wikipedia position, and 1,436 of 1,544 unique eligible
+players (93.0%) do. 1,893 of the 1,900 accepted matches (99.6%) are backed by an exact
+birth-year match. The result (`position_wiki` only) is merged many-to-one on `player_id` into
+a new derived table, `data/processed/player_season_team_features_with_wiki_position.csv`,
+which adds that one column to an unchanged copy of `player_season_team_features.csv`; the
+detailed Wikipedia QA columns stay in `data/processed/wikipedia_position_lookup/`.
+`position_wiki` is comparison/interpretation metadata only, exactly like the existing coarse
+`position` column, and must never be used as a clustering feature. **Integration into the
+main notebook is pending a Doron-Yuval discussion and explicit approval** — the notebook
+currently uses neither this column nor the derived table.
+
 ## Handoff rule
 
 Whenever Claude Code stops working:
