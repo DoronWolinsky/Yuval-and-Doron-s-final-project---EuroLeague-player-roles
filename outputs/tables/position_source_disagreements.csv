@@ -1,0 +1,384 @@
+player_id,position,position_wiki,position_365scores,position_reconciled
+P000140,Guard,Point Guard,Center,Center
+P000202,Forward,Small Forward,Shooting Guard,Shooting Guard
+P000229,Forward,Shooting Guard,Small Forward,Small Forward
+P000316,Forward,Power Forward,Small Forward,Small Forward
+P000378,Guard,Shooting Guard,Power Forward,Power Forward
+P000396,Forward,Small Forward,Power Forward,Power Forward
+P000416,Forward,Shooting Guard,Point Guard,Point Guard
+P000483,Forward,Small Forward,Point Guard,Point Guard
+P000494,Guard,Shooting Guard,Point Guard,Point Guard
+P000582,Center,Power Forward,Small Forward,Small Forward
+P000668,Guard,Point Guard,Power Forward,Power Forward
+P000726,Guard,Small Forward,Point Guard,Point Guard
+P000880,Guard,Shooting Guard,Small Forward,Small Forward
+P000912,Guard,Shooting Guard,Point Guard,Point Guard
+P000977,Forward,Power Forward,Small Forward,Small Forward
+P001142,Forward,Small Forward,Point Guard,Point Guard
+P001215,Center,Power Forward,Center,Center
+P001235,Guard,Small Forward,Shooting Guard,Shooting Guard
+P001487,Forward,Power Forward,Small Forward,Small Forward
+P001518,Forward,Small Forward,Power Forward,Power Forward
+P001612,Center,Power Forward,Center,Center
+P001711,Guard,Point Guard,Small Forward,Small Forward
+P001899,Guard,Small Forward,Center,Center
+P002015,Forward,Small Forward,Point Guard,Point Guard
+P002026,Forward,Power Forward,Small Forward,Small Forward
+P002072,Center,Center,Power Forward,Power Forward
+P002092,Guard,Shooting Guard,Point Guard,Point Guard
+P002104,Guard,Shooting Guard,Power Forward,Power Forward
+P002276,Guard,Point Guard,Shooting Guard,Shooting Guard
+P002328,Guard,Shooting Guard,Small Forward,Small Forward
+P002536,Forward,Center,Power Forward,Power Forward
+P002543,Guard,Point Guard,Small Forward,Small Forward
+P002561,Guard,Point Guard,Shooting Guard,Shooting Guard
+P002582,Forward,Shooting Guard,Small Forward,Small Forward
+P002628,Guard,Small Forward,Power Forward,Power Forward
+P002741,Center,Power Forward,Center,Center
+P002763,Forward,Power Forward,Small Forward,Small Forward
+P002807,Guard,Shooting Guard,Small Forward,Small Forward
+P002812,Center,Center,Power Forward,Power Forward
+P002841,Guard,Point Guard,Shooting Guard,Shooting Guard
+P002842,Guard,Small Forward,Point Guard,Point Guard
+P002852,Forward,Shooting Guard,Small Forward,Small Forward
+P002862,Forward,Small Forward,Power Forward,Power Forward
+P002871,Center,Power Forward,Center,Center
+P002873,Guard,Shooting Guard,Center,Center
+P002939,Guard,Point Guard,Shooting Guard,Shooting Guard
+P002970,Forward,Center,Small Forward,Small Forward
+P002972,Guard,Point Guard,Shooting Guard,Shooting Guard
+P003042,Center,Center,Power Forward,Power Forward
+P003091,Forward,Power Forward,Small Forward,Small Forward
+P003108,Forward,Power Forward,Small Forward,Small Forward
+P003151,Guard,Shooting Guard,Small Forward,Small Forward
+P003240,Guard,Small Forward,Point Guard,Point Guard
+P003263,Guard,Point Guard,Shooting Guard,Shooting Guard
+P003264,Center,Power Forward,Center,Center
+P003274,Forward,Small Forward,Point Guard,Point Guard
+P003328,Center,Power Forward,Center,Center
+P003413,Guard,Point Guard,Shooting Guard,Shooting Guard
+P003443,Forward,Small Forward,Power Forward,Power Forward
+P003452,Forward,Shooting Guard,Small Forward,Small Forward
+P003458,Forward,Power Forward,Small Forward,Small Forward
+P003478,Forward,Small Forward,Power Forward,Power Forward
+P003496,Center,Power Forward,Small Forward,Small Forward
+P003521,Guard,Point Guard,Shooting Guard,Shooting Guard
+P003529,Forward,Small Forward,Power Forward,Power Forward
+P003533,Forward,Power Forward,Center,Center
+P003573,Forward,Power Forward,Small Forward,Small Forward
+P003583,Center,Center,Power Forward,Power Forward
+P003608,Forward,Small Forward,Shooting Guard,Shooting Guard
+P003657,Forward,Small Forward,Power Forward,Power Forward
+P003703,Guard,Point Guard,Shooting Guard,Shooting Guard
+P003783,Guard,Point Guard,Shooting Guard,Shooting Guard
+P003958,Center,Power Forward,Center,Center
+P003983,Guard,Point Guard,Shooting Guard,Shooting Guard
+P004007,Forward,Small Forward,Power Forward,Power Forward
+P004058,Guard,Shooting Guard,Point Guard,Point Guard
+P004182,Forward,Power Forward,Shooting Guard,Shooting Guard
+P004192,Guard,Shooting Guard,Small Forward,Small Forward
+P004195,Guard,Shooting Guard,Point Guard,Point Guard
+P004212,Guard,Point Guard,Shooting Guard,Shooting Guard
+P004215,Center,Power Forward,Small Forward,Small Forward
+P004259,Center,Center,Power Forward,Power Forward
+P004271,Guard,Point Guard,Shooting Guard,Shooting Guard
+P004289,Center,Center,Power Forward,Power Forward
+P004292,Guard,Shooting Guard,Point Guard,Point Guard
+P004401,Forward,Power Forward,Small Forward,Small Forward
+P004402,Center,Power Forward,Center,Center
+P004445,Guard,Shooting Guard,Point Guard,Point Guard
+P004575,Center,Center,Power Forward,Power Forward
+P004586,Forward,Small Forward,Power Forward,Power Forward
+P004603,Center,Center,Power Forward,Power Forward
+P004761,Forward,Small Forward,Shooting Guard,Shooting Guard
+P004790,Center,Power Forward,Center,Center
+P004810,Guard,Point Guard,Shooting Guard,Shooting Guard
+P004845,Guard,Shooting Guard,Point Guard,Point Guard
+P004846,Guard,Shooting Guard,Point Guard,Point Guard
+P004857,,Center,Power Forward,Power Forward
+P004862,Guard,Shooting Guard,Point Guard,Point Guard
+P004866,Forward,Power Forward,Small Forward,Small Forward
+P004888,Forward,Power Forward,Small Forward,Small Forward
+P004941,Forward,Power Forward,Small Forward,Small Forward
+P004945,Guard,Shooting Guard,Point Guard,Point Guard
+P004974,Guard,Shooting Guard,Small Forward,Small Forward
+P004982,Center,Power Forward,Center,Center
+P004998,Forward,Shooting Guard,Small Forward,Small Forward
+P004999,Forward,Center,Power Forward,Power Forward
+P005024,Guard,Shooting Guard,Point Guard,Point Guard
+P005059,Guard,Small Forward,Point Guard,Point Guard
+P005094,Forward,Power Forward,Small Forward,Small Forward
+P005112,Guard,Point Guard,Small Forward,Small Forward
+P005146,Forward,Power Forward,Small Forward,Small Forward
+P005158,Guard,Shooting Guard,Point Guard,Point Guard
+P005195,Forward,Shooting Guard,Small Forward,Small Forward
+P005242,Guard,Shooting Guard,Point Guard,Point Guard
+P005319,Guard,Shooting Guard,Small Forward,Small Forward
+P005356,Guard,Small Forward,Shooting Guard,Shooting Guard
+P005368,Forward,Small Forward,Power Forward,Power Forward
+P005422,Forward,Power Forward,Shooting Guard,Shooting Guard
+P005460,Center,Power Forward,Center,Center
+P005670,Guard,Point Guard,Shooting Guard,Shooting Guard
+P005683,Forward,Small Forward,Power Forward,Power Forward
+P005686,Forward,Small Forward,Point Guard,Point Guard
+P005692,Forward,Power Forward,Center,Center
+P005730,Center,Center,Power Forward,Power Forward
+P005758,Forward,Center,Power Forward,Power Forward
+P005763,Forward,Small Forward,Shooting Guard,Shooting Guard
+P005771,Forward,Power Forward,Small Forward,Small Forward
+P005775,Guard,Shooting Guard,Point Guard,Point Guard
+P005793,Forward,Power Forward,Small Forward,Small Forward
+P005804,Center,Center,Power Forward,Power Forward
+P005814,Guard,Shooting Guard,Power Forward,Power Forward
+P005827,Center,Center,Shooting Guard,Shooting Guard
+P005846,Forward,Center,Power Forward,Power Forward
+P005917,Center,Power Forward,Center,Center
+P005938,Forward,Small Forward,Power Forward,Power Forward
+P005968,Forward,Power Forward,Point Guard,Point Guard
+P005979,Guard,Shooting Guard,Point Guard,Point Guard
+P006158,Guard,Shooting Guard,Power Forward,Power Forward
+P006277,Center,Power Forward,Center,Center
+P006302,Guard,Point Guard,Shooting Guard,Shooting Guard
+P006372,Forward,Small Forward,Point Guard,Point Guard
+P006477,Forward,Power Forward,Center,Center
+P006540,Guard,Shooting Guard,Small Forward,Small Forward
+P006543,Forward,Power Forward,Small Forward,Small Forward
+P006586,Guard,Small Forward,Shooting Guard,Shooting Guard
+P006641,Forward,Power Forward,Small Forward,Small Forward
+P006661,Guard,Point Guard,Shooting Guard,Shooting Guard
+P006701,Guard,Shooting Guard,Point Guard,Point Guard
+P006726,Forward,Center,Power Forward,Power Forward
+P006739,Guard,Point Guard,Shooting Guard,Shooting Guard
+P006768,Forward,Small Forward,Power Forward,Power Forward
+P006832,Forward,Center,Small Forward,Small Forward
+P007018,Forward,Center,Power Forward,Power Forward
+P007025,Guard,Shooting Guard,Point Guard,Point Guard
+P007027,Guard,Shooting Guard,Point Guard,Point Guard
+P007050,Forward,Power Forward,Small Forward,Small Forward
+P007069,Center,Power Forward,Center,Center
+P007201,Center,Power Forward,Center,Center
+P007230,Forward,Power Forward,Small Forward,Small Forward
+P007265,Guard,Point Guard,Shooting Guard,Shooting Guard
+P007395,Guard,Shooting Guard,Power Forward,Power Forward
+P007398,Guard,Point Guard,Shooting Guard,Shooting Guard
+P007423,Forward,Small Forward,Power Forward,Power Forward
+P007464,Forward,Small Forward,Power Forward,Power Forward
+P007497,Guard,Small Forward,Power Forward,Power Forward
+P007513,Guard,Point Guard,Shooting Guard,Shooting Guard
+P007524,Center,Power Forward,Small Forward,Small Forward
+P007527,Guard,Shooting Guard,Point Guard,Point Guard
+P007632,Forward,Small Forward,Power Forward,Power Forward
+P007645,Forward,Power Forward,Small Forward,Small Forward
+P007647,Guard,Point Guard,Small Forward,Small Forward
+P007736,Forward,Shooting Guard,Point Guard,Point Guard
+P007851,Forward,Small Forward,Power Forward,Power Forward
+P007853,Guard,Small Forward,Point Guard,Point Guard
+P007855,Center,Center,Small Forward,Small Forward
+P007889,Forward,Power Forward,Center,Center
+P007942,Center,Center,Power Forward,Power Forward
+P007960,Forward,Power Forward,Small Forward,Small Forward
+P007969,Guard,Small Forward,Shooting Guard,Shooting Guard
+P007990,Guard,Shooting Guard,Point Guard,Point Guard
+P007991,Guard,Small Forward,Point Guard,Point Guard
+P007992,Center,Power Forward,Point Guard,Point Guard
+P007996,Forward,Small Forward,Shooting Guard,Shooting Guard
+P008015,Forward,Small Forward,Power Forward,Power Forward
+P008025,Guard,Shooting Guard,Point Guard,Point Guard
+P008042,Center,Power Forward,Center,Center
+P008052,Forward,Power Forward,Center,Center
+P008066,Guard,Point Guard,Shooting Guard,Shooting Guard
+P008084,Forward,Power Forward,Small Forward,Small Forward
+P008173,Guard,Shooting Guard,Point Guard,Point Guard
+P008174,Guard,Shooting Guard,Point Guard,Point Guard
+P008176,Guard,Shooting Guard,Point Guard,Point Guard
+P008211,Guard,Small Forward,Point Guard,Point Guard
+P008232,Forward,Power Forward,Center,Center
+P008262,Guard,Small Forward,Power Forward,Power Forward
+P008275,Forward,Small Forward,Power Forward,Power Forward
+P008296,Forward,Power Forward,Small Forward,Small Forward
+P008384,Forward,Small Forward,Shooting Guard,Shooting Guard
+P008823,Forward,Power Forward,Small Forward,Small Forward
+P008829,Forward,Power Forward,Small Forward,Small Forward
+P008847,Forward,Power Forward,Center,Center
+P008855,Guard,Point Guard,Small Forward,Small Forward
+P008856,Guard,Point Guard,Power Forward,Power Forward
+P008985,Guard,Point Guard,Small Forward,Small Forward
+P008991,Center,Center,Power Forward,Power Forward
+P008995,Guard,Shooting Guard,Point Guard,Point Guard
+P009003,Guard,Shooting Guard,Point Guard,Point Guard
+P009004,Forward,Center,Power Forward,Power Forward
+P009005,Forward,Power Forward,Small Forward,Small Forward
+P009033,Guard,Shooting Guard,Point Guard,Point Guard
+P009056,Forward,Shooting Guard,Power Forward,Power Forward
+P009132,Guard,Shooting Guard,Small Forward,Small Forward
+P009213,Center,Power Forward,Center,Center
+P009299,Guard,Shooting Guard,Point Guard,Point Guard
+P009449,Guard,Point Guard,Shooting Guard,Shooting Guard
+P009549,Guard,Small Forward,Shooting Guard,Shooting Guard
+P009580,Center,Center,Power Forward,Power Forward
+P009748,Center,Power Forward,Small Forward,Small Forward
+P009783,Forward,Small Forward,Power Forward,Power Forward
+P009817,Forward,Small Forward,Shooting Guard,Shooting Guard
+P009847,Forward,Power Forward,Small Forward,Small Forward
+P009863,Guard,Point Guard,Shooting Guard,Shooting Guard
+P009864,Center,Power Forward,Center,Center
+P009960,Center,Center,Small Forward,Small Forward
+P010062,Guard,Small Forward,Point Guard,Point Guard
+P010254,Forward,Shooting Guard,Small Forward,Small Forward
+P010327,Forward,Small Forward,Power Forward,Power Forward
+P010356,Forward,Center,Small Forward,Small Forward
+P010357,Forward,Center,Power Forward,Power Forward
+P010387,Forward,Small Forward,Power Forward,Power Forward
+P010389,Guard,Shooting Guard,Point Guard,Point Guard
+P010391,Guard,Point Guard,Shooting Guard,Shooting Guard
+P010393,Center,Power Forward,Center,Center
+P010413,Guard,Point Guard,Shooting Guard,Shooting Guard
+P010414,Center,Power Forward,Center,Center
+P010458,Center,Power Forward,Small Forward,Small Forward
+P010465,Forward,Small Forward,Shooting Guard,Shooting Guard
+P010467,Center,Center,Small Forward,Small Forward
+P010545,Center,Center,Power Forward,Power Forward
+P010549,Guard,Shooting Guard,Point Guard,Point Guard
+P010560,Forward,Power Forward,Small Forward,Small Forward
+P010581,Forward,Power Forward,Center,Center
+P010588,Forward,Power Forward,Small Forward,Small Forward
+P010612,Guard,Shooting Guard,Point Guard,Point Guard
+P010857,Forward,Power Forward,Small Forward,Small Forward
+P010988,Guard,Shooting Guard,Point Guard,Point Guard
+P011051,Forward,Center,Power Forward,Power Forward
+P011078,Guard,Point Guard,Shooting Guard,Shooting Guard
+P011085,Forward,Small Forward,Shooting Guard,Shooting Guard
+P011194,Center,Power Forward,Center,Center
+P011196,Center,Center,Power Forward,Power Forward
+P011201,Guard,Point Guard,Shooting Guard,Shooting Guard
+P011202,Guard,Small Forward,Power Forward,Power Forward
+P011209,Guard,Small Forward,Shooting Guard,Shooting Guard
+P011217,Forward,Small Forward,Shooting Guard,Shooting Guard
+P011218,Guard,Shooting Guard,Point Guard,Point Guard
+P011219,Forward,Power Forward,Center,Center
+P011231,Forward,Power Forward,Small Forward,Small Forward
+P011239,Center,Center,Power Forward,Power Forward
+P011247,Guard,Point Guard,Shooting Guard,Shooting Guard
+P011248,Guard,Shooting Guard,Point Guard,Point Guard
+P011261,Guard,Shooting Guard,Small Forward,Small Forward
+P011284,Center,Center,Power Forward,Power Forward
+P011302,Forward,Shooting Guard,Point Guard,Point Guard
+P011375,Guard,Point Guard,Shooting Guard,Shooting Guard
+P011666,Guard,Shooting Guard,Power Forward,Power Forward
+P011925,Guard,Point Guard,Shooting Guard,Shooting Guard
+P011935,Center,Center,Power Forward,Power Forward
+P011937,Forward,Small Forward,Shooting Guard,Shooting Guard
+P011938,Guard,Point Guard,Shooting Guard,Shooting Guard
+P011949,Forward,Power Forward,Point Guard,Point Guard
+P011964,Forward,Center,Small Forward,Small Forward
+P011973,Forward,Center,Power Forward,Power Forward
+P012023,Guard,Shooting Guard,Point Guard,Point Guard
+P012058,Center,Center,Power Forward,Power Forward
+P012080,Forward,Small Forward,Shooting Guard,Shooting Guard
+P012096,Center,Power Forward,Center,Center
+P012103,Guard,Shooting Guard,Point Guard,Point Guard
+P012126,Guard,Shooting Guard,Small Forward,Small Forward
+P012168,Center,Power Forward,Center,Center
+P012181,Guard,Shooting Guard,Power Forward,Power Forward
+P012203,Center,Power Forward,Center,Center
+P012610,Forward,Small Forward,Shooting Guard,Shooting Guard
+P012640,Guard,Shooting Guard,Point Guard,Point Guard
+P012714,Center,Center,Power Forward,Power Forward
+P012715,Forward,Power Forward,Small Forward,Small Forward
+P012720,Forward,Small Forward,Shooting Guard,Shooting Guard
+P012721,Forward,Power Forward,Small Forward,Small Forward
+P012724,Forward,Small Forward,Power Forward,Power Forward
+P012732,Guard,Shooting Guard,Point Guard,Point Guard
+P012742,Guard,Small Forward,Shooting Guard,Shooting Guard
+P012743,Center,Center,Power Forward,Power Forward
+P012744,Guard,Small Forward,Shooting Guard,Shooting Guard
+P012765,Guard,Point Guard,Shooting Guard,Shooting Guard
+P012796,Center,Center,Power Forward,Power Forward
+P012801,Guard,Shooting Guard,Point Guard,Point Guard
+P012878,Center,Center,Power Forward,Power Forward
+P012885,Center,Center,Small Forward,Small Forward
+P012997,Forward,Power Forward,Small Forward,Small Forward
+P013269,Forward,Shooting Guard,Point Guard,Point Guard
+P013284,Forward,Small Forward,Power Forward,Power Forward
+P013290,Guard,Shooting Guard,Small Forward,Small Forward
+P013367,Guard,Point Guard,Shooting Guard,Shooting Guard
+P013368,Center,Power Forward,Center,Center
+P013370,Guard,Shooting Guard,Point Guard,Point Guard
+P013371,Forward,Point Guard,Small Forward,Small Forward
+P013373,Forward,Power Forward,Small Forward,Small Forward
+P013382,Forward,Small Forward,Shooting Guard,Shooting Guard
+P013384,Guard,Shooting Guard,Point Guard,Point Guard
+P013405,Forward,Small Forward,Shooting Guard,Shooting Guard
+P013696,Center,Power Forward,Center,Center
+P013775,Guard,Shooting Guard,Point Guard,Point Guard
+P014010,Center,Center,Power Forward,Power Forward
+P014014,Center,Center,Power Forward,Power Forward
+P014088,Center,Power Forward,Small Forward,Small Forward
+P014108,Center,Center,Small Forward,Small Forward
+P014115,Guard,Shooting Guard,Small Forward,Small Forward
+P014128,Forward,Small Forward,Shooting Guard,Shooting Guard
+P014152,Guard,Point Guard,Shooting Guard,Shooting Guard
+P014416,Forward,Small Forward,Center,Center
+PABN,Guard,Point Guard,Shooting Guard,Shooting Guard
+PADF,Center,Power Forward,Center,Center
+PADS,Guard,Point Guard,Power Forward,Power Forward
+PAFP,Guard,Point Guard,Power Forward,Power Forward
+PAFQ,Forward,Center,Power Forward,Power Forward
+PAIH,Center,Center,Shooting Guard,Shooting Guard
+PANB,Guard,Shooting Guard,Power Forward,Power Forward
+PAPB,Center,Power Forward,Shooting Guard,Shooting Guard
+PARO,Guard,Shooting Guard,Small Forward,Small Forward
+PATF,Forward,Power Forward,Point Guard,Point Guard
+PAUC,Forward,Power Forward,Center,Center
+PAUL,Center,Center,Power Forward,Power Forward
+PAXC,Center,Center,Power Forward,Power Forward
+PAZK,Forward,Power Forward,Point Guard,Point Guard
+PBAE,Center,Power Forward,Small Forward,Small Forward
+PBCC,Forward,Power Forward,Center,Center
+PBCN,Guard,Shooting Guard,Small Forward,Small Forward
+PBFY,Guard,Point Guard,Small Forward,Small Forward
+PBIX,Forward,Shooting Guard,Small Forward,Small Forward
+PBLH,Center,Power Forward,Small Forward,Small Forward
+PBTR,Center,Center,Point Guard,Point Guard
+PBUW,Guard,Shooting Guard,Point Guard,Point Guard
+PBXE,Center,Power Forward,Center,Center
+PCMF,Guard,Point Guard,Shooting Guard,Shooting Guard
+PCOB,Center,Power Forward,Shooting Guard,Shooting Guard
+PCPR,Guard,Shooting Guard,Small Forward,Small Forward
+PCSW,Guard,Point Guard,Center,Center
+PJDQ,Center,Center,Small Forward,Small Forward
+PJFX,Guard,Shooting Guard,Small Forward,Small Forward
+PJJN,Guard,Point Guard,Center,Center
+PJLX,Forward,Small Forward,Power Forward,Power Forward
+PJMF,Guard,Shooting Guard,Small Forward,Small Forward
+PJNL,Center,Power Forward,Center,Center
+PJPJ,Guard,Shooting Guard,Point Guard,Point Guard
+PJQH,Center,Center,Point Guard,Point Guard
+PJRF,Forward,Power Forward,Small Forward,Small Forward
+PJSS,Guard,Point Guard,Small Forward,Small Forward
+PJZH,Center,Small Forward,Power Forward,Power Forward
+PKAX,Guard,Point Guard,Shooting Guard,Shooting Guard
+PKBJ,Guard,Point Guard,Small Forward,Small Forward
+PKKI,Forward,Power Forward,Small Forward,Small Forward
+PKNI,Center,Power Forward,Point Guard,Point Guard
+PKOE,Forward,Small Forward,Point Guard,Point Guard
+PKPD,Guard,Shooting Guard,Small Forward,Small Forward
+PLCC,Forward,Shooting Guard,Point Guard,Point Guard
+PLEE,Guard,Shooting Guard,Point Guard,Point Guard
+PLHF,Center,Center,Small Forward,Small Forward
+PLJP,Center,Power Forward,Center,Center
+PLME,Guard,Point Guard,Shooting Guard,Shooting Guard
+PLTT,Guard,Shooting Guard,Point Guard,Point Guard
+PLUK,Guard,Shooting Guard,Power Forward,Power Forward
+PLUO,Guard,Small Forward,Point Guard,Point Guard
+PLVC,Guard,Shooting Guard,Point Guard,Point Guard
+PLVW,Guard,Point Guard,Shooting Guard,Shooting Guard
+PLXL,Forward,Small Forward,Power Forward,Power Forward
+PTEN,Forward,Center,Power Forward,Power Forward
+PTER,Guard,Point Guard,Shooting Guard,Shooting Guard
+PTEY,Center,Power Forward,Center,Center
+PTEZ,Guard,Shooting Guard,Power Forward,Power Forward
+PTGB,Guard,Shooting Guard,Point Guard,Point Guard
+PTGI,Forward,Shooting Guard,Point Guard,Point Guard
+PTGU,Guard,Point Guard,Power Forward,Power Forward
+PTHY,Forward,Small Forward,Power Forward,Power Forward

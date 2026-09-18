@@ -182,23 +182,33 @@ GMM, cluster interpretation.
 - Treatment of rows without valid spatial information (moot within the eligible sample
   itself — 0 such rows — but still relevant if any non-eligible row is ever reconsidered).
 
-**Separate side task — Wikipedia five-position enrichment (completed, not yet integrated):**
-An independent process looked up each unique player (`player_id`, from `players_bio.csv`) on
-Wikipedia and normalized any playing position found there to exactly one of Point Guard,
-Shooting Guard, Small Forward, Power Forward, or Center, using conservative identity
-verification (an exact birth-year match is required whenever available; ambiguous or
-unverified identities were deliberately left unresolved rather than guessed). The final
-lookup resolves 1,900 of 2,363 players overall; among the eligible modeling observations,
-4,403 of 4,568 (96.4%) have a resolved Wikipedia position, and 1,436 of 1,544 unique eligible
-players (93.0%) do. 1,893 of the 1,900 accepted matches (99.6%) are backed by an exact
-birth-year match. The result (`position_wiki` only) is merged many-to-one on `player_id` into
-a new derived table, `data/processed/player_season_team_features_with_wiki_position.csv`,
-which adds that one column to an unchanged copy of `player_season_team_features.csv`; the
-detailed Wikipedia QA columns stay in `data/processed/wikipedia_position_lookup/`.
-`position_wiki` is comparison/interpretation metadata only, exactly like the existing coarse
-`position` column, and must never be used as a clustering feature. **Integration into the
-main notebook is pending a Doron-Yuval discussion and explicit approval** — the notebook
-currently uses neither this column nor the derived table.
+**Position enrichment from Wikipedia and 365scores (completed and integrated into the main
+notebook, directly after the Stage 4 missing-value diagnostic):** each unique player
+(`player_id`) was independently looked up on Wikipedia and on 365scores.com, and any listed
+position normalized to one of five categories (Point Guard, Shooting Guard, Small Forward,
+Power Forward, Center). Wikipedia matches required conservative identity verification (exact
+birth-year match whenever available); 365scores rows matched to a non-player ("Coach"/
+"General Manager") were treated as unresolved. Per player, `position_365scores` is preferred
+whenever resolved, falling back to `position_wiki` otherwise (383 of 1,141 players where both
+resolve actually disagree — kept as 365scores per explicit instruction). Reconciled coverage:
+2,100/2,363 players overall, 97.8% (4,469/4,568) of eligible rows — higher than the original
+`position` column's own 97.1% coverage. Checked against EuroLeague's own three-category
+`position` (mapping Guard/Forward pairs down): 79.2% agreement (1,630/2,058 comparable
+players), with disagreement concentrated in adjacent categories (combo/tweener players)
+rather than flagrant swaps. Full narrative, numbers, and the confusion matrix are in the
+notebook itself. `position_wiki`, `position_365scores`, and `position_reconciled` are all
+comparison/interpretation metadata only, exactly like `position`, and must never be used as a
+clustering feature.
+
+Outputs: `data/processed/player_season_team_features_with_position.csv` (the complete
+6,307-row table with all position columns — this is now the position source of truth going
+forward, superseding `..._with_wiki_position.csv`, which is kept for provenance); QA tables
+`outputs/tables/position_source_agreement_summary.csv`,
+`outputs/tables/position_source_disagreements.csv`, and
+`outputs/tables/position_reconciled_vs_euroleague_position.csv`; detailed Wikipedia QA columns
+in `data/processed/wikipedia_position_lookup/`. Two players (`P011826` Kyle Guy, `P012613`
+Mikael Jantunen) never got a 365scores lookup at all due to a 504 timeout during scraping and
+fall back to `position_wiki`; not re-queried.
 
 ## Handoff rule
 
