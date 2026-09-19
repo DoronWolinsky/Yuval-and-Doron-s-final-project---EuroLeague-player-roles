@@ -83,25 +83,25 @@ The complete 6,307-row feature table is unchanged and now carries a boolean `eli
 
 ---
 
-## 4. Handle Missing Values in the Eligible Sample — In Progress
+## 4. Handle Missing Values in the Eligible Sample — Completed
 
 - [x] Recalculate missing-value counts after selecting the eligible sample.
 - [x] Separate genuinely missing measurements from values that are undefined because a player had no relevant attempts.
-- [ ] Decide whether height should be included as a clustering feature.
-- [ ] If height is included, fill missing height values using a method calculated only from the eligible sample.
-- [ ] Do not use traditional position to estimate height or any other clustering feature.
-- [ ] Do not fill missing traditional positions, since position will only be used for later comparison.
-- [ ] Do not invent average shot-location behavior for players without valid spatial information.
-- [ ] Decide whether observations that still lack required modeling features should be excluded or handled differently.
-- [ ] Explain every imputation or exclusion according to what the missing value means in this project.
+- [x] Decide whether height should be included as a clustering feature.
+- [x] If height is included, fill missing height values using a method calculated only from the eligible sample.
+- [x] Do not use traditional position to estimate height or any other clustering feature.
+- [x] Do not fill missing traditional positions, since position will only be used for later comparison.
+- [x] Do not invent average shot-location behavior for players without valid spatial information.
+- [x] Decide whether observations that still lack required modeling features should be excluded or handled differently.
+- [x] Explain every imputation or exclusion according to what the missing value means in this project.
 
-### Result so far
+### Result of this stage
 
-Recalculating missingness on the 4,568 eligible rows shows that the participation rule already eliminated every spatial location, spread, and shot-selection gap (all were tied to rows with no recorded field-goal attempts, or, for standard deviations, exactly one shot). Two genuine gaps remain: `height_cm` (31 rows) and `position` (132 rows, comparison-only). We also found that the shooting-percentage columns record `0.0` rather than a missing value when a player had zero attempts of that type (443 eligible rows for three-point percentage, 34 for free-throw percentage) -- not a missing-value count, but a structural-zero ambiguity that needs a decision if shooting efficiency is used as a feature.
+Recalculating missingness on the 4,568 eligible rows showed that the participation rule already eliminated every spatial location, spread, and shot-selection gap. Three genuine gaps remained: `height_cm` (31 rows), a structural-zero ambiguity in the shooting-percentage columns (`0.0` recorded for zero attempts, not a real 0% -- 443 rows for three-point percentage, 34 for free-throw percentage), and `position` (132 rows, comparison-only).
 
-### Decision required from this stage
+We decided both height and shooting efficiency belong in the clustering feature set. For height, since it's a fixed, look-up-able physical fact rather than a behavior to estimate, we manually verified the 11 missing players from external sources (cited in `data/processed/height_overrides.csv`) instead of imputing a statistic. For shooting efficiency, we first corrected the structural-zero ambiguity itself -- setting the percentage to a genuine missing value whenever attempts are zero, and adding `has_three_point_attempts`/`has_free_throw_attempts` flags so that behavior isn't lost -- then filled the resulting gaps with the median computed only from eligible rows that did attempt that shot type, never from position, keeping every row in the modeling sample without inventing a specific skill level. `position` was left exactly as it was: it's comparison-only, so a missing value there doesn't block anything and was never a candidate for filling.
 
-We need to create a modeling dataset without treating every missing value as the same problem. Any value we fill must have a reasonable interpretation, and we must avoid creating artificial playing behavior that was not observed.
+The eligible sample now has zero missing values across every candidate clustering feature.
 
 ---
 

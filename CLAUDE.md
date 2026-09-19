@@ -153,52 +153,33 @@ ended and another began.
   games and 100 minutes**. Eligible sample: 4,568 of 6,307 rows (72.4%), all 19 seasons
   represented (196-273 eligible rows each). `10 games / 200 minutes` is reserved as a
   sensitivity check for Stage 10, after clustering — not run yet.
+- CheckList stage 4 — missing values in the eligible sample. Height and shooting efficiency
+  were both decided as clustering features and every eligible-sample gap is now resolved:
+  - **Height:** the 31 eligible rows (11 unique players) missing `height_cm` were manually
+    verified from external sources rather than statistically imputed (a look-up-able physical
+    fact, not a behavior to estimate), cited in `data/processed/height_overrides.csv` and
+    merged in the notebook.
+  - **Shooting efficiency:** the structural-zero ambiguity was fixed first —
+    `three_points_percentage`/`free_throws_percentage` are now genuine missing values (not a
+    misleading `0.0`) whenever attempts are zero, with `has_three_point_attempts`/
+    `has_free_throw_attempts` flags preserving that fact — then the resulting gaps (443
+    three-point rows, 34 free-throw rows) were filled with the eligible-sample median computed
+    only from rows that did attempt that shot type (never from position). Medians used: 0.348
+    (three-point), 0.769 (free-throw).
+  - `position` (132 eligible rows) was left untouched throughout — it's comparison-only, never
+    a clustering input, so a missing value there was never something this stage needed to fill.
+  - Eligible sample now has **zero** missing values across every candidate clustering feature.
 
-**Current output:** `data/processed/player_season_team_features.csv` — the complete
-6,307-row, 77-column table (unchanged row count), now including the boolean
-`eligible_for_modeling` column. Not yet the final modeling matrix.
+**Current output:** `data/processed/player_season_team_features.csv` — the complete 6,307-row,
+79-column table (unchanged row count; +2 columns vs. the original 77 for the two "has
+attempts" flags), all eligible-sample gaps resolved. Also
+`data/processed/player_season_team_features_with_position.csv` (83 columns, adds the four
+position-enrichment columns on top) — see the position-enrichment note below. Neither is yet
+the final modeling matrix (no scaling/final feature selection yet).
 
-**In progress — CheckList stage 4, missing values in the eligible sample:** the notebook
-recalculates missingness on the 4,568 eligible rows (spatial/spread/shot-selection gaps: 0,
-eliminated by the Stage 3 eligibility rule; comparison-only `position`: 132, untouched, never
-filled). Two decisions have since been made and implemented in the notebook, right after the
-diagnostic:
-
-- **Height is a clustering feature.** The 31 eligible rows (11 unique players) missing
-  `height_cm` were not statistically imputed — height is a fixed, look-up-able physical fact,
-  not a behavior to estimate — so each was manually verified from an external source
-  (Wikipedia, or 365scores.com for one player) and recorded in
-  `data/processed/height_overrides.csv` (`player_id`, value, source cited per row), which the
-  notebook merges in. Eligible-sample missing height is now **0**.
-- **Shooting efficiency is a clustering feature.** The structural-zero ambiguity is fixed at
-  the source rather than left as a caveat: `three_points_percentage`/`free_throws_percentage`
-  are now genuine missing values (not `0.0`) whenever the corresponding attempt count is zero
-  (443 eligible rows for three-point, 34 for free-throw), and two new boolean columns,
-  `has_three_point_attempts` and `has_free_throw_attempts`, preserve that behavior so it isn't
-  lost once the percentage is missing. `two_points_percentage` needed no fix (no eligible row
-  has zero two-point attempts). **How to fill these now-missing percentages for modeling is
-  still an open decision** — deliberately deferred rather than decided by default.
-
-Both fixes are applied to `features` before the position-enrichment step below, so
-`data/processed/player_season_team_features.csv` (79 columns) and
-`data/processed/player_season_team_features_with_position.csv` (83 columns) both carry them;
-the notebook was re-executed top-to-bottom after each change with no errors.
-
-**Not yet performed:** deciding how to fill the missing three-point/free-throw percentages
-(impute vs. exclude vs. leave as-is for models that tolerate missing values), deciding whether
-observations still lacking a required feature should be excluded, final feature selection,
-scaling, PCA, K-Means, GMM, cluster interpretation. Only items 1-2 of Stage 4 are checked off
-in `CheckList.md` — the height/shooting-efficiency decisions above are real progress but the
-stage isn't complete until the percentage-filling decision is made and the checklist itself is
-updated.
-
-**Important unresolved decisions:**
-- How to fill the missing `three_points_percentage`/`free_throws_percentage` values (443/34
-  eligible rows) for modeling, now that they are genuine missing values rather than a
-  misleading `0.0`.
-- Final feature selection.
-- Treatment of rows without valid spatial information (moot within the eligible sample
-  itself — 0 such rows — but still relevant if any non-eligible row is ever reconsidered).
+**Next up — CheckList stage 5, final feature selection:** deciding which feature groups
+describe playing style (vs. general quality or playing time), reviewing distributions and
+correlations, and defining the final clustering feature set. Not started.
 
 **Position enrichment from Wikipedia and 365scores (completed and integrated into the main
 notebook, directly after the Stage 4 missing-value diagnostic):** each unique player
