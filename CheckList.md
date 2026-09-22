@@ -103,6 +103,8 @@ We decided both height and shooting efficiency belong in the clustering feature 
 
 The eligible sample now has zero missing values across every candidate clustering feature.
 
+A later data-quality check found that `players_bio.csv` uses `0`, not only `NaN`, as a missing-height sentinel for some players -- a distinct condition the original `height_cm` gap analysis above did not catch. 51 additional players carrying this `0` sentinel (167 eligible rows) were identified inside the eligible sample and externally verified the same way as the original 11 (365Scores preferred, Wikipedia fallback), and added to `data/processed/height_overrides.csv` (11 -> 62 rows). These are verified physical measurements, not imputed values, and the override is restricted to verified `player_id`s, replacing only `NaN` or `0`. The eligible sample remains 4,568 rows. Detailed provenance: `data/processed/zero_height_player_research.csv`.
+
 ---
 
 ## 5. Select the Final Features That Define a Player Role

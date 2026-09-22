@@ -65,9 +65,24 @@ python -m nbconvert --to notebook --execute --inplace notebooks/EuroLeague_Playe
 
 ## Status
 
-Stages 1-2 of `CheckList.md` are complete: understanding and examining the three raw
-datasets, and building the player-season-team feature table
-(`data/processed/player_season_team_features.csv`, 6,307 rows x 76 columns). This is not yet
-the final modeling matrix. The next stage is selecting the eligible modeling sample
-(`CheckList.md` stage 3). See `CheckList.md` for the full roadmap and `CLAUDE.md` for current
-work state and working rules.
+Stages 1-4 of `CheckList.md` are complete: understanding the three raw datasets, building the
+player-season-team feature table, defining the eligible modeling sample (4,568 of 6,307 rows,
+at least 5 games and 100 minutes), and resolving missing values in that eligible sample.
+
+Height cleaning handles two distinct missing-value sentinels found in `players_bio.csv`: the
+original `NaN` values, and a separately discovered `height_cm == 0` sentinel. Both are
+corrected through the same mechanism, `data/processed/height_overrides.csv`, which now lists
+62 uniquely verified players in total -- the original 11 `NaN`-height players plus 51 players
+later found to carry the `0` sentinel (167 eligible rows). All 62 heights are externally
+verified physical measurements, not statistical imputations, preferring 365Scores when a
+reliable identity match was available and falling back to Wikipedia otherwise. Detailed
+provenance for the 51-player correction is in
+`data/processed/zero_height_player_research.csv`. The notebook applies an override only to a
+verified `player_id`, and only where the recorded height is `NaN` or `0`, so an existing
+positive height is never overwritten; 7 additional zero-height players exist only outside the
+eligible modeling sample and were intentionally left untouched. Yuval's five-category position
+enrichment and the project's shooting-location/spatial features are unaffected by this
+correction.
+
+The next stage is selecting the final clustering feature set (`CheckList.md` stage 5). See
+`CheckList.md` for the full roadmap and `CLAUDE.md` for current work state and working rules.

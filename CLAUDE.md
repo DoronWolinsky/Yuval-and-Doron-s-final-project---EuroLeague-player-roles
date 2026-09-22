@@ -159,6 +159,16 @@ ended and another began.
     verified from external sources rather than statistically imputed (a look-up-able physical
     fact, not a behavior to estimate), cited in `data/processed/height_overrides.csv` and
     merged in the notebook.
+  - **Height (later zero-sentinel correction):** a follow-up check found `players_bio.csv`
+    also uses `0`, not only `NaN`, as a missing-height sentinel — 58 players, 51 of them in the
+    eligible sample (167 eligible rows), which the original `.isna()`-based fix could not
+    catch. These 51 were externally verified the same way as the original 11 (365Scores
+    preferred, Wikipedia fallback) and added to `data/processed/height_overrides.csv` (11 → 62
+    rows total). The notebook's override step now replaces `NaN` **or** `0` for verified
+    `player_id`s only, never an existing positive height; external facts, not imputation.
+    Eligible sample remains 4,568 rows. Detailed provenance:
+    `data/processed/zero_height_player_research.csv`. 7 more zero-height players exist outside
+    the eligible sample and are left untouched.
   - **Shooting efficiency:** the structural-zero ambiguity was fixed first —
     `three_points_percentage`/`free_throws_percentage` are now genuine missing values (not a
     misleading `0.0`) whenever attempts are zero, with `has_three_point_attempts`/
