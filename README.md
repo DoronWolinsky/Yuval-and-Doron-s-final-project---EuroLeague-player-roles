@@ -20,6 +20,7 @@ after clustering, for interpretation and comparison against the discovered group
 | `euroleague_points.csv` | `data/raw/` | one row per recorded shot/action event |
 | `players_bio.csv` | `data/raw/` | one row per player |
 | `merged_euroleague_players.csv` | `data/processed/` | one row per enriched event (derived) |
+| `player_season_team_features_with_position.csv` | `data/processed/` | one row per player-season-team: all features, eligibility flag, and position labels (derived by the main notebook) |
 
 `data/raw/euroleague_points.csv` and `data/processed/merged_euroleague_players.csv` are
 excluded from this repository (`.gitignore`) because they exceed GitHub's 100MB file-size
@@ -32,6 +33,7 @@ euroleague-player-roles/
 ├── data/
 │   ├── raw/                  # Source-of-truth CSVs (never modified)
 │   └── processed/            # Derived datasets
+├── scripts/                  # Wikipedia position lookup used for position enrichment
 ├── notebooks/
 │   ├── EuroLeague_Unsupervised_Roles.ipynb        # Original feasibility analysis
 │   ├── EuroLeague_Player_Roles_Project.ipynb      # Main project notebook (start here)
@@ -65,24 +67,29 @@ python -m nbconvert --to notebook --execute --inplace notebooks/EuroLeague_Playe
 
 ## Status
 
-Stages 1-4 of `CheckList.md` are complete: understanding the three raw datasets, building the
+Stages 1-5 of `CheckList.md` are complete: understanding the three raw datasets, building the
 player-season-team feature table, defining the eligible modeling sample (4,568 of 6,307 rows,
-at least 5 games and 100 minutes), and resolving missing values in that eligible sample.
+at least 5 games and 100 minutes), resolving missing values in that sample, and selecting the
+final clustering features. The next stage is transforming and scaling the modeling data
+(`CheckList.md` stage 6).
 
-Height cleaning handles two distinct missing-value sentinels found in `players_bio.csv`: the
-original `NaN` values, and a separately discovered `height_cm == 0` sentinel. Both are
-corrected through the same mechanism, `data/processed/height_overrides.csv`, which now lists
-62 uniquely verified players in total -- the original 11 `NaN`-height players plus 51 players
-later found to carry the `0` sentinel (167 eligible rows). All 62 heights are externally
-verified physical measurements, not statistical imputations, preferring 365Scores when a
-reliable identity match was available and falling back to Wikipedia otherwise. Detailed
-provenance for the 51-player correction is in
-`data/processed/zero_height_player_research.csv`. The notebook applies an override only to a
-verified `player_id`, and only where the recorded height is `NaN` or `0`, so an existing
-positive height is never overwritten; 7 additional zero-height players exist only outside the
-eligible modeling sample and were intentionally left untouched. Yuval's five-category position
-enrichment and the project's shooting-location/spatial features are unaffected by this
-correction.
+Rate features are expressed per 40 minutes, the length of a EuroLeague regulation game. The
+final clustering feature set has 17 features: two- and three-point attempts per 40, the three
+shooting percentages, assists, turnovers, offensive and defensive rebounds, steals, blocks,
+fouls committed, and fouls received per 40, height, and three shot-location summaries (median
+shot distance, variation in shot distance, and lateral spread of shots).
 
-The next stage is selecting the final clustering feature set (`CheckList.md` stage 5). See
-`CheckList.md` for the full roadmap and `CLAUDE.md` for current work state and working rules.
+Important data limitations handled in the notebook:
+
+- `players_bio.csv` marks a missing height with either `NaN` or `0`; the heights of the
+  affected players in the modeling sample were verified externally and are listed in
+  `data/processed/height_overrides.csv` (provenance in
+  `data/processed/zero_height_player_research.csv`).
+- The recorded shot-zone letters A-J are undocumented and refer to different court areas in
+  E2007-E2008 than in later seasons, so zone shares are kept only as descriptive fields and
+  shot location is described from the recorded coordinates.
+- Traditional position, and the five-category position built from 365scores and Wikipedia,
+  are used only to interpret the discovered roles, never as clustering inputs.
+
+See `CheckList.md` for the full roadmap and `CLAUDE.md` for the current work state and working
+rules.

@@ -31,7 +31,8 @@ biography).
 - Never modify raw data files under `data/raw/`. Any derived dataset goes under
   `data/processed/`.
 - Do not add unrelated libraries, models, or technologies. Stick to pandas, NumPy,
-  Matplotlib, and Seaborn unless a new dependency is genuinely required and approved.
+  Matplotlib, Seaborn, and scikit-learn (preprocessing, PCA, and the planned K-Means/GMM)
+  unless a new dependency is genuinely required and approved.
 - Do not modify `notebooks/EuroLeague_Unsupervised_Roles.ipynb`,
   `notebooks/01_data_audit.ipynb`, or `notebooks/02_coordinate_system_analysis.ipynb` unless
   explicitly asked — they are the original analysis and internal source material,
@@ -54,6 +55,8 @@ euroleague-player-roles/
 ├── data/
 │   ├── raw/                  # Never modify. Source of truth.
 │   └── processed/            # Derived data only.
+├── scripts/
+│   └── wikipedia_position_lookup.py               # Builds the Wikipedia position lookup.
 ├── notebooks/
 │   ├── EuroLeague_Unsupervised_Roles.ipynb        # Original analysis. Do not modify.
 │   ├── 01_data_audit.ipynb                        # Internal source material. Do not modify.
@@ -134,6 +137,44 @@ ended and another began.
   prose with older generated wording, and don't modify it outside the explicitly approved
   stage.
 
+### Consistency pass after notebook changes
+
+After every coherent notebook task or batch of related notebook edits — and always before a
+handoff, commit, or push — do one full consistency pass over the complete notebook. This is one
+pass per meaningful unit of change, not after every individual edit. In that pass:
+
+- Read the whole notebook as one continuous research narrative, not only the cells changed in
+  the current task.
+- Check whether a new discovery or decision makes an earlier explanation incomplete,
+  misleading, or false. Where understanding changed over time, keep the honest sequence of the
+  investigation but clearly mark the initial finding as initial and state the later corrected
+  conclusion; never leave two unqualified contradictory claims in different parts of the
+  notebook.
+- Check that sample sizes, row counts, feature lists, thresholds, variable names, file names,
+  stage numbers, methodological decisions, and reported results agree everywhere, and that
+  every numerical statement is backed by visible output in the notebook (see Hard rules).
+- Remove or update stale outputs, interpretations, forward-looking statements, and code that
+  refer to an abandoned method.
+- Confirm that Markdown comes after the output it interprets and that no conclusion appears
+  before its evidence.
+- Confirm the Voice rules above still hold: first-person plural, Doron and Yuval's own work, no
+  Claude/task/handoff/approval language.
+- Preserve manually written content; make only the smallest revisions needed to restore
+  consistency.
+- If code, calculations, figures, tables, or numerical claims changed, run a Restart Kernel +
+  Run All equivalent and verify the complete execution. A prose-only edit does not need
+  execution unless it changes the meaning of a numerical claim or its relationship to an
+  output.
+- Compare the notebook's final state with `README.md`, `CheckList.md`, and the Current Work
+  State below; they must agree on completed work, the current stage, important decisions,
+  produced files, and what remains open.
+- In the final task report, state explicitly that the consistency pass was performed and list
+  the earlier contradictions or stale statements that were corrected, or say explicitly that
+  none were found.
+
+This recurring pass supplements the final full editorial review in CheckList Stage 15; it does
+not mark Stage 15, or any of its items, complete early.
+
 ## Working conventions
 
 - Notebooks must run top-to-bottom after Restart Kernel + Run All, from the repository root,
@@ -143,81 +184,72 @@ ended and another began.
   verify the result is actually `bool` dtype before applying `~` to it — `fillna` alone
   leaves it `object`-dtype, and `~` on Python `True`/`False` objects silently computes a
   bitwise complement instead of a logical negation, with no error. Cast with `.astype(bool)`.
+- A Run All rewrites both processed feature CSVs (with last-digit float drift in the three
+  `*_std` spatial columns) and re-renders the notebook's figures. Unless a regeneration is
+  intended, restore those files with `git checkout`; when a column change is intended, replace
+  only the intended fields in the existing CSV text so unaffected columns stay byte-identical.
 
 ## Current Work State
 
-**Completed:**
-- CheckList stage 1 — understanding and examining the data.
-- CheckList stage 2 — building the player-season-team feature table.
-- CheckList stage 3 — defining the eligible modeling sample. Selected rule: **at least 5
-  games and 100 minutes**. Eligible sample: 4,568 of 6,307 rows (72.4%), all 19 seasons
-  represented (196-273 eligible rows each). `10 games / 200 minutes` is reserved as a
-  sensitivity check for Stage 10, after clustering — not run yet.
-- CheckList stage 4 — missing values in the eligible sample. Height and shooting efficiency
-  were both decided as clustering features and every eligible-sample gap is now resolved:
-  - **Height:** the 31 eligible rows (11 unique players) missing `height_cm` were manually
-    verified from external sources rather than statistically imputed (a look-up-able physical
-    fact, not a behavior to estimate), cited in `data/processed/height_overrides.csv` and
-    merged in the notebook.
-  - **Height (later zero-sentinel correction):** a follow-up check found `players_bio.csv`
-    also uses `0`, not only `NaN`, as a missing-height sentinel — 58 players, 51 of them in the
-    eligible sample (167 eligible rows), which the original `.isna()`-based fix could not
-    catch. These 51 were externally verified the same way as the original 11 (365Scores
-    preferred, Wikipedia fallback) and added to `data/processed/height_overrides.csv` (11 → 62
-    rows total). The notebook's override step now replaces `NaN` **or** `0` for verified
-    `player_id`s only, never an existing positive height; external facts, not imputation.
-    Eligible sample remains 4,568 rows. Detailed provenance:
-    `data/processed/zero_height_player_research.csv`. 7 more zero-height players exist outside
-    the eligible sample and are left untouched.
-  - **Shooting efficiency:** the structural-zero ambiguity was fixed first —
-    `three_points_percentage`/`free_throws_percentage` are now genuine missing values (not a
-    misleading `0.0`) whenever attempts are zero, with `has_three_point_attempts`/
-    `has_free_throw_attempts` flags preserving that fact — then the resulting gaps (443
-    three-point rows, 34 free-throw rows) were filled with the eligible-sample median computed
-    only from rows that did attempt that shot type (never from position). Medians used: 0.348
-    (three-point), 0.769 (free-throw).
-  - `position` (132 eligible rows) was left untouched throughout — it's comparison-only, never
-    a clustering input, so a missing value there was never something this stage needed to fill.
-  - Eligible sample now has **zero** missing values across every candidate clustering feature.
+**Completed:** CheckList stages 1-5. **Next:** Stage 6, transforming and scaling the modeling
+data — examine skew (strongest: `blocks_per_40` 2.08, `assists_per_40` 1.30,
+`raw_shot_distance_std` -1.30) and extreme values of the 17 features, decide on
+transformations, standardize, and build the final modeling matrix. Not started.
 
-**Current output:** `data/processed/player_season_team_features.csv` — the complete 6,307-row,
-79-column table (unchanged row count; +2 columns vs. the original 77 for the two "has
-attempts" flags), all eligible-sample gaps resolved. Also
-`data/processed/player_season_team_features_with_position.csv` (83 columns, adds the four
-position-enrichment columns on top) — see the position-enrichment note below. Neither is yet
-the final modeling matrix (no scaling/final feature selection yet).
+**Data and sample (stages 1-4):**
+- Eligible sample: `eligible_for_modeling` = at least **5 games and 100 minutes** — 4,568 of
+  6,307 rows, all 19 seasons (196-273 rows each). `10 games / 200 minutes` is reserved as a
+  Stage 10 sensitivity check.
+- Rates are per 40 minutes (`season total / minutes * 40`, `*_per_40`, `PER_40_SOURCE_COLUMNS`);
+  NaN where minutes are 0 (303 rows, none eligible).
+- Height: `players_bio.csv` marks missing height with `NaN` (27 players) **and** `0` (58
+  players). 62 players with eligible rows have externally verified heights in
+  `data/processed/height_overrides.csv` (provenance for the 51 zero-height players:
+  `zero_height_player_research.csv`); the notebook replaces only `NaN`/`0` for those IDs (198
+  eligible rows). The 7 other zero-height players have no eligible rows and stay as recorded.
+- Shooting percentages are `NaN` when attempts are 0 (flags `has_three_point_attempts`,
+  `has_free_throw_attempts`), then filled with the eligible median among shooters (0.348 3P%,
+  0.769 FT%; never from position).
+- Shot coordinates: basket at `(0, 0)`, distances in raw units; the `(-1, -1)` placeholder is
+  excluded from spatial features. The A-J `zone` letters are undocumented and mark different
+  court areas in E2007-E2008 than later, so zone shares are descriptive/QA only and are not
+  relabelled.
+- Position: `position` (EuroLeague, 3 categories) and `position_reconciled` (365scores, with
+  a Wikipedia fallback; 97.8% of eligible rows) are comparison-only, never clustering inputs.
+  Two players (`P011826`, `P012613`) never got a 365scores lookup (504 timeout) and use
+  `position_wiki`.
 
-**Next up — CheckList stage 5, final feature selection:** deciding which feature groups
-describe playing style (vs. general quality or playing time), reviewing distributions and
-correlations, and defining the final clustering feature set. Not started.
+**Stage 5 decision — `FINAL_CLUSTERING_FEATURES` (17, ordered):** `two_point_attempts_per_40`,
+`three_point_attempts_per_40`, `two_points_percentage`, `three_points_percentage`,
+`free_throws_percentage`, `assists_per_40`, `turnovers_per_40`, `offensive_rebounds_per_40`,
+`defensive_rebounds_per_40`, `steals_per_40`, `blocks_per_40`, `fouls_committed_per_40`,
+`fouls_received_per_40`, `height_cm`, `median_raw_shot_distance`, `raw_shot_distance_std`,
+`lateral_shot_position_std`. Complete for all eligible rows; largest |r| 0.826 (median
+distance vs lateral spread).
+- Both foul measures stay (r = 0.010 with each other); `fouls_committed_per_40` has r = -0.57
+  with minutes per game, accepted and explained in the notebook.
+- Shot location uses these three original coordinate summaries. A PCA of the seven summaries
+  was tested and rejected (one component was only court side), so no `spatial_pc*` columns
+  are model inputs.
+- Excluded: `points_per_40`, free-throw attempts per 40 and free-throw attempt rate, all
+  attempt shares, the `has_*` flags (QA only), the other four coordinate summaries, zone
+  shares, raw totals, playing-time and coverage fields, `valuation`, `plus_minus`,
+  identifiers/metadata, and all position columns.
 
-**Position enrichment from Wikipedia and 365scores (completed and integrated into the main
-notebook, directly after the Stage 4 missing-value diagnostic):** each unique player
-(`player_id`) was independently looked up on Wikipedia and on 365scores.com, and any listed
-position normalized to one of five categories (Point Guard, Shooting Guard, Small Forward,
-Power Forward, Center). Wikipedia matches required conservative identity verification (exact
-birth-year match whenever available); 365scores rows matched to a non-player ("Coach"/
-"General Manager") were treated as unresolved. Per player, `position_365scores` is preferred
-whenever resolved, falling back to `position_wiki` otherwise (383 of 1,141 players where both
-resolve actually disagree — kept as 365scores per explicit instruction). Reconciled coverage:
-2,100/2,363 players overall, 97.8% (4,469/4,568) of eligible rows — higher than the original
-`position` column's own 97.1% coverage. Checked against EuroLeague's own three-category
-`position` (mapping Guard/Forward pairs down): 79.2% agreement (1,630/2,058 comparable
-players), with disagreement concentrated in adjacent categories (combo/tweener players)
-rather than flagrant swaps. Full narrative, numbers, and the confusion matrix are in the
-notebook itself. `position_wiki`, `position_365scores`, and `position_reconciled` are all
-comparison/interpretation metadata only, exactly like `position`, and must never be used as a
-clustering feature.
-
-Outputs: `data/processed/player_season_team_features_with_position.csv` (the complete
-6,307-row table with all position columns — this is now the position source of truth going
-forward, superseding `..._with_wiki_position.csv`, which is kept for provenance); QA tables
-`outputs/tables/position_source_agreement_summary.csv`,
-`outputs/tables/position_source_disagreements.csv`, and
-`outputs/tables/position_reconciled_vs_euroleague_position.csv`; detailed Wikipedia QA columns
-in `data/processed/wikipedia_position_lookup/`. Two players (`P011826` Kyle Guy, `P012613`
-Mikael Jantunen) never got a 365scores lookup at all due to a 504 timeout during scraping and
-fall back to `position_wiki`; not re-queried.
+**Files:**
+- `data/processed/player_season_team_features.csv` (6,307 × 79, complete table) and
+  `data/processed/player_season_team_features_with_position.csv` (6,307 × 83, adds the four
+  position-enrichment columns; the table the later stages should use). Neither is the
+  modeling matrix yet.
+- `outputs/tables/final_clustering_feature_decisions.csv` (one decision per column) and
+  `outputs/tables/player_season_team_feature_dictionary.csv` (83 rows; `selected` for the 17).
+- Position provenance: `data/processed/wikipedia_position_lookup/wikipedia_position_lookup.csv`
+  (from `scripts/wikipedia_position_lookup.py`), `data/processed/player_positions_365scores.csv`,
+  and the QA tables `outputs/tables/position_source_agreement_summary.csv`,
+  `position_source_disagreements.csv`, and `position_reconciled_vs_euroleague_position.csv`.
+- Outputs of the internal source notebooks (`01_data_audit`, `02_coordinate_system_analysis`)
+  stay as they were produced, including audit-era names such as `*_per_36` in
+  `outputs/tables/candidate_columns_for_research.csv`; they are not active inputs.
 
 ## Handoff rule
 

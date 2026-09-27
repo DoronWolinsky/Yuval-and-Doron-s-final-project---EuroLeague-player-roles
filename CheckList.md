@@ -44,7 +44,7 @@ We determined that the appropriate unit of observation is one player-season-team
 - [x] Use the season-level player statistics as the base table.
 - [x] Add player biography information such as height and traditional position.
 - [x] Calculate playing-style statistics from the season totals.
-- [x] Calculate per-36-minute rates instead of relying on inconsistent supplied per-game columns.
+- [x] Calculate per-40-minute rates (one EuroLeague regulation game) instead of relying on inconsistent supplied per-game columns.
 - [x] Add shooting-volume and shooting-selection features.
 - [x] Aggregate shot-location information by player, season, and team.
 - [x] Add coordinate and shot-zone features.
@@ -57,7 +57,7 @@ We determined that the appropriate unit of observation is one player-season-team
 
 ### Result of this stage
 
-We produced a table containing 6,307 player-season-team observations and 76 columns. This table combines season statistics, per-36 rates, shooting behavior, shot-location information, biography data, and coverage indicators.
+We produced a table containing 6,307 player-season-team observations and 76 columns. This table combines season statistics, per-40 rates, shooting behavior, shot-location information, biography data, and coverage indicators.
 
 This is the complete feature table, but it is not yet the final modeling matrix.
 
@@ -88,7 +88,7 @@ The complete 6,307-row feature table is unchanged and now carries a boolean `eli
 - [x] Recalculate missing-value counts after selecting the eligible sample.
 - [x] Separate genuinely missing measurements from values that are undefined because a player had no relevant attempts.
 - [x] Decide whether height should be included as a clustering feature.
-- [x] If height is included, fill missing height values using a method calculated only from the eligible sample.
+- [x] If height is included, resolve missing height values without using traditional position (done by external verification of each player's height).
 - [x] Do not use traditional position to estimate height or any other clustering feature.
 - [x] Do not fill missing traditional positions, since position will only be used for later comparison.
 - [x] Do not invent average shot-location behavior for players without valid spatial information.
@@ -107,9 +107,9 @@ A later data-quality check found that `players_bio.csv` uses `0`, not only `NaN`
 
 ---
 
-## 5. Select the Final Features That Define a Player Role
+## 5. Select the Final Features That Define a Player Role — Completed
 
-- [ ] Review the available feature groups:
+- [x] Review the available feature groups:
   - scoring volume;
   - two-point, three-point, and free-throw usage;
   - shooting efficiency;
@@ -119,24 +119,34 @@ A later data-quality check found that `players_bio.csv` uses `0`, not only `NaN`
   - steals and blocks;
   - fouls;
   - height.
-- [ ] Decide which features describe playing style rather than general player quality.
-- [ ] Keep identifiers, names, seasons, and teams outside the clustering input.
-- [ ] Keep traditional position outside the clustering input.
-- [ ] Exclude `valuation` and `plus_minus` unless there is a clear reason to treat them as role features.
-- [ ] Examine feature distributions.
-- [ ] Examine correlations between candidate features.
-- [ ] Identify features that repeat nearly the same information.
-- [ ] Avoid including several mathematical versions of the same behavior without justification.
-- [ ] Decide whether shooting percentages should define the clusters or only describe them afterwards.
-- [ ] Decide whether height should influence the discovered roles or be reserved for interpretation.
-- [ ] Compare important alternative feature sets when the correct choice is unclear.
-- [ ] Define and explain the final set of clustering features.
+- [x] Decide which features describe playing style rather than general player quality.
+- [x] Keep identifiers, names, seasons, and teams outside the clustering input.
+- [x] Keep traditional position outside the clustering input.
+- [x] Exclude `valuation` and `plus_minus` unless there is a clear reason to treat them as role features.
+- [x] Examine feature distributions.
+- [x] Examine correlations between candidate features.
+- [x] Identify features that repeat nearly the same information.
+- [x] Avoid including several mathematical versions of the same behavior without justification.
+- [x] Decide whether shooting percentages should define the clusters or only describe them afterwards.
+- [x] Decide whether height should influence the discovered roles or be reserved for interpretation.
+- [x] Compare important alternative feature sets when the correct choice is unclear.
+- [x] Define and explain the final set of clustering features.
 
 ### Decision required from this stage
 
 We need to decide what we mean by a “player role” in numerical terms.
 
 The final feature set should capture how a player contributes and behaves on the court. It should not allow general player quality, playing time, or traditional position labels to dominate the discovered groups.
+
+### Result of this stage
+
+The final clustering feature set has 17 features, with every rate expressed per 40 minutes (one EuroLeague regulation game): two- and three-point attempts per 40; two-point, three-point, and free-throw percentage; assists and turnovers per 40; offensive and defensive rebounds per 40; steals, blocks, and fouls committed per 40; fouls received per 40; `height_cm`; and the shot-location profile `median_raw_shot_distance`, `raw_shot_distance_std`, and `lateral_shot_position_std`. The ordered list is `FINAL_CLUSTERING_FEATURES` in the notebook; every column's decision is recorded in `outputs/tables/final_clustering_feature_decisions.csv` and in the feature dictionary.
+
+- The A-J zone shares are descriptive/QA only: an initial 17-variable spatial PCA showed a component separating E2007-E2008 from later seasons, and the undocumented zone letters mark different court areas in those seasons. No historical zone relabelling is applied.
+- A PCA of the seven coordinate summaries (three components, 93.6% of their variance) was tested and not used: one component was only court side, and seven variables did not justify abstract components. Three original summaries were selected from their correlations instead.
+- Both foul measures are kept: they are nearly uncorrelated (r = 0.010). Fouls committed per 40 correlates -0.57 with minutes per game, which we accept as a moderate, non-duplicating relationship.
+- Excluded: points per 40 (outcome of volume and efficiency), free-throw attempts per 40 and free-throw attempt rate (overlap with fouls received), season and event attempt shares, raw totals, playing-time and coverage fields, `valuation`, `plus_minus`, identifiers, and all position columns.
+- The strongest correlation among the final features is 0.826 (median shot distance with lateral spread); no near-duplicate remains.
 
 ---
 
@@ -286,17 +296,14 @@ This comparison should help answer the central research question: whether unsupe
 
 The goal is not to predict the traditional labels. The goal is to determine whether the discovered roles reveal distinctions that the traditional labels do not show.
 
-### Potential five-position comparison source (prepared, not yet adopted)
+### Five-position comparison source (integrated)
 
-A separate Wikipedia lookup has produced a `position_wiki` column (Point Guard, Shooting
-Guard, Small Forward, Power Forward, Center) as a more granular comparison source alongside
-the existing coarse `position` field, resolved for 93.0% of unique eligible players (96.4% of
-eligible observations), in
-`data/processed/player_season_team_features_with_wiki_position.csv`. If Doron and Yuval
-approve using it, this stage's comparison could be run against both the coarse `position` and
-the five-position `position_wiki`. It has **not** been adopted into the notebook workflow yet
-— that is a pending team decision. Like `position`, it would only ever be used after
-clustering, for interpretation and comparison, never as a clustering input.
+The notebook carries a five-category `position_reconciled` label (Point Guard, Shooting
+Guard, Small Forward, Power Forward, Center), taken from 365scores with a Wikipedia fallback
+and covering 97.8% of eligible observations, in
+`data/processed/player_season_team_features_with_position.csv`. This stage's comparison can be
+run against both the coarse `position` and `position_reconciled`. Like `position`, it is used
+only after clustering, for interpretation and comparison, never as a clustering input.
 
 ---
 
