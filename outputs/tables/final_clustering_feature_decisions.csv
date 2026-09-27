@@ -1,6 +1,6 @@
 feature_group,features,decision,final_representation,reason
-Shooting volume,"two_point_attempts_per_40, three_point_attempts_per_40",include,used as is,"How often a player takes two- and three-point shots, on a per-game scale."
-Shooting efficiency,"two_points_percentage, three_points_percentage, free_throws_percentage",include,used as is,How well a player converts each shot type; zero-attempt gaps filled with the eligible median.
+Shooting volume,"two_point_attempts_per_40, three_point_attempts_per_40",include,used as is,"How often a player takes two- and three-point shots, normalized to a 40-minute regulation game."
+Shooting efficiency,"two_points_percentage, three_points_percentage, free_throws_percentage",include,used as is,"Conversion of each shot type; 3P% and FT% zero-attempt gaps median-filled, 2P% defined for every eligible row."
 Playmaking,"assists_per_40, turnovers_per_40",include,used as is,Ball distribution and its cost.
 Rebounding,"offensive_rebounds_per_40, defensive_rebounds_per_40",include,used as is,Offensive and defensive rebounding are different responsibilities.
 Defense and physicality,"steals_per_40, blocks_per_40, fouls_committed_per_40",include,used as is,"Steals, blocks, and fouls committed describe defensive involvement."
@@ -10,7 +10,7 @@ Shot-location profile,"median_raw_shot_distance, raw_shot_distance_std, lateral_
 Points per 40,points_per_40,exclude,shooting volume and efficiency,Outcome rebuilt almost exactly from attempts and percentages.
 Free-throw volume,"free_throw_attempts_per_40, free_throw_attempt_rate",exclude,fouls_received_per_40,Overlaps with fouls received; avoids repeated weight for contact pressure.
 Attempt shares,"two_point_attempt_share, three_point_attempt_share, event_two_point_attempt_share, event_three_point_attempt_share",exclude,per-40 attempt rates and shot-location profile,Exact complements; event shares duplicate the season shares.
-Attempt flags,"has_three_point_attempts, has_free_throw_attempts",QA only,per-40 attempt rates,Kept for missing-value handling and QA; attempt volume carries this behavior.
+Attempt flags,"has_three_point_attempts, has_free_throw_attempts",QA only,-,Retained for QA and missing-value handling; not clustering inputs.
 Unused coordinate summaries,"mean_lateral_shot_position, mean_raw_shot_distance, mean_longitudinal_shot_position, longitudinal_shot_position_std",exclude,shot-location profile,Court side is not a role; the others repeat median distance or distance spread.
 A-J zone shares,"zone_a_attempt_share, zone_b_attempt_share, zone_c_attempt_share, zone_d_attempt_share, zone_e_attempt_share, zone_f_attempt_share, zone_g_attempt_share, zone_h_attempt_share, zone_i_attempt_share, zone_j_attempt_share",descriptive / QA only,-,Undocumented zone letters mark different court areas in E2007-E2008 than later.
 Spatial PCA components,"spatial_pc1, spatial_pc2, spatial_pc3",exclude,shot-location profile,Abstract components; one is only court side. Not created as model inputs.
