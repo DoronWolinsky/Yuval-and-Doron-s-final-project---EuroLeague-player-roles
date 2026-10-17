@@ -216,7 +216,9 @@ started.
   eligible-sample attempt-weighted percentage (0.531 / 0.363 / 0.764). Reason: reliability —
   extreme raw 3P%/FT% values came almost entirely from 1-9 attempts. Zero-attempt rows get the
   prior, superseding the Stage 4 median fill for modeling only; `features` and the processed
-  CSVs keep the observed (median-filled) percentages. k = 5/10/20 were compared outside the
+  CSVs keep their Stage 4 percentage representation (observed percentages, median-filled where
+  attempts are 0), while the modeling matrix uses the Stage 6 shrinkage-adjusted estimates.
+  k = 5/10/20 were compared outside the
   notebook; do not re-test.
 - All 17 features are then standardized with `StandardScaler` (fitted on the 4,568 eligible
   rows). The other 14 are untransformed — skew is treated as role signal, and no observation is
