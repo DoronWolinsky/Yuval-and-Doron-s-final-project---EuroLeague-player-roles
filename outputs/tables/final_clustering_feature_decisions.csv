@@ -1,6 +1,6 @@
 feature_group,features,decision,final_representation,reason
 Shooting volume,"two_point_attempts_per_40, three_point_attempts_per_40",include,used as is,"How often a player takes two- and three-point shots, normalized to a 40-minute regulation game."
-Shooting efficiency,"two_points_percentage, three_points_percentage, free_throws_percentage",include,used as is,"Conversion of each shot type; 3P% and FT% zero-attempt gaps median-filled, 2P% defined for every eligible row."
+Shooting efficiency,"two_points_percentage, three_points_percentage, free_throws_percentage",include,attempt-weighted shrinkage toward the eligible-sample mean (k = 10),"Conversion of each shot type, stabilized so that percentages from very few attempts do not become extreme; zero-attempt rows receive the attempt-weighted mean."
 Playmaking,"assists_per_40, turnovers_per_40",include,used as is,Ball distribution and its cost.
 Rebounding,"offensive_rebounds_per_40, defensive_rebounds_per_40",include,used as is,Offensive and defensive rebounding are different responsibilities.
 Defense and physicality,"steals_per_40, blocks_per_40, fouls_committed_per_40",include,used as is,"Steals, blocks, and fouls committed describe defensive involvement."

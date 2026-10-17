@@ -48,6 +48,22 @@ biography).
   later, in this file's "Current Work State" section — not in a separate history log.
 - Do not create git commits or push unless explicitly requested.
 
+## Proportionate analysis
+
+- If an analysis, validation, diagnostic, transformation, plot, comparison, or output does not
+  serve a real research decision, do not do it. Prefer the smallest amount of analysis needed
+  to reach a defensible conclusion. When uncertain whether extra work is necessary, ask the
+  user instead of expanding the analysis automatically.
+- Do not re-verify what an earlier stage already established (e.g. completeness of the 17
+  features, their distributions) without a concrete reason.
+- Unusual values are not automatically problems: in this project an extreme rate may be the
+  role signal the clustering should find. Do not transform or remove data for statistical
+  neatness alone.
+- `CheckList.md` items are decisions to settle, not a menu of diagnostics; an item that would
+  add no evidence for a decision should be rewritten or dropped rather than performed.
+- Do not create a file (table, figure, processed dataset) unless it is used later or needed as
+  a deliverable.
+
 ## Repository structure
 
 ```text
@@ -191,10 +207,25 @@ not mark Stage 15, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-5. **Next:** Stage 6, transforming and scaling the modeling
-data — examine skew (strongest: `blocks_per_40` 2.08, `assists_per_40` 1.30,
-`raw_shot_distance_std` -1.30) and extreme values of the 17 features, decide on
-transformations, standardize, and build the final modeling matrix. Not started.
+**Completed:** CheckList stages 1-6. **Next:** Stage 7, PCA on the scaled modeling matrix. Not
+started.
+
+**Stage 6 decision (final):**
+- The three shooting percentages are represented in the modeling matrix by k = 10
+  attempt-weighted shrinkage, `(makes + 10 * prior_mean) / (attempts + 10)`, with the prior the
+  eligible-sample attempt-weighted percentage (0.531 / 0.363 / 0.764). Reason: reliability —
+  extreme raw 3P%/FT% values came almost entirely from 1-9 attempts. Zero-attempt rows get the
+  prior, superseding the Stage 4 median fill for modeling only; `features` and the processed
+  CSVs keep the observed (median-filled) percentages. k = 5/10/20 were compared outside the
+  notebook; do not re-test.
+- All 17 features are then standardized with `StandardScaler` (fitted on the 4,568 eligible
+  rows). The other 14 are untransformed — skew is treated as role signal, and no observation is
+  removed for being unusual.
+- The last two code cells build `modeling_features` (adjusted, unscaled), `X_scaled` (4,568 × 17,
+  columns in `FINAL_CLUSTERING_FEATURES` order, index = `features` row index),
+  `modeling_metadata` (`IDENTIFIER_COLS`), and `feature_scaler`, all kept in notebook state; no
+  modeling-matrix file is written. The last cell also rewrites the Shooting efficiency row of
+  `outputs/tables/final_clustering_feature_decisions.csv` with the shrinkage representation.
 
 **Data and sample (stages 1-4):**
 - Eligible sample: `eligible_for_modeling` = at least **5 games and 100 minutes** — 4,568 of
@@ -209,7 +240,8 @@ transformations, standardize, and build the final modeling matrix. Not started.
   eligible rows). The 7 other zero-height players have no eligible rows and stay as recorded.
 - Shooting percentages are `NaN` when attempts are 0 (flags `has_three_point_attempts`,
   `has_free_throw_attempts`), then filled with the eligible median among shooters (0.348 3P%,
-  0.769 FT%; never from position).
+  0.769 FT%; never from position). This fill completes the feature table only; the modeling
+  matrix uses the Stage 6 shrinkage estimate instead.
 - Shot coordinates: basket at `(0, 0)`, distances in raw units; the `(-1, -1)` placeholder is
   excluded from spatial features. The A-J `zone` letters are undocumented and mark different
   court areas in E2007-E2008 than later, so zone shares are descriptive/QA only and are not

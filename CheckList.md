@@ -17,6 +17,8 @@ The notebook should present the project as one continuous investigation. At ever
 
 If an approach does not produce a useful result, we should show that honestly and explain why we tested a different approach.
 
+The items below are the research decisions each stage has to settle, not a list of every possible diagnostic. We run a check, plot, or comparison only when it informs one of those decisions.
+
 ---
 
 ## 1. Understand and Examine the Data — Completed
@@ -150,28 +152,25 @@ The final clustering feature set has 17 features, with every rate expressed per 
 
 ---
 
-## 6. Transform and Scale the Modeling Data
+## 6. Transform and Scale the Modeling Data — Completed
 
-- [ ] Examine whether some selected features have strongly skewed distributions.
-- [ ] Identify extreme values and determine whether they are data problems or legitimate unusual player styles.
-- [ ] Test appropriate transformations where needed.
-- [ ] Compare transformed and untransformed distributions when the benefit is uncertain.
-- [ ] Avoid removing unusual players only because they are different from the majority.
-- [ ] Standardize the final features so that variables with larger numerical scales do not dominate the clustering algorithms.
-- [ ] Create the final modeling matrix.
-- [ ] Record the final ordered feature list and the preprocessing applied to each feature.
+- [x] Stabilize shooting percentages that rest on very few attempts, so they do not become extreme modeling values.
+- [x] Standardize the final features so that variables with larger numerical scales do not dominate the distance-based clustering algorithms.
+- [x] Keep the other selected feature representations; transform a feature or remove an observation only for a substantive basketball or data reason, not because a distribution is skewed or a player is unusual.
+- [x] Create the final modeling matrix, keeping the observation identifiers alongside it so later results can be mapped back to players.
 
-### Result expected from this stage
+### Result of this stage
 
-We will have a numerical matrix in which every row represents an eligible player-season-team observation and every column represents a justified aspect of playing style.
+The three shooting percentages are replaced in the modeling matrix by an attempt-weighted shrinkage estimate, `(makes + 10 * prior_mean) / (attempts + 10)`, with the prior the eligible-sample attempt-weighted percentage (0.531 2P%, 0.363 3P%, 0.764 FT%). Before the adjustment, 25 of 26 extreme 3P% values and 25 of 33 extreme FT% values (|z| > 3) came from 1-9 attempts; afterwards only one extreme value across the three features does. This supersedes the Stage 4 median fill for modeling; zero-attempt rows receive the prior mean, and the feature table keeps the observed percentages.
+
+The 17 features in `FINAL_CLUSTERING_FEATURES` are then standardized with `StandardScaler`, fitted on the 4,568 eligible rows, into a 4,568 × 17 matrix (`X_scaled`, kept in notebook state with the feature-table index; identifiers in `modeling_metadata`). The other 14 features are not transformed: the skewed rates such as `blocks_per_40` and `assists_per_40` reflect distinctive roles that the clustering should be able to find.
 
 ---
 
 ## 7. Explore the Data Using PCA
 
 - [ ] Apply PCA to the scaled modeling features.
-- [ ] Examine the cumulative explained variance.
-- [ ] Determine how much of the original information is represented by the first principal components.
+- [ ] Examine the cumulative explained variance to see how much information the first components represent.
 - [ ] Examine the component loadings.
 - [ ] Explain which combinations of playing-style features drive the main differences between players.
 - [ ] Create a two-dimensional PCA scatter plot.

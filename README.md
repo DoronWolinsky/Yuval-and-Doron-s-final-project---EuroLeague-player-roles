@@ -67,11 +67,12 @@ python -m nbconvert --to notebook --execute --inplace notebooks/EuroLeague_Playe
 
 ## Status
 
-Stages 1-5 of `CheckList.md` are complete: understanding the three raw datasets, building the
+Stages 1-6 of `CheckList.md` are complete: understanding the three raw datasets, building the
 player-season-team feature table, defining the eligible modeling sample (4,568 of 6,307 rows,
-at least 5 games and 100 minutes), resolving missing values in that sample, and selecting the
-final clustering features. The next stage is transforming and scaling the modeling data
-(`CheckList.md` stage 6).
+at least 5 games and 100 minutes), resolving missing values in that sample, selecting the
+final clustering features, and preparing the modeling matrix (stabilizing shooting
+percentages based on few attempts, then standardizing all features). The next stage is
+exploring the data with PCA (`CheckList.md` stage 7).
 
 Rate features are expressed per 40 minutes, the length of a EuroLeague regulation game. The
 final clustering feature set has 17 features: two- and three-point attempts per 40, the three
