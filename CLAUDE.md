@@ -89,7 +89,7 @@ euroleague-player-roles/
 
 ## `CheckList.md`
 
-The authoritative research roadmap: 16 stages from data understanding through the Hebrew
+The authoritative research roadmap: 15 stages from data understanding through the Hebrew
 presentation, each with checkbox items and a short expected result or decision. It is the
 reference for both Doron/Yuval and Claude Code on what's done and what's next. Tick boxes as
 stages complete; don't turn it into a technical activity log, and don't redesign or renumber
@@ -188,8 +188,8 @@ pass per meaningful unit of change, not after every individual edit. In that pas
   the earlier contradictions or stale statements that were corrected, or say explicitly that
   none were found.
 
-This recurring pass supplements the final full editorial review in CheckList Stage 15; it does
-not mark Stage 15, or any of its items, complete early.
+This recurring pass supplements the final full editorial review in CheckList Stage 14; it does
+not mark Stage 14, or any of its items, complete early.
 
 ## Working conventions
 

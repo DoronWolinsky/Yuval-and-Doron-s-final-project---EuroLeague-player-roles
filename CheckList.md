@@ -169,239 +169,117 @@ The 17 features in `FINAL_CLUSTERING_FEATURES` are then standardized with `Stand
 
 ## 7. Explore the Data Using PCA
 
-- [ ] Apply PCA to the scaled modeling features.
-- [ ] Examine the cumulative explained variance to see how much information the first components represent.
-- [ ] Examine the component loadings.
-- [ ] Explain which combinations of playing-style features drive the main differences between players.
-- [ ] Create a two-dimensional PCA scatter plot.
-- [ ] Use the PCA plot to examine whether the data appears to contain separated groups, overlapping groups, or gradual transitions.
-- [ ] Decide whether PCA will be used only for visualization or also as an input representation for clustering.
-- [ ] Explain the reasoning behind that decision.
+- [ ] Apply PCA to the scaled modeling matrix and examine how much variance the first components explain.
+- [ ] Interpret the main component loadings: which combinations of playing-style features drive the largest differences between players.
+- [ ] Create a two-dimensional PCA projection and describe whether it shows separated groups, overlapping groups, or gradual transitions.
+- [ ] Decide whether PCA is used only for exploration and visualization or also as the clustering representation, and explain why.
 
-### Important interpretation
-
-The two-dimensional PCA plot is a simplified projection of a higher-dimensional dataset. It can help us understand and present the structure, but it does not by itself determine how many player roles exist.
+The two-dimensional projection simplifies a 17-dimensional dataset. It helps us understand and present the structure, but it does not by itself determine how many roles exist.
 
 ---
 
-## 8. Establish a K-Means Clustering Baseline
+## 8. Establish a K-Means Baseline
 
-- [ ] Apply K-Means to a reasonable range of possible cluster counts.
-- [ ] Examine the elbow curve.
-- [ ] Calculate silhouette scores.
-- [ ] Examine the size of the clusters produced by each candidate solution.
-- [ ] Create a PCA visualization colored by the K-Means clusters.
-- [ ] Examine whether the resulting groups appear meaningfully separated.
-- [ ] Analyze the average feature profile of the K-Means clusters.
-- [ ] Determine whether the K-Means assumptions produce a useful representation of the player roles.
+- [ ] Run K-Means over a reasonable range of cluster counts.
+- [ ] Use the elbow curve and/or silhouette scores as evidence for sensible cluster counts.
+- [ ] Inspect cluster sizes to rule out obviously poor solutions.
+- [ ] Choose a K-Means baseline to compare with GMM.
 
-### Purpose of this stage
-
-K-Means provides a simple and interpretable clustering baseline. We will use it to understand the structure of the data and later compare it with Gaussian Mixture Models.
-
-If K-Means produces groups that are difficult to interpret or that appear artificially rigid, we should explain this and examine whether GMM provides a better description.
+K-Means is a simple baseline for the model comparison. Detailed cluster profiles are interpreted only for the final model (Stage 11).
 
 ---
 
-## 9. Apply Gaussian Mixture Models
+## 9. Fit Gaussian Mixture Models and Select the Final Model
 
-- [ ] Apply Gaussian Mixture Models to a justified range of possible cluster counts.
-- [ ] Calculate BIC for every candidate number of clusters.
-- [ ] Use BIC as the primary data-driven method for comparing the GMM solutions, as proposed in the original project.
-- [ ] Examine AIC as supporting information if it adds useful evidence.
-- [ ] Do not automatically assume that the preliminary result of eight clusters is still optimal.
-- [ ] Examine cluster sizes for every leading solution.
-- [ ] Check whether any solution creates extremely small or difficult-to-explain clusters.
-- [ ] Examine the membership probabilities produced by GMM.
-- [ ] Identify players with high-confidence membership.
-- [ ] Identify players whose behavior lies between multiple roles.
-- [ ] Create a PCA visualization colored by the GMM clusters.
-- [ ] Compare the GMM solution with the K-Means baseline.
-- [ ] Select the preferred model and number of clusters.
-
-### Decision required from this stage
-
-The final model should be selected using a combination of:
-
-- BIC and other relevant statistical evidence;
-- cluster sizes;
-- stability;
-- visual structure;
-- clarity of the cluster profiles;
-- basketball interpretability.
-
-The preliminary eight-cluster result is important evidence of feasibility, but the final result must be recalculated using the expanded feature set and the complete modeling process.
+- [ ] Fit GMMs over a justified range of cluster counts, without assuming the preliminary eight-cluster result.
+- [ ] Use BIC as the main criterion for the number of components; add AIC only if it adds useful evidence.
+- [ ] Check the cluster sizes of the leading solutions for very small or degenerate clusters.
+- [ ] Summarize membership certainty if it helps the model choice.
+- [ ] Compare the leading GMM solution with the K-Means baseline.
+- [ ] Select the preferred model and number of clusters, based on the statistical evidence, cluster sizes, and whether the clusters are interpretable.
 
 ---
 
-## 10. Check the Stability of the Clustering Result
+## 10. Check the Robustness of the Result
 
-- [ ] Repeat the preferred clustering with different random initializations.
-- [ ] Check whether similar observations remain grouped together across runs.
-- [ ] Examine whether a small change in the participation threshold changes the main result.
-- [ ] Compare important alternative feature sets, such as:
-  - with and without height;
-  - with and without shooting efficiency;
-  - full feature space versus a PCA-based representation.
-- [ ] Examine whether clusters are dominated by particular seasons or historical periods.
-- [ ] Determine which discovered patterns remain stable across reasonable methodological choices.
-- [ ] Explain which findings are robust and which depend on a particular decision.
+- [ ] Repeat the preferred clustering with different random initializations and check that observations stay grouped together.
+- [ ] Rerun it on the stricter `10 games / 200 minutes` sample reserved in Stage 3 and check whether the main role structure holds.
+- [ ] Run at most one further sensitivity comparison, only if the final model leaves a concrete methodological uncertainty (for example a feature group or the recording period that appears to drive a cluster).
 
-### Purpose of this stage
-
-We need to show that the discovered roles are not only the result of one random initialization or one arbitrary preprocessing choice.
-
-If an alternative setup produces a different result, we should not hide it. We should explain what changed, why it changed, and which solution better answers the research question.
+The goal is to show that the main result is not an accident of one initialization or one arbitrary choice. If an alternative setup changes the result, we report it and explain which solution better answers the research question.
 
 ---
 
-## 11. Analyze and Interpret the Discovered Clusters
+## 11. Interpret the Discovered Roles
 
-- [ ] Calculate the average original-unit feature values for every cluster.
-- [ ] Calculate standardized cluster profiles.
-- [ ] Create visual comparisons of the cluster profiles.
-- [ ] Identify the features that most strongly distinguish every cluster.
-- [ ] Examine representative players from every cluster.
-- [ ] Examine players closest to each cluster center or with the highest GMM membership probability.
-- [ ] Examine unusual members and boundary cases.
-- [ ] Determine the main basketball behavior represented by each cluster.
-- [ ] Assign a meaningful basketball role name to every interpretable cluster.
-- [ ] Support every role name using the numerical profile and representative players.
-- [ ] Explain how each discovered role differs from the other roles.
-- [ ] Reconsider the feature set, model, or number of clusters if a group cannot be interpreted coherently.
+- [ ] Summarize each cluster's profile in original units and/or standardized values, and identify the features that most distinguish it.
+- [ ] Inspect representative players from each cluster (for example those closest to the center or with the highest membership probability).
+- [ ] Assign each interpretable cluster a basketball role name supported by both its numerical profile and its player examples.
+- [ ] Use a multi-season or team-change example only when it genuinely helps illustrate a role or role change.
+- [ ] Revise the model only if a cluster is genuinely incoherent.
 
-### Result expected from this stage
-
-The output should no longer be a list of numbered clusters. Each cluster should become an understandable basketball role supported by statistics and player examples, such as a creator, interior finisher, perimeter scorer, rebound-focused big, or another role that is genuinely supported by the results.
-
-We should not choose the role names in advance. The names must follow from the final cluster profiles.
+Role names are not chosen in advance; they must follow from the final cluster profiles. Player examples support the numerical profile rather than replace it.
 
 ---
 
 ## 12. Compare the Discovered Roles with Traditional Positions
 
-- [ ] Use traditional position labels only after the clustering is complete.
-- [ ] Create a comparison between cluster membership and traditional positions.
-- [ ] Show the position distribution inside every discovered role.
-- [ ] Examine whether some roles contain players from several traditional positions.
-- [ ] Identify players whose discovered role provides more specific information than their listed position.
-- [ ] Examine whether players listed at the same traditional position are divided into different playing roles.
-- [ ] Handle players with missing position labels transparently.
-- [ ] Explain whether the discovered roles add useful information beyond traditional position labels.
+- [ ] Show how the discovered roles are distributed across the traditional positions, using both the 3-category `position` and the 5-category `position_reconciled`.
+- [ ] Examine whether players with the same position are split into meaningfully different roles, and whether players from different positions are combined when they play alike.
+- [ ] Decide whether the discovered roles add useful information beyond the position labels.
+- [ ] State how many observations lack a position label, and treat it further only if it affects the interpretation.
 
-### Main research interpretation
-
-This comparison should help answer the central research question: whether unsupervised learning can identify meaningful player roles that describe modern EuroLeague players better than broad traditional position categories.
-
-The goal is not to predict the traditional labels. The goal is to determine whether the discovered roles reveal distinctions that the traditional labels do not show.
-
-### Five-position comparison source (integrated)
-
-The notebook carries a five-category `position_reconciled` label (Point Guard, Shooting
-Guard, Small Forward, Power Forward, Center), taken from 365scores with a Wikipedia fallback
-and covering 97.8% of eligible observations, in
-`data/processed/player_season_team_features_with_position.csv`. This stage's comparison can be
-run against both the coarse `position` and `position_reconciled`. Like `position`, it is used
-only after clustering, for interpretation and comparison, never as a clustering input.
+The goal is not to predict the position labels but to see whether the discovered roles reveal distinctions the labels do not show. Position is used here only after clustering, never as a clustering input.
 
 ---
 
-## 13. Examine Player and Season Examples
+## 13. Answer the Research Question
 
-- [ ] Examine players who appear in several seasons.
-- [ ] Determine whether the model captures plausible changes in their playing roles over time.
-- [ ] Examine players who changed teams during a season.
-- [ ] Determine whether their player-season-team observations reflect different team roles when appropriate.
-- [ ] Use selected examples to make the cluster interpretation more concrete.
-- [ ] Avoid using a small number of convenient examples as proof for the entire model.
-
-### Purpose of this stage
-
-Examples of real players can make the discovered roles understandable, but they must support the numerical analysis rather than replace it.
-
----
-
-## 14. Answer the Research Question
-
-- [ ] Summarize the final discovered roles.
-- [ ] Explain why the selected model and cluster count were chosen.
-- [ ] Explain whether the roles are statistically stable.
-- [ ] Explain whether the roles are meaningful from a basketball perspective.
-- [ ] Explain how they compare with traditional positions.
-- [ ] State whether the project supports the idea that modern EuroLeague players can be described using more detailed roles.
-- [ ] Separate strong conclusions from tentative interpretations.
-- [ ] Discuss the main limitations of the data and methodology.
+- [ ] Summarize the final roles.
+- [ ] Explain why the model and number of clusters were selected.
+- [ ] State whether the result was reasonably robust.
+- [ ] Explain whether the roles are meaningful in basketball terms and whether they add information beyond traditional positions.
+- [ ] Discuss the main limitations, separating strong conclusions from tentative ones.
 
 ### Limitations to consider
 
-- The participation threshold used to define the modeling sample.
-- Missing biography information.
-- Players without enough valid shot-location data.
-- Differences in event recording across seasons.
-- The uncertain physical scale of the coordinate system.
-- The selected feature set.
+- The participation threshold that defines the modeling sample.
+- The discovered roles depend on the chosen 17-feature representation and preprocessing decisions.
+- Event types and zone letters are not recorded consistently across seasons, so dunks, layups, and shot zones could not be used.
+- Shot distances are in undocumented raw coordinate units.
+- Possible historical changes in EuroLeague playing style across the 19 seasons.
 - The assumptions of K-Means and GMM.
-- The use of player-season-team observations, which allows the same player to appear more than once.
-- The possibility that historical changes in EuroLeague playing style influence some clusters.
+- Player-season-team observations allow the same player to appear more than once.
+- Position labels are missing for some eligible observations, which limits the position comparison.
 
 ---
 
-## 15. Complete the Final Notebook Story
+## 14. Final Notebook Review
 
-- [ ] Read the complete notebook from beginning to end as one continuous investigation.
-- [ ] Make sure every section follows naturally from the previous result.
-- [ ] Explain each important method before its implementation.
-- [ ] Explain each important result after it appears.
-- [ ] State the decision that followed from each important result.
-- [ ] Include alternative approaches when they affected the final decision.
-- [ ] Preserve unsuccessful experiments when they genuinely explain why we changed direction.
-- [ ] Remove redundant tests that do not affect a decision or conclusion.
-- [ ] Keep the writing in first-person plural as Doron and Yuval explaining their own project.
-- [ ] Make sure every numerical claim is supported by visible notebook output.
-- [ ] Keep all notebook text, code, comments, chart labels, and tables in English.
-- [ ] End with the project conclusions and limitations.
-- [ ] Render the completed notebook as HTML.
-- [ ] Inspect the final HTML from beginning to end.
+- [ ] Do one complete editorial and consistency read of the notebook, removing redundancy and making sure every conclusion follows visible evidence.
+- [ ] Make sure the notebook reads naturally in first-person plural as Doron and Yuval and ends with the conclusions and limitations.
+- [ ] Render the notebook as HTML and inspect the final HTML.
 
 ---
 
-## 16. Prepare the Hebrew Presentation
+## 15. Prepare the Hebrew Presentation
 
-- [ ] Build the presentation only after the notebook results are final.
-- [ ] Present the research question and motivation.
-- [ ] Explain the datasets and the information they provide.
-- [ ] Summarize the important data-quality and preparation decisions.
-- [ ] Explain how the final modeling sample and features were selected.
-- [ ] Explain PCA and what its visualization shows.
-- [ ] Explain the comparison between K-Means and GMM.
-- [ ] Show how BIC was used to select the GMM cluster count.
-- [ ] Present the final discovered player roles.
-- [ ] Use representative player examples.
-- [ ] Compare the discovered roles with traditional positions.
-- [ ] Explain at least one important case where a result did not match our expectation and caused us to change the method or decision.
-- [ ] Present the main conclusions and limitations.
-- [ ] Select only figures and tables that contribute to the presentation story.
-- [ ] Divide the presentation clearly between Doron and Yuval.
-- [ ] Rehearse a complete presentation of approximately 40 minutes.
-- [ ] Make sure both presenters can explain every important methodological decision.
-- [ ] Record the final presentation if required.
+- [ ] Build the presentation only after the notebook results are final, from its strongest results.
+- [ ] Present the research question, data, key preparation decisions, and how the sample and features were chosen.
+- [ ] Explain the PCA view, the K-Means/GMM comparison, and how the number of clusters was chosen.
+- [ ] Present the discovered roles with representative players and the comparison with traditional positions.
+- [ ] Include a methodological change or unexpected result only where it helps tell the research story.
+- [ ] Present the conclusions and limitations.
+- [ ] Divide the presentation between Doron and Yuval, make sure both can explain every major decision, and rehearse a talk of about 40 minutes.
+- [ ] Record the presentation if required.
 
 ---
 
 ## Final Project Acceptance Check
 
-- [ ] The notebook presents one continuous data-science investigation.
-- [ ] The reasoning behind every major methodological decision is explained.
-- [ ] The expanded feature set includes scoring, shooting, playmaking, rebounding, and defensive behavior.
-- [ ] Traditional position is never used as a clustering input.
-- [ ] PCA provides a clear two-dimensional visualization of the players and clusters.
-- [ ] K-Means provides a useful baseline for comparison.
-- [ ] GMM and BIC are used as proposed to evaluate the number of clusters.
-- [ ] The final cluster count is supported by the complete analysis rather than assumed from the preliminary result.
-- [ ] Every final cluster has a statistically supported and understandable basketball interpretation.
-- [ ] Representative players support the interpretation of each role.
+- [ ] The notebook runs top to bottom and renders correctly as HTML.
+- [ ] Traditional position was never used as a clustering input.
+- [ ] The final model and number of clusters are justified.
+- [ ] The discovered roles are interpretable and supported by data and player examples.
 - [ ] The comparison with traditional positions answers the research question.
-- [ ] Unexpected or unsuccessful results are reported honestly and used to explain changes in the analysis.
-- [ ] The final conclusions are supported by visible code outputs, tables, and figures.
-- [ ] The final English notebook is rendered correctly as HTML.
-- [ ] The Hebrew presentation accurately represents the results of the notebook.
+- [ ] The presentation accurately reflects the final notebook.
