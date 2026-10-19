@@ -167,14 +167,20 @@ The 17 features in `FINAL_CLUSTERING_FEATURES` are then standardized with `Stand
 
 ---
 
-## 7. Explore the Data Using PCA
+## 7. Explore the Data Using PCA — Completed
 
-- [ ] Apply PCA to the scaled modeling matrix and examine how much variance the first components explain.
-- [ ] Interpret the main component loadings: which combinations of playing-style features drive the largest differences between players.
-- [ ] Create a two-dimensional PCA projection and describe whether it shows separated groups, overlapping groups, or gradual transitions.
-- [ ] Decide whether PCA is used only for exploration and visualization or also as the clustering representation, and explain why.
+- [x] Apply PCA to the scaled modeling matrix and examine how much variance the first components explain.
+- [x] Interpret the main component loadings: which combinations of playing-style features drive the largest differences between players.
+- [x] Create a two-dimensional PCA projection and describe whether it shows separated groups, overlapping groups, or gradual transitions.
+- [x] Decide whether PCA is used only for exploration and visualization or also as the clustering representation, and explain why.
 
 The two-dimensional projection simplifies a 17-dimensional dataset. It helps us understand and present the structure, but it does not by itself determine how many roles exist.
+
+### Result of this stage
+
+PCA of `X_scaled` gives PC1 38.1%, PC2 13.3%, and PC3 7.2% of the variance (51.5% for two components, 58.7% for three); PC4-PC10 each explain 3.1-6.1%, and eight components are needed to pass 80%. PC1 is an interior-to-perimeter axis (rebounds, height, blocks, two-point attempts against three-point attempts, shot distance, and lateral spread); PC2 is on-ball offensive involvement (turnovers, fouls received, assists, two-point attempts); PC3 is a weaker contrast of three-point and free-throw percentage against fouls committed and steals. The PC1-PC2 plane keeps little of three-point percentage (0.04), steals (0.10), fouls committed (0.18), and two-point and free-throw percentage (0.28 each).
+
+The PC1-PC2 projection shows overlapping regions of uneven density along a continuous spectrum, not separated groups. We decided to use PCA only for exploration and visualization: K-Means and GMM use the 17 standardized features, because no small number of components captures most of the variance and the discarded directions carry selected role features.
 
 ---
 

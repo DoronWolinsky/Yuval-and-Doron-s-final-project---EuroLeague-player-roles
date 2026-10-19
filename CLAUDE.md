@@ -207,8 +207,18 @@ not mark Stage 14, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-6. **Next:** Stage 7, PCA on the scaled modeling matrix. Not
+**Completed:** CheckList stages 1-7. **Next:** Stage 8, K-Means baseline on `X_scaled`. Not
 started.
+
+**Stage 7 decision (final):** PCA is exploration/visualization only; K-Means and GMM use the
+17 standardized features in `X_scaled`, not PCA components. Evidence (in the notebook): PC1
+38.1%, PC2 13.3%, PC3 7.2% (cumulative 51.5% / 58.7%), PC4-PC10 3.1-6.1% each, 8 components to
+pass 80%; the PC1-PC2 plane keeps only 0.04-0.28 of 3P%, steals, fouls committed, 2P%, FT%.
+PC1 = interior-to-perimeter, PC2 = on-ball offensive involvement, PC3 = weak shooting-accuracy
+vs fouls/steals contrast. The projection shows uneven density along a continuum, no separated
+groups. The last notebook cells keep `modeling_pca`, `pca_scores`, `pca_loadings`, and
+`pca_projection` (PC1/PC2 scores, `X_scaled` index) in notebook state for later 2D cluster plots,
+and write `outputs/figures/pca_explained_variance.png` and `pca_projection_pc1_pc2.png`.
 
 **Stage 6 decision (final):**
 - The three shooting percentages are represented in the modeling matrix by k = 10
