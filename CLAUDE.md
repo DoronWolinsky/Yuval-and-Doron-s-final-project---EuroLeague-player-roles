@@ -8,14 +8,21 @@ Persistent working instructions for this repository. Read this file, `CheckList.
 **Discovering New EuroLeague Player Roles Using Unsupervised Learning** — an academic data
 science project by Doron and Yuval.
 
-**Research question:** Can natural EuroLeague player roles be discovered from performance
-data without relying on traditional position labels (Guard, Forward, Center)?
+**Research question:** Can unsupervised learning discover meaningful EuroLeague player roles
+from performance data, and do these roles offer useful distinctions beyond the traditional
+basketball positions?
 
 **Unit of observation:** player-season-team. The same player may appear in multiple rows
 (different seasons and/or teams); these are not duplicates.
 
-Traditional position (`position` in `players_bio.csv`) is **never used as a clustering
-input** — only afterwards, to interpret and compare the discovered groups against it.
+Position labels are **never used as a clustering input** — only afterwards, as external
+reference labels. The **primary** comparison is with the five traditional positions in
+`position_reconciled` (365scores + Wikipedia); the EuroLeague three-category `position` is a
+supplementary, coarser comparison. Early notebook sections that describe the original
+three-category source data stay as historical narrative. Discovered roles are judged by their
+basketball meaning and what they add beyond positions, never by having more clusters than
+there are positions — don't use cluster count relative to 3 or 5 positions as a model-selection
+argument.
 
 Data files and their roles are described in `README.md`. Do not silently change which file is
 treated as the source of truth for a given kind of data (season totals, shot events,
@@ -272,8 +279,9 @@ and write `outputs/figures/pca_explained_variance.png` and `pca_projection_pc1_p
   excluded from spatial features. The A-J `zone` letters are undocumented and mark different
   court areas in E2007-E2008 than later, so zone shares are descriptive/QA only and are not
   relabelled.
-- Position: `position` (EuroLeague, 3 categories) and `position_reconciled` (365scores, with
-  a Wikipedia fallback; 97.8% of eligible rows) are comparison-only, never clustering inputs.
+- Position: `position_reconciled` (5 categories; 365scores, with a Wikipedia fallback; 97.8% of
+  eligible rows) is the primary comparison label and `position` (EuroLeague, 3 categories) the
+  supplementary one; both are comparison-only, never clustering inputs.
   Two players (`P011826`, `P012613`) never got a 365scores lookup (504 timeout) and use
   `position_wiki`.
 

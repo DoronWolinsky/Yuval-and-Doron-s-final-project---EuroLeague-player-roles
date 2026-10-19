@@ -4,7 +4,7 @@
 
 Our goal is to use unsupervised machine learning to discover meaningful EuroLeague player roles based on how players actually play.
 
-The model will not receive traditional position labels such as Guard, Forward, or Center. We will use these labels only after clustering, to examine whether the discovered roles provide a more detailed description of modern EuroLeague players.
+The model will not receive any position label. Positions are used only after clustering, as external reference labels: the main comparison is with the five traditional basketball positions (Point Guard, Shooting Guard, Small Forward, Power Forward, Center) in `position_reconciled`, compiled from 365scores and Wikipedia, and the EuroLeague three-category `position` (Guard, Forward, Center) is a supplementary, coarser comparison. The discovered roles are valuable if they have a clear basketball meaning and show distinctions the positions do not, not because there are more of them than there are positions.
 
 The notebook should present the project as one continuous investigation. At every stage, we should explain:
 
@@ -234,12 +234,12 @@ Role names are not chosen in advance; they must follow from the final cluster pr
 
 ## 12. Compare the Discovered Roles with Traditional Positions
 
-- [ ] Show how the discovered roles are distributed across the traditional positions, using both the 3-category `position` and the 5-category `position_reconciled`.
+- [ ] Show how the discovered roles are distributed across the five traditional positions (`position_reconciled`, the main comparison), and add the coarser 3-category `position` as a supplementary comparison.
 - [ ] Examine whether players with the same position are split into meaningfully different roles, and whether players from different positions are combined when they play alike.
 - [ ] Decide whether the discovered roles add useful information beyond the position labels.
 - [ ] State how many observations lack a position label, and treat it further only if it affects the interpretation.
 
-The goal is not to predict the position labels but to see whether the discovered roles reveal distinctions the labels do not show. Position is used here only after clustering, never as a clustering input.
+The goal is not to predict the position labels but to see whether the discovered roles reveal distinctions the labels do not show. Having more roles than positions is not in itself evidence of added information. Position is used here only after clustering, never as a clustering input.
 
 ---
 

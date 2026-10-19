@@ -1,16 +1,21 @@
 # Discovering New EuroLeague Player Roles Using Unsupervised Learning
 
-An academic data science project by Doron and Yuval exploring whether natural EuroLeague
-player roles can be discovered from performance data with unsupervised machine learning,
-without relying on traditional position labels (Guard / Forward / Center).
+An academic data science project by Doron and Yuval exploring whether unsupervised machine
+learning can discover meaningful EuroLeague player roles from performance data, and whether
+those roles add useful distinctions beyond traditional basketball positions.
 
 ## Research question
 
-Can natural EuroLeague player roles be discovered from performance data without relying on
-traditional position labels such as Guard, Forward, and Center?
+Can unsupervised learning discover meaningful EuroLeague player roles from performance data,
+and do these roles offer useful distinctions beyond the traditional basketball positions?
 
-Traditional position labels are **never used as a clustering input**. They are used only
-after clustering, for interpretation and comparison against the discovered groups.
+Position labels are **never used as a clustering input**; they are external reference labels
+used only after clustering. The primary comparison is with the five traditional positions
+(Point Guard, Shooting Guard, Small Forward, Power Forward, Center) in `position_reconciled`,
+compiled from 365scores and Wikipedia; the EuroLeague three-category `position` (Guard,
+Forward, Center) is a supplementary, coarser comparison. The value of the discovered roles
+lies in their basketball meaning and in what they add beyond these positions, not in whether
+there are more clusters than positions.
 
 ## Data
 
@@ -91,8 +96,9 @@ Important data limitations handled in the notebook:
 - The recorded shot-zone letters A-J are undocumented and refer to different court areas in
   E2007-E2008 than in later seasons, so zone shares are kept only as descriptive fields and
   shot location is described from the recorded coordinates.
-- Traditional position, and the five-category position built from 365scores and Wikipedia,
-  are used only to interpret the discovered roles, never as clustering inputs.
+- The EuroLeague biography data records only three broad positions, so the five-category
+  position used for the main comparison was built from 365scores and Wikipedia. Both are used
+  only to interpret the discovered roles, never as clustering inputs.
 
 See `CheckList.md` for the full roadmap and `CLAUDE.md` for the current work state and working
 rules.
