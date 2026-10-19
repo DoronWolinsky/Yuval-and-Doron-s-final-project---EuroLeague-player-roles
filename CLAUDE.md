@@ -207,8 +207,22 @@ not mark Stage 14, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-7. **Next:** Stage 8, K-Means baseline on `X_scaled`. Not
-started.
+**Completed:** CheckList stages 1-8. **Next:** Stage 9, GMMs on `X_scaled` and final model
+selection (compare with the K-Means baseline). Not started.
+
+**Stage 8 decision (final):** K-Means baseline is **k = 4** (`KMeans(n_clusters=4, n_init=20,
+random_state=RANDOM_STATE)` on `X_scaled`; cluster sizes 1,228 / 1,268 / 1,166 / 906, silhouette
+0.148). k = 2-12 were fitted; silhouette (full sample) falls from 0.299 at k = 2 to 0.081 at
+k = 12, inertia gains drop sharply after k = 4, no degenerate clusters. k = 2 is valid but
+mainly the PC1 interior/perimeter split; k = 5 (silhouette 0.134) is a similarly reasonable
+alternative. k = 4 is a weakly supported practical baseline, not the number of roles. Cluster
+sizes are a degeneracy check only — balanced sizes are neither expected nor preferred, since
+roles need not be equally common. Stage 9 must choose the GMM cluster count independently on
+`X_scaled`; the preliminary ~8-component GMM/BIC result (different feature representation) is
+not a target to reproduce. Notebook state kept for Stage 9: `kmeans_models` (dict k -> fitted model), `kmeans_comparison` (per-k
+inertia, silhouette, cluster sizes), `KMEANS_BASELINE_K`, `kmeans_baseline`, and
+`kmeans_labels` (Series indexed like `X_scaled`/`modeling_metadata`). No label file is written;
+figure `outputs/figures/kmeans_model_selection.png`.
 
 **Stage 7 decision (final):** PCA is exploration/visualization only; K-Means and GMM use the
 17 standardized features in `X_scaled`, not PCA components. Evidence (in the notebook): PC1

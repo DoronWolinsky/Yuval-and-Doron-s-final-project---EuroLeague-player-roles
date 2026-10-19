@@ -184,14 +184,18 @@ The PC1-PC2 projection shows overlapping regions of uneven density along a conti
 
 ---
 
-## 8. Establish a K-Means Baseline
+## 8. Establish a K-Means Baseline — Completed
 
-- [ ] Run K-Means over a reasonable range of cluster counts.
-- [ ] Use the elbow curve and/or silhouette scores as evidence for sensible cluster counts.
-- [ ] Inspect cluster sizes to rule out obviously poor solutions.
-- [ ] Choose a K-Means baseline to compare with GMM.
+- [x] Run K-Means over a reasonable range of cluster counts.
+- [x] Use the elbow curve and/or silhouette scores as evidence for sensible cluster counts.
+- [x] Inspect cluster sizes to rule out obviously poor solutions.
+- [x] Choose a K-Means baseline to compare with GMM.
 
 K-Means is a simple baseline for the model comparison. Detailed cluster profiles are interpreted only for the final model (Stage 11).
+
+### Result of this stage
+
+K-Means on `X_scaled` for k = 2-12 (20 initializations each). Inertia gains drop sharply after k = 4 (6,490 for the third cluster, 3,856 for the fourth, 1,746 for the fifth, then 1,468 down to 595). Silhouette (all 4,568 rows) is highest at k = 2 (0.299) and declines steadily (0.148 at k = 4, 0.081-0.098 from k = 7), confirming overlapping rather than separated groups. Cluster sizes were checked only for degenerate or suspiciously small clusters, not as a preference for balance; none was found (smallest at k = 12: 300 rows). k = 2 is valid but mainly captures the broad interior-perimeter split along PC1, so it is of little use as a baseline. The selected practical baseline is **k = 4** (silhouette 0.148, where inertia gains flatten); the support is weak and k = 5 is a similarly reasonable alternative. The baseline is a reference for the model comparison, not an estimate of the number of roles; the final model and number of clusters are chosen in Stage 9 on their own evidence.
 
 ---
 
