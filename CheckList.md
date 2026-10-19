@@ -199,14 +199,18 @@ K-Means on `X_scaled` for k = 2-12 (20 initializations each). Inertia gains drop
 
 ---
 
-## 9. Fit Gaussian Mixture Models and Select the Final Model
+## 9. Fit Gaussian Mixture Models and Select the Final Model — Completed
 
-- [ ] Fit GMMs over a justified range of cluster counts, without assuming the preliminary eight-cluster result.
-- [ ] Use BIC as the main criterion for the number of components; add AIC only if it adds useful evidence.
-- [ ] Check the cluster sizes of the leading solutions for very small or degenerate clusters.
-- [ ] Summarize membership certainty if it helps the model choice.
-- [ ] Compare the leading GMM solution with the K-Means baseline.
-- [ ] Select the preferred model and number of clusters, based on the statistical evidence, cluster sizes, and whether the clusters are interpretable.
+- [x] Fit GMMs over a justified range of cluster counts, without assuming the preliminary eight-cluster result.
+- [x] Use BIC as the main criterion for the number of components; add AIC only if it adds useful evidence.
+- [x] Check the cluster sizes of the leading solutions for very small or degenerate clusters.
+- [x] Summarize membership certainty if it helps the model choice.
+- [x] Compare the leading GMM solution with the K-Means baseline.
+- [x] Select the preferred model and number of clusters, based on the statistical evidence and the absence of degenerate components (cluster sizes are a degeneracy check only; interpretability is examined in Stage 11).
+
+### Result of this stage
+
+Full-covariance GMMs (k = 2-12, 10 initializations) with the default `reg_covar = 1e-6` gave the lowest BIC at k = 10 (k = 9 +108), but from k = 5 every solution had a collapsed component: one made of exactly the 443 zero-three-point-attempt rows (zero variance in three-point attempts per 40 and the shrunk 3P%), and at k = 10 one of 865 zero-block rows. These point masses are legitimate data; the Gaussian likelihood exploits them, so those BIC gains are artifacts. With `reg_covar = 0.01` and `0.1` no component collapses and BIC prefers k = 5 under both (runner-up k = 6, +23, and k = 4, +12). We kept 0.01, the smaller tested value that removes the collapse, as a stated modeling assumption. Under it, BIC has its minimum at k = 5 (155,866), k = 6 is +23, k = 4 is +884, and BIC rises steadily from k = 7. The selected model is the **full-covariance GMM with five components** (weights 0.140-0.246, hard counts 620-1,162; 77.1% of observations with max posterior >= 0.9, 3.5% below 0.6). It agrees with K-Means k = 4 at ARI 0.409 (GMM k = 4 vs K-Means k = 4: 0.513). The choice is conditional on the regularization, and k = 6 is a close alternative; stability and basketball meaning remain to be shown in Stages 10-12.
 
 ---
 

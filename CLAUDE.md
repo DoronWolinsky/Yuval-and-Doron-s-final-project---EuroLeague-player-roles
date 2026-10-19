@@ -214,8 +214,23 @@ not mark Stage 14, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-8. **Next:** Stage 9, GMMs on `X_scaled` and final model
-selection (compare with the K-Means baseline). Not started.
+**Completed:** CheckList stages 1-9. **Next:** Stage 10, robustness of the selected GMM
+(different initializations; the reserved `10 games / 200 minutes` sample). Not started.
+
+**Stage 9 decision (final):** clustering model = `GaussianMixture(n_components=5,
+covariance_type="full", reg_covar=0.01, n_init=10, max_iter=500, random_state=RANDOM_STATE)` on
+`X_scaled`. Default `reg_covar=1e-6` gave BIC minimum k = 10 but collapsed components from k = 5
+on (443 zero-3PA rows: zero variance in 3PA/40 and shrunk 3P%; 865 zero-block rows at k = 10) —
+a Gaussian-likelihood artifact of legitimate point masses, not a data error. 0.01 and 0.1 both
+remove the collapse and both put the BIC minimum at k = 5 (runner-up k = 6 +23 / k = 4 +12);
+0.01 kept as the smaller tested value (a stated assumption, not a proven optimum; absolute BIC
+not compared across settings). Under 0.01: k = 5 BIC 155,866, k = 6 +23 (close alternative),
+k = 4 +884; weights 0.140-0.246, hard counts 620-1,162; 77.1% max posterior >= 0.9, 3.5% < 0.6;
+component 2 least certain (0.881). ARI vs K-Means k = 4: GMM k = 4 0.513, GMM k = 5 0.409. No
+position label was used. Notebook state kept: `fit_gmm_sweep`, `gmm_models` and `gmm_summaries`
+(dicts by `reg_covar` -> k), `GMM_REG_COVAR`, `gmm_comparison`, `GMM_SELECTED_K`, `gmm_selected`,
+`gmm_labels` and `gmm_posteriors` (indexed like `X_scaled`/`modeling_metadata`). Figure
+`outputs/figures/gmm_bic.png`; no label file. The three GMM sweeps take about 1 minute of Run All.
 
 **Stage 8 decision (final):** K-Means baseline is **k = 4** (`KMeans(n_clusters=4, n_init=20,
 random_state=RANDOM_STATE)` on `X_scaled`; cluster sizes 1,228 / 1,268 / 1,166 / 906, silhouette
