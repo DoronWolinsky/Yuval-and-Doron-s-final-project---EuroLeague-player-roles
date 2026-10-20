@@ -239,15 +239,32 @@ threshold, or the recording-period difference.
 
 ---
 
-## 11. Interpret the Discovered Roles
+## 11. Interpret the Discovered Roles — Completed
 
-- [ ] Summarize each cluster's profile in original units and/or standardized values, and identify the features that most distinguish it.
-- [ ] Inspect representative players from each cluster (for example those closest to the center or with the highest membership probability).
-- [ ] Assign each interpretable cluster a basketball role name supported by both its numerical profile and its player examples.
-- [ ] Use a multi-season or team-change example only when it genuinely helps illustrate a role or role change.
-- [ ] Revise the model only if a cluster is genuinely incoherent.
+- [x] Summarize each cluster's profile in original units and/or standardized values, and identify the features that most distinguish it.
+- [x] Inspect representative players from each cluster (for example those closest to the center or with the highest membership probability).
+- [x] Assign each interpretable cluster a basketball role name supported by both its numerical profile and its player examples.
+- [x] Use a multi-season or team-change example only when it genuinely helps illustrate a role or role change.
+- [x] Revise the model only if a cluster is genuinely incoherent.
 
 Role names are not chosen in advance; they must follow from the final cluster profiles. Player examples support the numerical profile rather than replace it.
+
+### Result of this stage
+
+Each component's standardized profile (heatmap, `outputs/figures/gmm_cluster_profiles.png`) and
+two representative-player lists per component (highest posterior probability, and closest to the
+fitted component mean, each deduplicated by player) gave five distinct, basketball-coherent
+roles: **playmaking guards** (component 0, n = 1,054; high assists and turnovers, short,
+low rebounding/blocks), **low-post centers** (component 1, n = 756; near-zero three-point rate,
+minimal shot-location spread, tallest, most rebounds/blocks), **low-usage forwards** (component
+2, n = 976; the flattest profile, defined mainly by low turnovers and fouls drawn rather than one
+strong signal), **perimeter shooters** (component 3, n = 1,162; longest shot distance, most
+three-point attempts, fewest two-point attempts), and **mobile stretch bigs** (component 4,
+n = 620; tall with high rebounding/blocks like component 1, but with much more shot variety and a
+real three-point rate). No component was incoherent enough to revise the model. Alberto Abalde's
+career (playmaking guard at Joventut in E2017, then perimeter shooter at Real Madrid from E2020
+on, with one low-usage-forward season) illustrates the clustering tracking a real role change
+using only season statistics.
 
 ---
 

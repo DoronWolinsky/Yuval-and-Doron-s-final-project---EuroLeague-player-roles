@@ -214,8 +214,31 @@ not mark Stage 14, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-10. **Next:** Stage 11, interpreting the discovered roles
-(cluster profiles, representative players, role names). Not started.
+**Completed:** CheckList stages 1-11. **Next:** Stage 12, comparing the discovered roles with
+traditional positions (`position_reconciled` primary, `position` supplementary). Not started.
+
+**Stage 11 decision (final):** the five GMM components were named from their standardized
+profiles (heatmap `outputs/figures/gmm_cluster_profiles.png`) and two representative-player
+lists per component (highest posterior probability, and closest to `gmm_selected.means_`, each
+deduplicated by player, both include `position_reconciled` for color): component 0 **playmaking
+guards** (n = 1,054; assists z = +0.88, turnovers z = +0.54, height z = -0.79), component 1
+**low-post centers** (n = 756; shot-distance spread z = -1.90, three-point attempts z = -1.50,
+height z = +1.13, offensive rebounds z = +1.50, blocks z = +1.29 -- the most extreme profile),
+component 2 **low-usage forwards** (n = 976; no |z| above 0.66, the flattest profile, defined by
+low turnovers/fouls-drawn rather than one strong signal), component 3 **perimeter shooters**
+(n = 1,162; median shot distance z = +1.23, three-point attempts z = +1.01, two-point attempts
+z = -0.93), component 4 **mobile stretch bigs** (n = 620; height/rebounds/blocks elevated like
+component 1 but far less extreme shot-location restriction, non-trivial three-point rate 2.66
+per 40 vs component 1's 0.12). Victor Wembanyama's E2021 ASVEL season is component 4's top
+"star" (posterior 1.0) but not a "textbook" example -- flagged in the notebook as an extreme,
+confidently-assigned case rather than a typical one. Alberto Abalde's career (component 0 at
+Joventut in E2017, then component 3 at Real Madrid from E2020 on with one component-2 season)
+is used as the one multi-season role-change illustration. No cluster was revised. Notebook state
+added: `cluster_profile`, `ROLE_NAMES`, `role_summary`, `representative_players()`,
+`dist_to_own_mean`, `stars`, `textbook`, `abalde`. New file: `outputs/figures/gmm_cluster_profiles.png`.
+A Run All also regenerates `gmm_bic.png`, `kmeans_model_selection.png`,
+`pca_explained_variance.png`, and `pca_projection_pc1_pc2.png` with harmless byte-level drift --
+restore those with `git checkout` unless a real regeneration is intended.
 
 **Stage 10 decision (final):** the selected GMM (k = 5, full covariance, `reg_covar = 0.01`) is
 stable. (1) Nine additional `random_state` refits gave BIC within 155,864-155,885 of the
