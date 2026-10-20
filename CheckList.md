@@ -214,13 +214,28 @@ Full-covariance GMMs (k = 2-12, 10 initializations) with the default `reg_covar 
 
 ---
 
-## 10. Check the Robustness of the Result
+## 10. Check the Robustness of the Result — Completed
 
-- [ ] Repeat the preferred clustering with different random initializations and check that observations stay grouped together.
-- [ ] Rerun it on the stricter `10 games / 200 minutes` sample reserved in Stage 3 and check whether the main role structure holds.
-- [ ] Run at most one further sensitivity comparison, only if the final model leaves a concrete methodological uncertainty (for example a feature group or the recording period that appears to drive a cluster).
+- [x] Repeat the preferred clustering with different random initializations and check that observations stay grouped together.
+- [x] Rerun it on the stricter `10 games / 200 minutes` sample reserved in Stage 3 and check whether the main role structure holds.
+- [x] Run at most one further sensitivity comparison, only if the final model leaves a concrete methodological uncertainty (for example a feature group or the recording period that appears to drive a cluster).
 
 The goal is to show that the main result is not an accident of one initialization or one arbitrary choice. If an alternative setup changes the result, we report it and explain which solution better answers the research question.
+
+### Result of this stage
+
+Refitting the selected GMM (k = 5, full covariance, `reg_covar = 0.01`) with nine additional
+random states gave essentially the same BIC every time (155,864-155,885) and closely agreeing
+component labels: pairwise ARI across all ten runs averaged 0.978 (minimum 0.929), and Hungarian
+matching against the original run kept at least 96.8% of observations in the same component.
+Refitting the full pipeline (shrinkage prior, scaler, GMM) on the stricter `10 games / 200
+minutes` sample (3,679 of the 4,568 eligible rows) also chose five components by BIC and
+reproduced closely matching cluster profiles on the shared rows (ARI 0.887, 94.9% matched
+agreement; profile means within 0.8 units, mostly within 0.3). A check of each component's share
+of E2007-E2008 rows (8.4%-14.8%, against 10.8% overall) found no component disproportionately
+tied to the early recording period, so no further sensitivity comparison was needed. The
+five-component GMM is a stable result, not an artifact of initialization, the participation
+threshold, or the recording-period difference.
 
 ---
 

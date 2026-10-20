@@ -214,8 +214,27 @@ not mark Stage 14, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-9. **Next:** Stage 10, robustness of the selected GMM
-(different initializations; the reserved `10 games / 200 minutes` sample). Not started.
+**Completed:** CheckList stages 1-10. **Next:** Stage 11, interpreting the discovered roles
+(cluster profiles, representative players, role names). Not started.
+
+**Stage 10 decision (final):** the selected GMM (k = 5, full covariance, `reg_covar = 0.01`) is
+stable. (1) Nine additional `random_state` refits gave BIC within 155,864-155,885 of the
+original 155,866, pairwise ARI across all ten runs averaging 0.978 (min 0.929), and Hungarian-
+matched agreement with the original run of at least 96.8%. (2) Refitting the full pipeline
+(shrinkage prior, `StandardScaler`, GMM) on the stricter `10 games / 200 minutes` sample (3,679
+of the 4,568 eligible rows, all already inside it) also selected k = 5 by BIC (124,041 vs 124,691
+at k = 4 and 124,569 at k = 6) and reproduced matching cluster profiles on the shared rows (ARI
+0.887, 94.9% matched agreement; profile means within 0.8 units of the full-sample model, mostly
+within 0.3). (3) Each component's share of E2007-E2008 rows (8.4%-14.8%) stays close to the
+10.8% overall share, so no component is a recording-period artifact, and no further sensitivity
+comparison was run. Notebook state added: `match_components` (Hungarian alignment helper),
+`stability_models`/`stability_labels`/`stability_summary` (seeds 0-8 plus the original 42),
+`strict_rows`/`X_strict_scaled`/`strict_gmm`/`strict_labels`/`strict_bic_check`/
+`profile_compare`, and `early_share_by_component`. No new files written (no new figures or
+tables); this stage only adds notebook cells. A Run All regenerates
+`outputs/figures/gmm_bic.png`, `kmeans_model_selection.png`, `pca_explained_variance.png`, and
+`pca_projection_pc1_pc2.png` with harmless byte-level differences (not content changes) — restore
+them with `git checkout` unless a real regeneration is intended.
 
 **Stage 9 decision (final):** clustering model = `GaussianMixture(n_components=5,
 covariance_type="full", reg_covar=0.01, n_init=10, max_iter=500, random_state=RANDOM_STATE)` on
