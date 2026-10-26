@@ -214,8 +214,21 @@ not mark Stage 14, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-12. **Next:** Stage 13, answering the research question. Not
-started.
+**Completed:** CheckList stages 1-13. **Next:** Stage 14, the final notebook review. Not started.
+
+**Stage 13 decision (final):** added a short "Discussion" markdown section (prose only, no new
+code/data/figures) that briefly recaps the five roles, the GMM k = 5 selection (Stage 9), and the
+Stage 10 robustness checks, then states the answer to the research question: the roles are
+basketball-meaningful and add information beyond position, evidenced by the Stage 12 cross-tabs
+and low ARI (0.210/0.288), not by having more roles than positions. A "Limitations" subsection
+separates better-supported points (the Stage 10 stability checks, the Stage 12 position
+comparison itself, the small 2.2%/2.9% missing-label share) from more tentative ones (the
+participation threshold, the 17-feature representation and its preprocessing, inconsistent
+event-type/zone recording across seasons, undocumented shot-distance units, untested
+longer-term playing-style drift across the 19 seasons -- distinct from the Stage 10 check, which
+only ruled out an E2007-E2008 recording-period artifact -- the K-Means/GMM assumptions against
+the continuum the Stage 7 PCA projection showed, and repeated players across seasons inflating
+cluster sizes relative to distinct players). No Run All needed (no numeric/code changes).
 
 **Stage 12 decision (final):** `position_reconciled` covers 97.8% of eligible rows (`position`
 97.1%); unlabeled rows are dropped from each comparison (no further treatment needed). Primary

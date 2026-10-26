@@ -300,13 +300,13 @@ forwards) -- not by having more roles than positions. New figure:
 
 ---
 
-## 13. Answer the Research Question
+## 13. Answer the Research Question — Completed
 
-- [ ] Summarize the final roles.
-- [ ] Explain why the model and number of clusters were selected.
-- [ ] State whether the result was reasonably robust.
-- [ ] Explain whether the roles are meaningful in basketball terms and whether they add information beyond traditional positions.
-- [ ] Discuss the main limitations, separating strong conclusions from tentative ones.
+- [x] Summarize the final roles.
+- [x] Explain why the model and number of clusters were selected.
+- [x] State whether the result was reasonably robust.
+- [x] Explain whether the roles are meaningful in basketball terms and whether they add information beyond traditional positions.
+- [x] Discuss the main limitations, separating strong conclusions from tentative ones.
 
 ### Limitations to consider
 
@@ -318,6 +318,19 @@ forwards) -- not by having more roles than positions. New figure:
 - The assumptions of K-Means and GMM.
 - Player-season-team observations allow the same player to appear more than once.
 - Position labels are missing for some eligible observations, which limits the position comparison.
+
+### Result of this stage
+
+A short "Discussion" section in the notebook recaps the five roles, the GMM/k = 5 choice, and
+the Stage 10 robustness checks, then states the answer to the research question: the roles are
+basketball-meaningful and add information beyond `position_reconciled`/`position` (low ARI,
+0.210/0.288; the Center split and the two cross-position merges from Stage 12 are the concrete
+evidence), not because there are more roles than positions. A "Limitations" subsection separates
+better-supported points (stability checks, the position comparison itself, the small missing-label
+share) from more tentative ones (the participation threshold, the 17-feature representation,
+inconsistent event/zone recording, undocumented shot-distance units, untested longer-term
+playing-style drift across the 19 seasons, the clustering assumptions against the continuum PCA
+showed, and repeated players across seasons). No new code, data, or figures; prose only.
 
 ---
 
