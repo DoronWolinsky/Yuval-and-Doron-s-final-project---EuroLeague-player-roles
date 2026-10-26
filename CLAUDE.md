@@ -214,8 +214,33 @@ not mark Stage 14, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-11. **Next:** Stage 12, comparing the discovered roles with
-traditional positions (`position_reconciled` primary, `position` supplementary). Not started.
+**Completed:** CheckList stages 1-12. **Next:** Stage 13, answering the research question. Not
+started.
+
+**Stage 12 decision (final):** `position_reconciled` covers 97.8% of eligible rows (`position`
+97.1%); unlabeled rows are dropped from each comparison (no further treatment needed). Primary
+cross-tab (role x `position_reconciled`, counts/row-share/column-share, heatmap
+`outputs/figures/role_vs_position_reconciled.png`): Center and Point Guard each concentrate into
+one role (69%/24% Center -> low-post centers/mobile stretch bigs; 54%/40% Point Guard ->
+playmaking guards/perimeter shooters), Small Forward and Power Forward each split three ways,
+and Point Guard vs. Shooting Guard split the same two roles with shares reversed (Shooting
+Guard 44% perimeter shooters / 36% playmaking guards) -- the guard split tracks
+ball-handling-vs-shooting more than the official label. From the role side, mobile stretch bigs
+(50% Power Forward + 31% Center) and low-usage forwards (38% Small Forward + 37% Power Forward)
+each combine two positions the label keeps separate. The supplementary 3-category `position`
+(no new figure) reproduces the same shape (Center 64%/27% low-post/mobile stretch; Guard
+47%/43% playmaking/perimeter; Forward spread 44%/20%/20% across low-usage/perimeter/mobile
+stretch). ARI is low against both labels (0.210 `position_reconciled`, 0.288 `position`,
+computed with `adjusted_rand_score` on the labeled subset), well below the 0.4-0.5 internal
+K-Means/GMM agreement from Stage 9. Decision: the roles add real information beyond position --
+the Center split and the two cross-position merges are the clearest evidence -- not because
+there are more roles than positions. Notebook state added: `role_position`, `counts`,
+`role_share`, `position_share`, `ROLE_ORDER`, `POSITION_ORDER`, `role_position3`, `counts3`,
+`role_share3`, `position_share3`, `ari_position_reconciled`, `ari_position`. New file:
+`outputs/figures/role_vs_position_reconciled.png`. A Run All also regenerates `gmm_bic.png`,
+`kmeans_model_selection.png`, `pca_explained_variance.png`, and `pca_projection_pc1_pc2.png` with
+harmless byte-level drift -- restore those with `git checkout` unless a real regeneration is
+intended (already restored after this stage's Run All).
 
 **Stage 11 decision (final):** the five GMM components were named from their standardized
 profiles (heatmap `outputs/figures/gmm_cluster_profiles.png`) and two representative-player

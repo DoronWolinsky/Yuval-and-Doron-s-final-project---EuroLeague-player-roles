@@ -268,14 +268,35 @@ using only season statistics.
 
 ---
 
-## 12. Compare the Discovered Roles with Traditional Positions
+## 12. Compare the Discovered Roles with Traditional Positions — Completed
 
-- [ ] Show how the discovered roles are distributed across the five traditional positions (`position_reconciled`, the main comparison), and add the coarser 3-category `position` as a supplementary comparison.
-- [ ] Examine whether players with the same position are split into meaningfully different roles, and whether players from different positions are combined when they play alike.
-- [ ] Decide whether the discovered roles add useful information beyond the position labels.
-- [ ] State how many observations lack a position label, and treat it further only if it affects the interpretation.
+- [x] Show how the discovered roles are distributed across the five traditional positions (`position_reconciled`, the main comparison), and add the coarser 3-category `position` as a supplementary comparison.
+- [x] Examine whether players with the same position are split into meaningfully different roles, and whether players from different positions are combined when they play alike.
+- [x] Decide whether the discovered roles add useful information beyond the position labels.
+- [x] State how many observations lack a position label, and treat it further only if it affects the interpretation.
 
 The goal is not to predict the position labels but to see whether the discovered roles reveal distinctions the labels do not show. Having more roles than positions is not in itself evidence of added information. Position is used here only after clustering, never as a clustering input.
+
+### Result of this stage
+
+`position_reconciled` covers 97.8% of eligible rows (`position` 97.1%); unlabeled rows were
+dropped from each comparison. Cross-tabulating roles against `position_reconciled` shows Center
+and Point Guard concentrated in one role each (69% of Centers are low-post centers, 24% mobile
+stretch bigs; 54% of Point Guards are playmaking guards, 40% perimeter shooters), while Small
+Forward and Power Forward split three ways each and the Point Guard/Shooting Guard split tracks
+ball-handling-vs-shooting more than the official label (Shooting Guard: 44% perimeter shooters,
+36% playmaking guards -- the same two roles as Point Guard, with shares reversed). From the role
+side, mobile stretch bigs (50% Power Forward + 31% Center) and low-usage forwards (38% Small
+Forward + 37% Power Forward) each combine two positions the label keeps separate. The
+supplementary 3-category `position` shows the same shape (Center 64% low-post centers / 27%
+mobile stretch bigs; Guard 47%/43% playmaking guards vs. perimeter shooters; Forward spread
+across three roles). Adjusted Rand index is low against both labels (0.210 vs
+`position_reconciled`, 0.288 vs `position`), well below the 0.4-0.5 internal agreement between
+the Stage 9 K-Means/GMM solutions. Decision: the discovered roles add real information beyond
+position -- most clearly by splitting Center into two basketball-distinct groups and by
+combining Power Forward with Center (mobile stretch bigs) and with Small Forward (low-usage
+forwards) -- not by having more roles than positions. New figure:
+`outputs/figures/role_vs_position_reconciled.png`.
 
 ---
 
