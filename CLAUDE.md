@@ -96,7 +96,7 @@ euroleague-player-roles/
 
 ## `CheckList.md`
 
-The authoritative research roadmap: 15 stages from data understanding through the Hebrew
+The authoritative research roadmap: 16 stages from data understanding through the Hebrew
 presentation, each with checkbox items and a short expected result or decision. It is the
 reference for both Doron/Yuval and Claude Code on what's done and what's next. Tick boxes as
 stages complete; don't turn it into a technical activity log, and don't redesign or renumber
@@ -214,7 +214,22 @@ not mark Stage 14, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-13. **Next:** Stage 14, the final notebook review. Not started.
+**Completed:** CheckList stages 1-14. **Next:** Stage 15, rendering the notebook as HTML (split
+out of the old Stage 14 into its own stage this round; the Hebrew presentation is now Stage 16).
+Not started.
+
+**Stage 14 decision (final):** one editorial/consistency read of the full notebook (prose only,
+no new code/data/figures, no Run All needed). Cut one redundant transition paragraph in the
+Stage 4 missing-value discussion. Condensed a Center-split/cross-position-merge point that had
+been written out in full three times (Stage 12 cross-tab interpretation, Stage 12 decision
+paragraph, Stage 13 Discussion) to one full explanation plus brief back-references, preserving
+each paragraph's unique content. Rewrote Stage 13's Discussion from four bold-labeled sub-points
+into flowing paragraphs; no facts, numbers, or citations changed. No AI-artifact code found
+worth changing -- all helper functions are reused multiple times and legitimately justify their
+existence. Notebook: 192 -> 191 cells (one markdown cell removed); validates, zero execution
+errors, ends at the Limitations section, consistently first-person-plural. `git status` showed
+only the notebook changed from this stage's edits -- no figures or processed CSVs touched, so
+nothing needed restoring.
 
 **Stage 13 decision (final):** added a short "Discussion" markdown section (prose only, no new
 code/data/figures) that briefly recaps the five roles, the GMM k = 5 selection (Stage 9), and the

@@ -334,15 +334,33 @@ showed, and repeated players across seasons). No new code, data, or figures; pro
 
 ---
 
-## 14. Final Notebook Review
+## 14. Final Notebook Review — Completed
 
-- [ ] Do one complete editorial and consistency read of the notebook, removing redundancy and making sure every conclusion follows visible evidence.
-- [ ] Make sure the notebook reads naturally in first-person plural as Doron and Yuval and ends with the conclusions and limitations.
+- [x] Do one complete editorial and consistency read of the notebook, removing redundancy and making sure every conclusion follows visible evidence.
+- [x] Make sure the notebook reads naturally in first-person plural as Doron and Yuval and ends with the conclusions and limitations.
+
+### Result of this stage
+
+One full read of the notebook found it already close to final, since it had been written under
+these same constraints throughout. We cut one redundant transition paragraph in the Stage 4
+missing-value discussion that restated a point the previous cell had just made, and condensed a
+Center-split/cross-position-merge explanation that had been written out in full three times
+(Stage 12's cross-tab interpretation, its decision paragraph, and Stage 13's Discussion) down to
+one full explanation plus brief back-references. Stage 13's Discussion was rewritten from four
+bold-labeled sub-points into flowing paragraphs for a more natural lecture narrative; no facts,
+numbers, or citations changed. No code or figures needed changes, so no Run All was required.
+The notebook validates, has zero execution errors, ends at the Limitations section, and reads
+consistently in first-person plural throughout.
+
+---
+
+## 15. Render the Notebook as HTML
+
 - [ ] Render the notebook as HTML and inspect the final HTML.
 
 ---
 
-## 15. Prepare the Hebrew Presentation
+## 16. Prepare the Hebrew Presentation
 
 - [ ] Build the presentation only after the notebook results are final, from its strongest results.
 - [ ] Present the research question, data, key preparation decisions, and how the sample and features were chosen.
