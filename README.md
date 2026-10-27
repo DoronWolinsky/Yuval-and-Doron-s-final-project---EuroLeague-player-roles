@@ -89,9 +89,10 @@ The roles were then compared with the traditional positions: the adjusted Rand i
 against both the five-category `position_reconciled` (0.210) and the three-category `position`
 (0.288), with Centers splitting into low-post centers and mobile stretch bigs and two roles
 combining positions the labels keep separate. The notebook ends with a discussion that answers
-the research question and a limitations section, and stages 1-14 (including a final editorial
-review) are complete. What remains is rendering the notebook as HTML (stage 15) and recording a
-20-minute Hebrew walkthrough of the notebook (stage 16).
+the research question and a limitations section, and stages 1-15 are complete, including a
+final editorial review and the rendered HTML version of the notebook,
+`outputs/EuroLeague_Player_Roles_Project.html`. The only remaining stage is a 20-minute recorded
+Hebrew walkthrough of the notebook (stage 16).
 
 Rate features are expressed per 40 minutes, the length of a EuroLeague regulation game. The
 final clustering feature set has 17 features: two- and three-point attempts per 40, the three

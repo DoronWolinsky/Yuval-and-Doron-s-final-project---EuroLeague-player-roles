@@ -355,9 +355,15 @@ consistently in first-person plural throughout.
 
 ---
 
-## 15. Render the Notebook as HTML
+## 15. Render the Notebook as HTML — Completed
 
-- [ ] Render the notebook as HTML and inspect the final HTML.
+- [x] Render the notebook as HTML and inspect the final HTML.
+
+### Result of this stage
+
+The notebook was rendered from its saved outputs, without re-execution, to
+`outputs/EuroLeague_Player_Roles_Project.html`. All 12 figures are embedded, every table renders
+in full, and the HTML contains no error outputs.
 
 ---
 
@@ -376,7 +382,7 @@ The presentation is a recorded walkthrough of the final notebook in Hebrew by Do
 
 ## Final Project Acceptance Check
 
-- [ ] The notebook runs top to bottom and renders correctly as HTML.
+- [x] The notebook runs top to bottom and renders correctly as HTML.
 - [ ] Traditional position was never used as a clustering input.
 - [ ] The final model and number of clusters are justified.
 - [ ] The discovered roles are interpretable and supported by data and player examples.

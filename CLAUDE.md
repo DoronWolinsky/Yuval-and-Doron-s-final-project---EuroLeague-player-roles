@@ -214,9 +214,15 @@ not mark Stage 14, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-14. **Next:** Stage 15, rendering the notebook as HTML. Not
-started. Stage 16 is now a ~20-minute recorded Hebrew walkthrough of the notebook by Doron and
-Yuval (not a 40-minute slide presentation).
+**Completed:** CheckList stages 1-15. **Next:** Stage 16, a ~20-minute recorded Hebrew
+walkthrough of the notebook by Doron and Yuval (not a slide presentation). Not started; it is the
+only remaining stage.
+
+**Stage 15 decision (final):** rendered with `python -m nbconvert --to html` from the saved
+outputs (no re-execution) to `outputs/EuroLeague_Player_Roles_Project.html` (~2.3 MB; 12 base64
+figures; MathJax/require.js load from CDN but the notebook contains no math). Verified heading
+order, all tables complete (no truncation), the raw-means and representative tables, zero error
+outputs; notebook valid with 192 cells. If the notebook changes, re-render the HTML the same way.
 
 **Pre-render editorial pass (after Stage 14):** markdown-only edits to 15 cells (no code, outputs,
 figures, or numbers changed; no Run All needed). Shortened the eligibility-sample decision, the
@@ -240,7 +246,10 @@ identical tables. The Wembanyama paragraph and all star/textbook names were remo
 prose. Notebook state `representative_players()`, `stars`, `textbook`, `dist_to_own_mean` no
 longer exist; `representatives` and `representative_table` replace them. The default-`reg_covar`
 table's ~1e-16 smallest-variance values change sign/digits on a rerun (harmless; the prose says
-"zero up to rounding error").
+"zero up to rounding error"). Final markdown-only fixes (no re-execution): the paragraph after
+the representative table no longer repeats the 15 names; removed the PCA sentence promising a
+PC1-PC2 cluster plot (none exists); softened the shot-data limitation (standardization does not
+establish consistent coordinate recording across seasons).
 
 **Stage 14 decision (final):** one editorial/consistency read of the full notebook (prose only,
 no new code/data/figures, no Run All needed). Cut one redundant transition paragraph in the
