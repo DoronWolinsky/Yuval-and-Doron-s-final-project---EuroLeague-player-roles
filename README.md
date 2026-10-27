@@ -72,7 +72,7 @@ python -m nbconvert --to notebook --execute --inplace notebooks/EuroLeague_Playe
 
 ## Status
 
-Stages 1-11 of `CheckList.md` are complete: understanding the three raw datasets, building the
+The research stages of `CheckList.md` are complete: understanding the three raw datasets, building the
 player-season-team feature table, defining the eligible modeling sample (4,568 of 6,307 rows,
 at least 5 games and 100 minutes), resolving missing values in that sample, selecting the
 final clustering features, preparing the modeling matrix (stabilizing shooting percentages
@@ -83,8 +83,15 @@ checking the robustness of that result against different random initializations,
 `10 games / 200 minutes` participation rule, and the E2007-E2008 recording-period difference,
 and interpreting the five components as playmaking guards, low-post centers, low-usage
 forwards, perimeter shooters, and mobile stretch bigs. PCA is used only for exploration and
-visualization; clustering uses the 17 standardized features. The next stage is comparing the
-discovered roles with traditional positions (`CheckList.md` stage 12).
+visualization; clustering uses the 17 standardized features.
+
+The roles were then compared with the traditional positions: the adjusted Rand index is low
+against both the five-category `position_reconciled` (0.210) and the three-category `position`
+(0.288), with Centers splitting into low-post centers and mobile stretch bigs and two roles
+combining positions the labels keep separate. The notebook ends with a discussion that answers
+the research question and a limitations section, and stages 1-14 (including a final editorial
+review) are complete. What remains is rendering the notebook as HTML (stage 15) and recording a
+20-minute Hebrew walkthrough of the notebook (stage 16).
 
 Rate features are expressed per 40 minutes, the length of a EuroLeague regulation game. The
 final clustering feature set has 17 features: two- and three-point attempts per 40, the three

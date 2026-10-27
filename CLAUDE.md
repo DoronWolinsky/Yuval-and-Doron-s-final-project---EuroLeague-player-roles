@@ -214,9 +214,33 @@ not mark Stage 14, or any of its items, complete early.
 
 ## Current Work State
 
-**Completed:** CheckList stages 1-14. **Next:** Stage 15, rendering the notebook as HTML (split
-out of the old Stage 14 into its own stage this round; the Hebrew presentation is now Stage 16).
-Not started.
+**Completed:** CheckList stages 1-14. **Next:** Stage 15, rendering the notebook as HTML. Not
+started. Stage 16 is now a ~20-minute recorded Hebrew walkthrough of the notebook by Doron and
+Yuval (not a 40-minute slide presentation).
+
+**Pre-render editorial pass (after Stage 14):** markdown-only edits to 15 cells (no code, outputs,
+figures, or numbers changed; no Run All needed). Shortened the eligibility-sample decision, the
+missing-value summary (now four bullets), the free-throw/fouls feature-selection bullets, the
+Discussion, and Limitations (now one list of untested choices, incl. regularization and k = 6);
+removed all "(Stage N)" references from the prose; softened overclaims (Abalde role-change
+explanation, "far more than anyone else" for component 0, the stricter-sample "edges of each
+group" claim, the coarser-label ARI explanation, missing-label effect). README status updated.
+Then added one code cell after the GMM profile heatmap (`raw_cluster_profile`: unstandardized
+`modeling_features` means by `gmm_labels`, 2 decimals); all raw-unit values quoted in the role
+descriptions match it. Its output came from a full execution of a scratch copy; only that cell's
+output and the execution counts were taken over.
+
+**Representative players (replaces the Stage 11 lists):** the irreproducible highest-posterior
+"stars" list (posterior ties at 1.0) and the Euclidean "textbook" list were replaced by one table,
+`representative_table`: 3 observations per component with the smallest Mahalanobis distance to
+their own component mean (`mahalanobis_to_own_component()`, using
+`gmm_selected.precisions_cholesky_` on `X_scaled`), one per `player_id`, ties broken by
+`player_id`/season/team, shown as `Player (Season, Team)`. Two fresh full executions gave
+identical tables. The Wembanyama paragraph and all star/textbook names were removed from the
+prose. Notebook state `representative_players()`, `stars`, `textbook`, `dist_to_own_mean` no
+longer exist; `representatives` and `representative_table` replace them. The default-`reg_covar`
+table's ~1e-16 smallest-variance values change sign/digits on a rerun (harmless; the prose says
+"zero up to rounding error").
 
 **Stage 14 decision (final):** one editorial/consistency read of the full notebook (prose only,
 no new code/data/figures, no Run All needed). Cut one redundant transition paragraph in the
@@ -282,9 +306,8 @@ low turnovers/fouls-drawn rather than one strong signal), component 3 **perimete
 (n = 1,162; median shot distance z = +1.23, three-point attempts z = +1.01, two-point attempts
 z = -0.93), component 4 **mobile stretch bigs** (n = 620; height/rebounds/blocks elevated like
 component 1 but far less extreme shot-location restriction, non-trivial three-point rate 2.66
-per 40 vs component 1's 0.12). Victor Wembanyama's E2021 ASVEL season is component 4's top
-"star" (posterior 1.0) but not a "textbook" example -- flagged in the notebook as an extreme,
-confidently-assigned case rather than a typical one. Alberto Abalde's career (component 0 at
+per 40 vs component 1's 0.12). (The player lists were later replaced by a Mahalanobis-based
+table -- see "Representative players" above.) Alberto Abalde's career (component 0 at
 Joventut in E2017, then component 3 at Real Madrid from E2020 on with one component-2 season)
 is used as the one multi-season role-change illustration. No cluster was revised. Notebook state
 added: `cluster_profile`, `ROLE_NAMES`, `role_summary`, `representative_players()`,

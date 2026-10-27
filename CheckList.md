@@ -252,8 +252,9 @@ Role names are not chosen in advance; they must follow from the final cluster pr
 ### Result of this stage
 
 Each component's standardized profile (heatmap, `outputs/figures/gmm_cluster_profiles.png`) and
-two representative-player lists per component (highest posterior probability, and closest to the
-fitted component mean, each deduplicated by player) gave five distinct, basketball-coherent
+three representative player-season-team observations per component (smallest Mahalanobis
+distance to the component mean under its fitted covariance, one per player, deterministic
+tie-break) gave five distinct, basketball-coherent
 roles: **playmaking guards** (component 0, n = 1,054; high assists and turnovers, short,
 low rebounding/blocks), **low-post centers** (component 1, n = 756; near-zero three-point rate,
 minimal shot-location spread, tallest, most rebounds/blocks), **low-usage forwards** (component
@@ -360,16 +361,16 @@ consistently in first-person plural throughout.
 
 ---
 
-## 16. Prepare the Hebrew Presentation
+## 16. Record the Hebrew Notebook Walkthrough
 
-- [ ] Build the presentation only after the notebook results are final, from its strongest results.
-- [ ] Present the research question, data, key preparation decisions, and how the sample and features were chosen.
-- [ ] Explain the PCA view, the K-Means/GMM comparison, and how the number of clusters was chosen.
+The presentation is a recorded walkthrough of the final notebook in Hebrew by Doron and Yuval, about 20 minutes long, not a separate slide deck.
+
+- [ ] Record only after the notebook and its HTML rendering are final, walking through the notebook itself.
+- [ ] Cover the research question, data, key preparation decisions, and how the sample and features were chosen.
+- [ ] Explain the PCA view, the K-Means/GMM comparison, the covariance-collapse finding, and how the number of clusters was chosen.
 - [ ] Present the discovered roles with representative players and the comparison with traditional positions.
-- [ ] Include a methodological change or unexpected result only where it helps tell the research story.
 - [ ] Present the conclusions and limitations.
-- [ ] Divide the presentation between Doron and Yuval, make sure both can explain every major decision, and rehearse a talk of about 40 minutes.
-- [ ] Record the presentation if required.
+- [ ] Divide the walkthrough between Doron and Yuval, make sure both can explain every major decision, and keep the recording to about 20 minutes.
 
 ---
 
@@ -380,4 +381,4 @@ consistently in first-person plural throughout.
 - [ ] The final model and number of clusters are justified.
 - [ ] The discovered roles are interpretable and supported by data and player examples.
 - [ ] The comparison with traditional positions answers the research question.
-- [ ] The presentation accurately reflects the final notebook.
+- [ ] The recorded walkthrough accurately reflects the final notebook.
