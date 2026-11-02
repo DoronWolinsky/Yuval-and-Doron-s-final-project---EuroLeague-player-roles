@@ -218,6 +218,15 @@ not mark Stage 14, or any of its items, complete early.
 walkthrough of the notebook by Doron and Yuval (not a slide presentation). Not started; it is the
 only remaining stage.
 
+**Post-Stage-15 edit:** removed the `minutes_per_game` vs `minutes / games_played` check
+(0.01 tolerance; all differences were <= 0.05, i.e. rounding of `minutes` to one decimal, so the
+"462 mismatches" claim was misleading). Rewrote its follow-up paragraph, the opening of the per-40
+paragraph, and the per-40 dictionary reason string: rates are computed from totals because
+per-game values mix playing time with playing style. No numbers or outputs changed besides the
+deleted cell; execution counts renumbered; HTML re-rendered. Notebook now 190 cells (includes the
+user's own hand edits to the opening sections). The audit-era `audit_issues.csv` /
+`range_check_summary_euroleague_players.csv` still list the 0.01 check and are left as is.
+
 **Stage 15 decision (final):** rendered with `python -m nbconvert --to html` from the saved
 outputs (no re-execution) to `outputs/EuroLeague_Player_Roles_Project.html` (~2.3 MB; 12 base64
 figures; MathJax/require.js load from CDN but the notebook contains no math). Verified heading
