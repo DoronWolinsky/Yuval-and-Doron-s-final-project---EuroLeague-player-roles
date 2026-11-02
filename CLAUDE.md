@@ -223,8 +223,10 @@ only remaining stage.
 "462 mismatches" claim was misleading). Rewrote its follow-up paragraph, the opening of the per-40
 paragraph, and the per-40 dictionary reason string: rates are computed from totals because
 per-game values mix playing time with playing style. No numbers or outputs changed besides the
-deleted cell; execution counts renumbered; HTML re-rendered. Notebook now 190 cells (includes the
-user's own hand edits to the opening sections). The audit-era `audit_issues.csv` /
+deleted cell; execution counts renumbered; HTML re-rendered. Includes the user's own hand edits to the
+opening sections. Also removed the redundant non-positive minutes/games check (cells `666ce7b0`,
+`7ff87a3a`); the 303 zero-minute count stays backed by the per-40 cell's own output. Notebook now
+188 cells. The audit-era `audit_issues.csv` /
 `range_check_summary_euroleague_players.csv` still list the 0.01 check and are left as is.
 
 **Stage 15 decision (final):** rendered with `python -m nbconvert --to html` from the saved
