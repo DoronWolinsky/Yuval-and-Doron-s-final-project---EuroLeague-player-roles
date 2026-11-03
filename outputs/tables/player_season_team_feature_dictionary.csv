@@ -4,10 +4,10 @@ season_code,identifier,euroleague_players.csv,season_code identifier.,as provide
 player_id,identifier,euroleague_players.csv,player_id identifier.,as provided,not applicable (identifier),exclude,exclude,"Identify the observation, not behavior."
 player,identifier,euroleague_players.csv,player identifier.,as provided,not applicable (identifier),exclude,exclude,"Identify the observation, not behavior."
 team_id,identifier,euroleague_players.csv,team_id identifier.,as provided,not applicable (identifier),exclude,exclude,"Identify the observation, not behavior."
-height_cm,descriptive,players_bio.csv,Player height in centimeters.,as provided,player's profile page could not be fully scraped,clustering feature (physical profile),selected,Verified physical measurement that shapes playing style.
-position,descriptive,players_bio.csv,Traditional position (Guard/Forward/Center).,as provided,player's profile page could not be fully scraped,comparison only,comparison_only,"Used only to interpret clusters afterwards, never to define them."
-nationality,descriptive,players_bio.csv,Player nationality.,as provided,profile page could not be fully scraped,exclude,exclude,"Identify the observation, not behavior."
-born,descriptive,players_bio.csv,Date of birth.,as provided,profile page could not be fully scraped,exclude,exclude,"Identify the observation, not behavior."
+height_cm,descriptive,players_bio.csv,Player height in centimeters.,as provided,not recorded in players_bio.csv,clustering feature (physical profile),selected,Verified physical measurement that shapes playing style.
+position,descriptive,players_bio.csv,Traditional position (Guard/Forward/Center).,as provided,not recorded in players_bio.csv,comparison only,comparison_only,"Used only to interpret clusters afterwards, never to define them."
+nationality,descriptive,players_bio.csv,Player nationality.,as provided,not recorded in players_bio.csv,exclude,exclude,"Identify the observation, not behavior."
+born,descriptive,players_bio.csv,Date of birth.,as provided,not recorded in players_bio.csv,exclude,exclude,"Identify the observation, not behavior."
 games_played,coverage,euroleague_players.csv,Season total for games played.,as provided,not applicable (always present),exclude,exclude,"Describe observation volume or data quality, not role."
 games_started,coverage,euroleague_players.csv,Season total for games started.,as provided,not applicable (always present),exclude,exclude,"Describe observation volume or data quality, not role."
 minutes,coverage,euroleague_players.csv,Season total for minutes.,as provided,not applicable (always present),exclude,exclude,"Describe observation volume or data quality, not role."

@@ -8189,7 +8189,7 @@ players_bio.csv:        2,363 rows, 14 columns
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Data-Quality-Checks">Data Quality Checks<a class="anchor-link" href="#Data-Quality-Checks">¶</a></h2><p>We examined identifier uniqueness, seasonal coverage, missing values, and inconsistencies in the recorded data.</p>
+<h2 id="Data-Quality-Checks">Data Quality Checks<a class="anchor-link" href="#Data-Quality-Checks">¶</a></h2><p>We examined identifier uniqueness, seasonal coverage, and whether the recorded event types are consistent across seasons.</p>
 </div>
 </div>
 </div>
@@ -8312,80 +8312,12 @@ Same set of seasons in both files: True
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8761555b">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">missing_height</span> <span class="o">=</span> <span class="n">bio_df</span><span class="p">[</span><span class="s2">"height_cm"</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">missing_position</span> <span class="o">=</span> <span class="n">bio_df</span><span class="p">[</span><span class="s2">"position"</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Missing height: </span><span class="si">{</span><span class="n">missing_height</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">bio_df</span><span class="p">)</span><span class="si">}</span><span class="s2"> players"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Missing position: </span><span class="si">{</span><span class="n">missing_position</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">bio_df</span><span class="p">)</span><span class="si">}</span><span class="s2"> players"</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">bio_df</span><span class="p">[</span><span class="s2">"height_cm"</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#4C72B0"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Player Height Distribution"</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Height (cm)"</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Number of players"</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.85"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"top"</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">]:</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">spine</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"height_distribution.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Missing height: 27 of 2363 players
-Missing position: 54 of 2363 players
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
-<img alt="No description has been provided for this image" class="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqwAAAGyCAYAAAAh9pZGAAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjExLjEsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcvctoD+AAAAAlwSFlzAAAPYQAAD2EBqD+naQAARg1JREFUeJzt3Qd8U9X///FP92Ije4MU2UNQVEBBQBEUcIAICIoDEMWJigKKA/dC0a8CKgp+RVEQVNbXxQ8HCCqCskFG2ZRRutv8H5+DN/+mg6Rpmtymr+fj0UfIPcnNaU5p3zn3jBCHw+EQAAAAwKZCA10BAAAA4EwIrAAAALA1AisAAABsjcAKAAAAWyOwAgAAwNYIrAAAALA1AisAAABsjcAKAAAAWyOwAgAAwNYIrAB86vLLL5cePXo4v3r27Cl9+vSRESNGyOzZsyUrK8s8bvPmzab8119/tX0L9O/fX5544okCy/X7eOmllzw+386dO81zfvjhh0I/58cffzzj477//nt57733Ct1Ol112mVx99dXy4IMP5mkTb+pbmLrkPv+2bds8+l69qYO33wuAwAoP8OsDCDK7du2SSy+9VO6//37nsbS0NPn555/l6aeflvXr18uUKVPMMX1scnKy2N3u3bulTp06BZbr93HkyBGPz1ezZk2ZPn26VKlSxePnpKene/R+jR8/3oTPwrZTZmamJCYmyldffSVDhw41x/VDhrf1LUxdcp/f0+/Vmzp4+70ACCwCKwCfi4uLk3r16rkci4+Pl+3bt8t///tfufPOO0v1ux4ZGZnn/bFLO7Vv314qVqwozz33nPl369ati72+/nw/7PLeAygchgQA8JvmzZuLw+GQf/75J9/y1NRU0/ulPXxXXHGFDBw4UF5//XXTG6uGDx8u9913X57nvfrqqzJ48GDnfX2NuXPnyrBhw6R3795y2223ybfffussty45z58/35xTL4V//fXXPvs+3b1+fpel9XufOnWqDBgwwHzfzz77rKmfPs4aRqEOHz4sTz75pHmc1vu1115zvj/6WO0l/eKLL8y/jx496lX9b7nlFomNjZV33323wPrqsIG77rpLrrzySlOPiRMnmg8klvzqUtD7XtBlev1e9bw6JEN/JubNm+csK2hIyZtvvmkeX1Ad8nstfX+1vfT71uErt956qyxdujRPe61Zs8a89337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Lm3atDGX+/X2qaeekkWLFskzzzwj1atXl9tvv92EVgAAACAggXXLli0yatQos4RVhw4dZOPGjdK4cWMzVGDq1Kkya9asIlcMAAAAKNLGAWXLljW3DRs2lHXr1rlsJKDjWlNTU3mHAQAAEJjA2qhRI/npp5+cgVU3B7DGs6anp5vAevLkyaLXDgAAAKWeV5OuBg0aJDfffLP8/vvv8uijj5qNA3Spq759+8ry5cslNjaWjQIAAAAQuB7W888/X1555RXZsWOHJCcnm0lXf/75p4wfP15+/PFHmTRpkm9qBwAAgFLPqx5W1aNHD/Ol6tatK99++61s375dGjRoIBUrViz1bywAAAACHFhz02EB7dq189XpAAAAgMIF1gkTJsjBgwc9fbg88cQTHm3dCgAAAPgksB4/flwSExM9fbhkZ2d7/FgAAACgyIH1tdde8/ShAAAAQODHsGqP63vvvScrVqyQI0eOSPny5c2uVzfddJPUrFnTdzUEAABAqebVslY6llW3YX3nnXckJiZG2rZta1YG+OKLL6RPnz6yfv1639cUAAAApZJXPazTpk0zPapz5syR6tWrO4/rDlc62WrixIny2Wef+bKeAAAAKKW86mH97bffZNy4cS5hVcXFxcnkyZNl27ZthZqgBQAAAPg0sEZGRkpWVla+ZWFhYeYLAAAACFhg1XGqU6ZMkT179rgcz8zMlOeff945ptUbixcvlp07d7occzgc8ssvv5gxstp7m5u7cgAAAJSyMayHDx+WhIQEufzyy83uVroqQFJSkplstW/fPmnSpIkMHz7c+fhnn31WqlWr5va8S5YskbFjx5owXL9+fXMsOTlZRowYIUePHpWzzz5bJk2aJLfccovccccdHpUDAACgFAZWDastWrRw9m7u3bvX/LtOnTrmSxU0ZKAgBw4cMGEzJCTE5fhbb71lQumCBQskOjpa1qxZI0OGDJFu3bpJ06ZN3ZYDAACgFAbWF1980aeV0NA7fvx4ufLKK+XTTz91KVu4cKEMGzbMhFF17rnnSuvWrWXRokUmkLorBwAAQCkcw+prH3zwgelhvf/++/NsTqC9uY0bN3Y53rBhQ/n777/dlgMAAKAU73TlK1u3bjXbvmpojYqKcinTQKrKlSvnclzvb9y40W25two7nMFb2dnZzlt/vSb8h/YNbrRv8KON7UNXH9KrsfrlLYecfq7zPNa5CnneuJhwyc52SGio6xBGb+m5HI7TeaA0CvNwZamABtb09HTTq3r77bfne/leVx1QoaGuHcE6zlV/uNyVe0PP6c+VBsqWLWt6iRGcaN/gRvsGP9o48LQzq169epKWniYpqSlenyc9I/3f2wznecLCwyQt/fRxT4WFljNh9cOv1sv+I0lSFNUqxcnQ3i3ln3/2SFpampRG8fHx9g+sM2fONGFNe0Q/+eQTZ2BcvXq1lClTxiyPpXRSVU66o5aW6y+SM5V7Izw8XBo1aiT+kJKSIps2bTKrKugWtwgutG9wo32DH21sL1GRURITfbqjyhuREZH/3kZITHSMZGdnSXJyisTGxkhoaFihz5N4MkOOnPC+Pioq8vTza9euXaTzlAYeB9aVK1eayUzeBsH86FJXPXr0kHXr1rlcgtm9e7e5pN+zZ08TZnft2iUdOnRwPkbLdQmrKlWqnLHcW/7a+MDqGdZbNlsIPrRvcKN9gx9tbC969TT3SkKFer6EuJ7HOlchz5vnPEVgPZ8M4MNJV88884zs37/f/HvkyJFmvdWi6t+/vzz11FMuX7qL1tVXXy133XWXecwll1xiNhOwaB3Wrl0rXbt29agcAAAApaSHVdP/Dz/8YC7Db9682czq18vnBalUqZJPPjFocL322mtl9OjR0qZNG7PsVefOnaVLly4elQMAAKCUBNbu3bubHav0Sw0cOPCMj1+6dKkZJO1Nr6u1y5XSjQh0UwANogcPHjTBVNdr9bQcAAAApSSw6lanrVq1Mj2rL730ktl6VXtRC1K5cmWvKjRx4sQ8x6pXry5jxowp8DnuygEAAFAKAqsODLYus+sYUe0JrVq1anHWDQAAAPBuWaspU6ZIYmKiPP3002Zc69GjR83YVl1F4JZbbpFmzZrx1gIAACBwW7MeO3ZMBgwYIB999JHUqFFDunXrZpaR+umnn8xx7YEFAAAAAtbDOn36dImIiJAlS5ZIzZo1ncd1Af9JkyaZHlhrIwAAAADA7z2s2pM6btw4l7CqYmNjZfLkyfL333/LyZMni1QxAAAAwOvAqrtRFbRCgG4xqsFVt0cFAAAAAhJY4+PjZd68efmWLVu2zNzqtqkAAABAQMawjhgxQvr162fWZO3du7dZ3ur48eOyatUqmTt3rtm6lX1xAQAAELDAqj2sr7zyihmv+u233zqPR0ZGmg0FNLACAAAAAQusqmfPnmY5K51gdeTIEYmLi5OmTZtKmTJlfFIxAAAAoEiB1Tw5PFxatmzJOwkAAAB7TboCAAAA/IXACgAAAFsjsAIAAMDWCKwAAAAIvsB67733yvz5831fGwAAAMAXgXXr1q1y9tlne/NUAAAAoPgDa5s2bczWrOnp6d48HQAAACjedVjLli0rM2fOlAULFkjdunWlcuXKeR4zZcoUs2UrAAAA4PfAmpCQYHpZLcnJyXke43A4ilQxAAAAwOvA+vLLL/PuAQAAwN7LWqWmpsr06dNl6NChctlll8nevXvl6aeflnXr1vm2hgAAACjVvAqsSUlJMmjQIHnppZfk5MmTcuDAAcnMzDRhdfDgwbJy5Urf1xQAAAClkleBVXtWs7KyZMmSJWY91ipVqpjjs2fPliFDhpieVgAAACBggXXFihXy8MMPS506dVyOh4WFyX333Sf79+83Pa8AAABAQAJrWlqaREdH51umobWglQMAAAAAvwTWpk2byowZM8ywgNx0iEBUVBRrsAIAACBwy1rdcsstMmDAAOnbt69cfvnlcurUKVm6dKls377dBNYHH3xQQkJCfFNDAAAAlGpe9bA2adLE9LCqqVOnypEjR+SFF14wofWee+6R4cOH+7qeAAAAKKW86mFV7du3l0WLFsmePXvk4MGDEhsbKw0bNpTIyEjf1hAAAAClmteBNSUlRT744AP55ptv5OjRo1KuXDk599xzTe9qjRo1fFtLAAAAlFpeDQnQHtXevXvLa6+9ZsaqnnPOORITEyPz5s2Tq666Sv766y/f1xQAAAClklc9rNOmTZMKFSrInDlzpHr16i47YE2aNEnGjx9vJl8BAAAAAelhXbNmjYwbN84lrKoyZcqYXa50tYDDhw97fD5dHuu3335zDi/Iz59//inLly+XhIQEr8oBAABQinpYtXfV4XDkf8LwcLOpQGioZ1lYA6ouk5WammrGvupOWRMmTJCrr77auUnBqFGjTAhu0KCBCbZjx46Vm266yaNyAAAAlMLAquNXn332WfnPf/4j1apVcx7XEPvqq6+aZa8qVark0bmmTJliHvv222+bkKtDCR599FHp1KmT2XxAjx84cMCsSKA9uD/++KOMGDHClDdu3NhtOQAA8L/sbIeEhrImO/wcWHUzAA2GVjDdtGmTdO/eXdq1a2dCq27Fqpfl9+/fb8Kirs1auXJlt+fVXbFGjhzp7JG99NJLzWvpufTfGmAHDx5swqi68MILpUWLFrJw4UK599573ZYDAAD/07D68bLNciixaFu1x9etKD071vNZvRDkgTU9Pd1cfre0adPGeXz37t3m3zVr1jRfGl4zMzM9Ou+TTz7pcv/vv/82t7Vq1ZITJ06YdV5z95SeffbZsmHDBrflAAAgcDSsJhw+VaRzVKkQ47P6oBQE1pdffrlYK7Jjxw5ZtmyZzJo1S2699VazVNauXbtMWfny5V0eq2u+ag/vsWPHzljuLZ0E5g/Z2dnOW3+9JvyH9g1utG/wo42LJiwszFyRLWjOi6cccvr5RT1XnvNY5yrkeX1VH+scqjRngLCwsOLdOEDfZF2PNTExMd8Ga9SoUaF2vdq2bZs5V8WKFU0vq64yYPXS5v5mdPiAvqa7cm/oObUu/lK2bFlWNghitG9wo32DH23sHR3uV69ePUlLT5OU1JQitUF6Rvq/txlFOld+5wkLD5O09PSA1EelpZ+OYXq1OOdV7NIkPj6++ALrzp075Y477pCtW7cW+JilS5eaH1ZP6XhY/brnnnvMCgE6qeuBBx5w7qqVk97XMavWuNWCyr2hqxxo2PYHraf2BOskNd14AcGF9g1utG/wo42LLioySmKiPRsiWJDIiNOdX5ERERITHeOz82RnZ0lycorExsZIaGiY3+tjvT+qdu3aRTpPaeBVYLWGB2iozH053qIz/N3Rsa7ffvutXHTRRWapLKW9suedd56sXr3anEODp37yaN++vfN5OmZWl7ByV17c3dNFZU0001t/vSb8h/YNbrRv8KONi053w9SvIp1DQnxyrjznsc5VyPP6qj7WORQZoJgCq655+thjj0mHDh2kqJcMJk+ebNZM1ZUCrHEca9euNROnVJcuXUxvbb9+/cx9HSqgGxfoygCelAMAAKAUBlbd4UoX+i8q/UTxyCOPyMSJE82lF10ZQNdTPX78uHNJqjvvvFOuu+46s6GALqH10Ucfmd7Url27elQOAACAUrg168033yzPPfec6QnVZa2K4qqrrpLZs2dLRkaGrFu3zoxj/fLLL6VOnTqmvGHDhvL555+btV7Xr18vgwYNkmnTpjm70d2VAwAAoBT2sNavX19OnTplwmFBYy8WL14sdevW9eh8zZs3N18F0fOMGzfO63IAAACUssD6wgsvSFJSkgwYMKDALVh1LVQAAAAgIIFVl2J6/vnn5eKLLy5yBQAAAACfj2HVhZStZagAAAAA2wXW3r17y+uvv27GsQIAAAC2GxJw9OhRs7B/p06dzHqpsbGxeWbl66YCOnMfAAAA8Htg/eeff6Rly5bO+9nZ2UWqBAAAAODTwPriiy968zQAAADAP4F1+fLlbsev6gYAcXFx3pweAAAAKFpg1fGpu3btKrBcNxJo27YtgRUAAACBCazvv/++2Uo1J92idceOHTJ16lSzdaunu1wBAAAAPg+sNWvWzPd448aNzRar119/vfTt21dCQ71aNQsAAABw8nmirFWrlrk9dOiQr08NAACAUsjngXXdunVmnVYmXAEAACBgQwImTJggBw8edDnmcDgkKSnJBNZu3bpJmTJlfFJBAAAAlG5eBdbjx49LYmKiyzHd6So6OlrGjBkjQ4YM8VX9AAAAUMp5FVhfe+0139cEAAAAyAfT+AEAABAcPaw9evQ442YBuS1dulTq1avnbb0AAACAwgVWXVs197jV/Pzyyy+yc+dOiY2N9fTUAAAAQNED64gRI85Yvm/fPrNl69lnny1vvfWWVK5c2dNTAwAAAL6ddJV7S9b33ntPfvjhB7n//vulTZs2RT0lAAAA4JtJVytWrJAbb7xRypYtK7NmzSKsAgAAwB49rHv37jWX/ytUqCBvvvmmVKxY0fc1AwAAAAobWPXy//Tp0+Wnn36ScePGScuWLXkTAQAAYI8hAd9//70MHTpUqlSpYi7/E1YBAABgqx7WJ598UhISEuSvv/6SyZMnu338V199JXXq1Clq/QAAAFDKeRxY+/btK0ePHvX4xHFxcd7WCQAAACh8YB0zZoynDwUAAADssawVAAAAUNwIrAAAALA1AisAAABsjcAKAAAAWyOwAgAAwNZsEVgdDods27ZNfv31Vzl06FC+j9m5c6esWrVKEhMTvSoHAABAKdiatTjs2bNH7rrrLjl8+LDUqlVLNm7cKP369ZOJEydKSEiIZGRkyP333y8///yz1K5dW7Zv3y7jx4+X6667zjzfXTkAAABKtoAH1kcffVRq1KghH3/8sURERJie0muuuUaaNWtmQue7775rdtdavHixVKxYUZYvXy5jx46VDh06SP369d2WAwAAoGQL6JCAzMxMiY6OlptuusmEVaUhs1OnTrJixQpzf968eSa4ahhV3bt3l/j4eFmwYIFH5QAAACjZAtrDGh4eLm+99Vae4wcPHjTDA5KSkkyPa5MmTVzK9f769evdlgMAAKDkC/iQgNxWr14ta9euldGjRzsnUFm9p5by5cvLli1b3JZ7KysrS/whOzvbeeuv14T/0L7BjfYNfrRx0YSFhZlJ1fpVFA45/fyinivPeaxzFfK8vqqPdQ5VmjNAWFhYyQusCQkJcu+998rgwYOlc+fOZuWA/L4Zva+/SNLT089Y7u0wBet1/aFs2bLm+0Zwon2DG+0b/Ghj70RFRUm9evUkLT1NUlJTitQG6Rmn/9anZ2QU6Vz5nScsPEzS/s0S/q6PSksPd05AT0tLk9IoPj6+ZAXWffv2ybBhw+TCCy80E7FUmTJlzG1KiusPhN6Pi4tzW+7tMIVGjRqJP2g9N23aZIYwxMTE+OU14T+0b3CjfYMfbVx0UZFREhOdWaRzREZE/nsbITHRMT47T3Z2liQnp0hsbIyEhob5vT7W+6N0lSOUgMC6e/duGT58uHTt2lUeeeQRs5yVqlq1qsTGxubpgdy7d6+ZnOWuvLi7p4sqNDTUeeuv14T/0L7BjfYNfrRx0enfc+tvutfnkBCfnCvPeaxzFfK8vqqPdQ5FBigBGwfouqk6BKB///6mZzVn4+u/L7roIvnuu++cx44fP242GNCVBNyVAwAAoOQLD/TllltvvdVMmmrVqpX88MMPzrIKFSqYY2PGjJGBAwfK448/Lm3btpVZs2ZJ06ZNpWfPnuZx7soBAABQsgU0sO7YscN56f799993KdNxnRpYzznnHLOpwOzZs2Xp0qVmndWhQ4c6L9W4KwcAAEDJFtDAqrtZzZgxw+3jNJQ+8cQTXpcDAACg5KIbEgAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZmq8Canp4umzdvzrfsyJEjsnHjRklJSfGqHAAAACWTrQLr888/Lw899JDLsezsbJkwYYJ0795d7rrrLuncubN89dVXHpcDAACgZAsXG8jKypIXXnhBZs2aJc2bN3cp02P/93//J4sXL5Zq1arJggULZNy4cdKqVSupXbu223IAAACUbAHvYT169Kj069fP9Ip26tQpT/ncuXPluuuuM2FU9e3bVxo0aCDz58/3qBwAAAAlW8ADq4457dGjh3z55ZfStGlTl7KkpCTZvn17nl5Xfdz69evdlgMAAKDkC/iQgFq1apmxp/lJTEwUh8MhFStWdDmu9zWouisvyhAFf9Dxt9atv14T/kP7BjfaN/jRxkUTFhZm/kbrV1E45PTzi3quPOexzlXI8/qqPtY5VGnOAGFhYSUjsLpbNSC/b0bvZ2Zmui33hj5v27Zt4i9ly5aVhIQEv70e/Iv2DW60b/Cjjb0TFRUl9erVk7T0NElJLdrqPekZp//Wp2dkFOlc+Z0nLDxM0v7NEv6uj0pLPx3D9uzZI2lpaVIaxcfHl/zAGhcXZ25TU1Ndjut9LXNX7o3w8HBp1KiR+Gs4xKZNm6RJkyYSExPjl9eE/9C+wY32DX60cdFFRUZJTLR3HUiWyIjIf28jJCY6xmfnyc7OkuTkFImNjZHQ0DC/18d6fxSTxEt4YK1atapER0fLvn37XI5rj2TdunXdlhd393RRhYaGOm/99ZrwH9o3uNG+wY82LrqQkBDzVaRzSIhPzpXnPNa5CnleX9XHOociA5SASVfufll07NjRLFtlOXXqlKxZs0YuvPBCt+UAAAAo+Wzdw6pGjx4tgwcPNstWtW3bVmbMmCF16tSRXr16eVQOAACAks1WPaw1atQw4zlzat26tdkcYOfOnTJz5kxp2bKludWxpp6UAwAAz2VnF23mO1AcbJXqtKc0P+3atTNfBXFXDgAAPBMaGiIfL9sshxKTvX7L4utWlJ4d6/GWIzgDKwAACDwNqwmHT3n9/CoVWPkGQTwkAAAAAMiNwAoAAABbI7ACAADA1gisAAAAsDUCKwAAAGyNwAoAAABbI7ACAAAEQJnYCJ9t1JAd5Bs+sA4rAABAAMREhvtko4YqFWNlYI94CWYEVgAAgBK8UUNpwJAAAAAA2BqBFQAAALZGYA2wiIgICQkJCXQ1AAAAbIsxrAGkQbVZ8+YSHhbmk9mBOnAbAAAg2BBYA90AYWHy0dKNcuRYqtfnKA2zAwEAQOlFYLWBg4nJcuBISqCrAQAAYEuMYQUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtEVgBAABgawRWAAAA2BqBFQAAALZGYAUAAICtBU1gPXXqlOzatUsyMjICXRUAAAD4UIkPrA6HQ6ZMmSIXXHCB3HDDDdKlSxf55ptvAl0tAAD8KjvbwTuOoBUe6AoU1UcffSRffvmlfPXVV1K7dm1z/5577pElS5ZI9erVA109AAD8IjQ0RD5etlkOJSZ7fY74uhWlZ8d6Pq0X4AtBEVivv/56E1bVoEGD5IMPPpD58+fLyJEjA109AAD8RsNqwuFTXj+/SoUYn9YH8JUSPSQgOTlZtm7dKs2bN3c5rvd///33gNULAADAX8rERvhsSIhdh5aEOHQQaAm1Z88eufTSS+WTTz6RVq1aOY/rmNY1a9bIp59+WqjzrV271oyJjYyMFH/Q1woJCZGklIwi/YCEhYZIXEyET+sG37RvZmamhIeHm3ZGcKF9g19JbONTKRmSVYS/JxHhoRITFW6b8xR3nbIdDgktZNva+XtLTcuUrCLEurCQEImO8u/Fd81cTZo0Ce4hAWlpaeZWf5nkFBYWZn7JFJa/fyFZr1eGsBmUtH0jIvggEaxo3+BXEtvYV50XdjuPL89lt/P48lzRfg6b/lSiv7PY2Fhzm5qamifIxsXFFfp8bdu29VndAAAA4Bslegxr1apVJSoqSvbv3+9yfN++fc5JWAAAACjZSnRg1Uv/HTp0kJ9++sl5THtbdfyqrssKAACAkq9EDwlQo0aNkuHDh5seVb2k/84775ie1yuuuCLQVQMAAEBpXyXA8uOPP8q7774riYmJ0qJFCxkzZoycddZZga4WAAAAfCAoAisAAACCV4kewwoAAIDgR2AFAACArRFYAQAAYGsEVgAAANgagRUAAAC2RmAFAACArZX4jQNKqhMnTpgdutLT0+XCCy+UypUrB7pK8FJ2drbMnTtXcq8Qp7ut1a9f3/w7IyPDrBesawW3bt1aGjRowPtdAqSlpclXX30l/fv3z1OmO+rt2rVLGjZsaNq0sOWwhy+//FIuvvhiKVOmjPPY6tWrZevWrS6P07W9e/To4byv5evXrzfHO3bsKOHh/Dm1kx07dsjff/8tkZGR0qZNmzxrsx84cEB+/fVXiYiIkIsuukji4uIKVQ7/Yx3WAND/RLo7V9OmTc32sr/99ptMnTrV/KdAyfPPP/9Iz5495dprrzXtadH7rVq1kqNHj8qNN95oyurWrSsrVqyQe+65R4YNGxbQesO9SZMmyeLFi+WXX35xHsvMzJS77rpLNm7caIKofvDs2rWrPP300xISEuK2HPbx+eefy0MPPSRLly6VevXqOY+PGDFCTp48Keecc47zWJ06deTWW281/3799ddl1qxZprPhr7/+knLlysl7773nEnoROM8++6x8/PHH0qVLF9OO+jd2ypQpctlll5nyZcuWybhx40z7aTDVr/fff998uPSkHAGiGwfAv/r27et46qmnnPenTp3q6NKliyM9PZ2mKIGWLVvm6NChQ4HlDz/8sGPIkCGOjIwMc/+7775zNGvWzLFr1y4/1hKFkZSU5Bg3bpwjPj7ecd5557mUzZ4929GpUydHYmKiuf/PP/842rRp41i6dKlH5Qi8zMxMx9tvv+1o2rSpaeOdO3e6lHfu3NnxxRdf5PvcDRs2mOfprfWz0qdPH8dzzz3nl7rjzFatWmV+v27atMl5bObMmY527do5Tp48ab7at2/vmDt3rinLzs523H333Y4bb7zR3HdXjsBhDKuf6WUk7WG9/vrrnce0p+3gwYPm8gNKns2bN0ujRo3yLcvKypKvv/5arrvuOuclQ738WLt2bdNzB/vR4RvaE6M9Z0OHDs33EnKvXr2kQoUK5r72mnfr1k0WLVrkUTkCb9SoUWY7b+0Jz2+4lvaonX322fk+V9uxZcuW0qxZM3NfLxUPGDDAtDsCLzU11fSEx8fHO4/p/8ekpCTzu/qHH34w/8f79etnyvSqh14B06sohw4dcluOwCGw+pmGVR0TY41tVGXLlpUqVaqYS4goebZs2WIuFellp/nz58vvv//uLNMxjMnJyXn++GnApb3tS4ds6OXi/D6I6P/hM7Wnu3IEXp8+fcwwAP3wmJuGmtDQUBNEdfzy//73Pzl+/LizXNsx98+F3t+3b58cO3bML/VHwTp37ix33313nvGsqnz58qb99EOk/h3O2X46B2HTpk1uyxE4jBL3M/3Fp78I9RdiThpa+WVXcgPr7t27Ta+MtqOOVdSxq2+88YbzD52OcctJH3f48OEA1Rhnon+orrnmmnzLdHzqqVOn8m1P/f/rrhz2cNVVV53x/7MaOXKk6UnVAKth9NVXX5Xzzz/ftGOTJk1cnmONXdX/71bPOuxBr3LpHJEOHTqY4Kntp8E19/9Pq/3clSNwCKwB+M+TO6yq/I6hZNAZwnfeeadzQP/+/fulb9++8tZbb0mnTp3ybV/au+SuCHGm9nRXDvvTFVtuvvlmGTNmjMTExJietUceeUTuu+8++eabb0wb5548Z7Vv7pVCEHhPPfWUudKlk7BUfu2n9/VL289dOQKHwOpn2vOil4hz014ZZpiWTI8++qjL/erVq0v37t3NMlZXXHGFOZa7zWnvkkmXyImKiiqwPd2Vw/50xQ/9smhQ0bHM8+bNM72t2tuWX/vm7ImDfVYL0Bn/OsO/Vq1a5lhB7adhVMvclSNw+NjvZzrWUQeF6ySrnGs96v2CBvnDvnTJqo8++sisr5qT/nKzlrHSyVb6CT8nvU97l9z/w2dqT3flsLfly5ebdVhzsnrW9P+ytq8OAcrdvjoUgPW07UHb6/HHHzfjj+fMmeMy5ji/9rPu6+PclSNwCKx+1qJFCzPBSgfzW3QWeXR0tBljg5JFLxk+88wz8tlnn7nMMv7+++/N4H/tbdP1dXPOINYxcjp4X9fmRMmjM/6110Y3/VA6+/i7774zxz0ph73plRG9amK1n1q4cKHUrFnThBltR13RRcesW+FIf5/Tvvag7TF+/HjzoUM7E3T93Jx0bVb9P7ly5UqX9tVVBXT1FnflCByGBPiZ9rrpfyZdlHjPnj0mqOoC1BMmTOCSYQkNrNqeOk5KJ2bohxENr3r5STeHUDr2bdCgQTJ27FjzS++///2vWeZKP7yg5NF21T9guhydfujQDyP6h8zaDctdOext9OjR8u2335r2052tNmzYYD6ATJs2zQz50JUFdBe7wYMHm81B1q5daz6E6mRLBJ5e/tffwToOWVeCyEnbTj946IQ6XdJMl6vSya+6usuMGTPMY6pVq3bGcgQOO10FyLp168x/Jh0fpX/U2rVrF6iqwAd0KSOdkKGzSHV9xt69e7ssi6IfTvSXno6F0rbWMa7semR/2pOmlxUffPBBl+Pai65jGhMSEqRx48ZmzUYNM56Wwx50gqQGUV0GqVKlSs7jOoZxwYIFZjmkihUrmmWwcvbU6WoQ+qFE1+rVgHP11Ve7PB+BDazbtm3Lt0w/ZFgrPOhVMO1N17Hl+vs69y5W7srhfwRWAAAA2BpjWAEAAGBrBFYAAADYGoEVAAAAtkZgBQAAgK0RWAEAAGBrBFYAAADYGoEVAAAAtkZgBYAC/P777zJ16lQ5cuRIvuW//PKLKdetHD2l23jOnj27UO+5Pke3mXRnzZo1ZtF7T2RkZMh//vOfQtXdW8uXLzebMACAtwisAHCGwPr6668XGFhXrVplyos79C1evNhs6evuMbqTT2pqqkfn1Hpv3rzZL1tC69a09957rxw9erTYXwtAcAoPdAUAoDS54ooriuW8iYmJ4nA4PHqsbimqW1hqz60/nHPOOdKlSxd56qmn5MUXX/TLawIILgRWAPAx7Xldt26dhIeHy/nnny9NmzZ1lmlI1HCpvaE5L89/8803smvXLtMbefHFF8unn34qjRs3lgsuuMD5uJMnT8oPP/wge/fuNXvbX3rppRIZGWmGJnz33XfmMdOnT5cOHTpI165dC6zftGnTpHPnzlKzZs08ZatXr5Y///xTYmJi5MILL5R69eq51D00NFTOO+88+d///me+j0aNGpnXysrKMsf0e9DndO/eXcLCwpzPHTRokFxzzTUyevRo8xwAKAyGBACAj+j40VtuuUVGjhxpgtv27dtNUHvyySddLt3nHI966NAh6d+/vzz77LNy4MABc+n/yiuvNGNjf/75Z+fj9u/fL1dddZUJrPqcxx9/XK6//npJS0srVB13795txpTqa+SkwxqGDx8uY8aMkX/++Ud+++0383qffPKJS921Xv369TOhdseOHebxd999twwcONAEWg3TDz/8sNx5550u52/evLkJsu+9916h6gsAih5WAHBjzpw5Urly5Xx7UnN66aWXTMjU3lG9DK569+4tN954o7Rq1coEwNyeeeYZExbnz58vFSpUMMcmTZqUZ8zqsWPH5LnnnjO9r+qyyy4zvbTaq6nDDDQcay+rBuZKlSoV+L1o4FXae5rTK6+8In/88YcsXLjQ9PIq/R40GHfr1s35/W/dutWEzpw9v5999pkJraNGjTL3mzVrJhMnTjThWHuCLTos4Ouvvy6wbgBQEHpYAcAHMjMzZd68edKzZ09nWFU6JEADXM6eSosG1SVLlpjeSSusKu21zO2ss85yhlXVunVrCQkJkT179hSqnjpUQYcC5JxspWNfNaj26dPHGVbVtddeK7fffrsJyxYNwznD6tlnn21uL7/88jzHEhISXF47Pj7e9A7v27evUHUGAHpYAcCNG264wYSt3PTyuNXLqiFMhwRoINPjOaWnp8u2bdvyPH/nzp1m/GqDBg1cjlepUkXKlSvncix3r2lERIQZT1rYIQGHDx+WihUruhzTsagaSnOOV1Vah9yX9jU452SNU83ZA20d03GtOVmvq3WoUaNGoeoNoHQjsAKAD2RnZ5vb6OjoPGXa+6iTo/L8Ag4Pd3numWg49QXtlc29mkDuYFlc9bBex1ffC4DSg8AKAD6gPYZRUVGmlzJ3r6SO8dSe1Nzq1q1reiN1klNOul7piRMnCh1EPVG1alXZsmWLyzHtHdUhAjpRLCcN0m+++aZ07NhRzj33XCkqax3WatWqFflcAEoXPuYCgA9oD6pOsNJwqpONLLo4v05Aym/R/NjYWOnbt68Z36pLVlneeeedQoVQ6/U96S3V2fq6GoEOA7Boj6euGqCz/A8ePOg8rktt6fCG/HqNvfH3339L9erV853ABgBnQg8rAPiILuekvZRXX3219OrVy1zyX7RokVxyySVy66235vsc3QFq6NChZqkonY2v41o1UOYcMuCJJk2amIA7efJkadmypdx22235Pk7XR33iiSfM2FtdacBy//33m55Xrbse1/G4uozVAw88YEKuL+hr9ujRo1BBHAAUgRUACtCmTRszY7+gHkFdQF/LrRn3Oknpww8/NAv5r1+/3kyM0kvqOS+n63jWnL2bOsFqwYIFZnkqnfGvi/7rklP6HOt19TnHjx/P8/q6CL8+Xmmo1Ndes2aNy0z/3PRyvAZoXUYrZ2DV70Gfv3LlSrMTlt7X0JtzQlh+9bDeIx0OYdFeVD2Wc0krXTJLhz689tpr/LwBKLQQh6d7+QEAfO7dd9814161d9WydOlSGTt2rOmdLY5doTZu3Gh2ndIe1JyhsjhpT62OiWVrVgDeoIcVAAJIx7ZqiNPey1q1apm1S3UnqvHjxxfbFqa6TqxuZvDCCy/Iq6++KsVtw4YN8uOPP5peXQDwBj2sABBgOjFLL+Xr5XZdb7VTp05mcf/ipGvDzpw5U4YMGeKyiUBx0ACuGyO0b9++WF8HQPAisAIAAMDWWNYKAAAAtkZgBQAAgK0RWAEAAGBrBFYAAADYGoEVAAAAtkZgBQAAgK0RWAEAAGBrBFYAAADYGoEVAAAAYmf/DzoPYLOJGl4iAAAAAElFTkSuQmCC"/>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=81680e21">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>27 players have no recorded height and 54 have no recorded position, mostly players whose
-EuroLeague profile page could not be scraped. This first check counts only <code>NaN</code> values, so 27
-is the number of players with no height value at all, not necessarily every player without a
-usable height. Most recorded heights fall roughly between 180 and 210 cm, so height looks like
-a plausible feature for later; we keep it as a candidate and decide later how to handle the
-players without a usable height. <code>position</code> is
-never going to be a model input anyway — we only need it later for comparison, so its missing
-values matter less.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6f18bc01">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">action_ids_per_season</span> <span class="o">=</span> <span class="n">points_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"season_code"</span><span class="p">)[</span><span class="s2">"action_id"</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
@@ -8400,7 +8332,7 @@ values matter less.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8545,7 +8477,7 @@ duplicating rows.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">players_with_bio</span> <span class="o">=</span> <span class="n">players_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">bio_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"player_id"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="s2">"m:1"</span><span class="p">)</span>
@@ -8596,7 +8528,7 @@ regenerated from the two raw files.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">season_team_stats</span> <span class="o">=</span> <span class="n">players_df</span><span class="p">[[</span><span class="s2">"season_code"</span><span class="p">,</span> <span class="s2">"player_id"</span><span class="p">,</span> <span class="s2">"team_id"</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
@@ -8645,7 +8577,7 @@ compare the event data with the season totals.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">teams_per_player_season</span> <span class="o">=</span> <span class="n">players_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"season_code"</span><span class="p">,</span> <span class="s2">"player_id"</span><span class="p">])[</span><span class="s2">"team_id"</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
@@ -8673,7 +8605,7 @@ compare the event data with the season totals.</p>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8738,7 +8670,7 @@ compare the event data with the season totals.</p>
 We are keeping these as separate rows rather than merging them, since the whole point of using
 <code>season_code + player_id + team_id</code> as the key is to let a player's role differ by team.</p>
 <p>One more thing worth noting: <code>players_bio.csv</code> also has <code>club_code</code>/<code>club_name</code>, which is the
-player's club at the time the page was scraped — not their team in a given season. We use
+player's club at the time the biography data was retrieved — not their team in a given season. We use
 <code>team_id</code> from <code>euroleague_players.csv</code>/<code>euroleague_points.csv</code> for anything historical, and
 only use the biography table for things that don't change with time, like height.</p>
 </div>
@@ -8767,7 +8699,7 @@ kept only genuine field-goal attempts (makes and misses, two- and three-point).<
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">SHOT_ACTION_IDS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"2FGA"</span><span class="p">,</span> <span class="s2">"2FGAB"</span><span class="p">,</span> <span class="s2">"2FGM"</span><span class="p">,</span> <span class="s2">"3FGA"</span><span class="p">,</span> <span class="s2">"3FGAB"</span><span class="p">,</span> <span class="s2">"3FGM"</span><span class="p">,</span> <span class="s2">"DUNK"</span><span class="p">,</span> <span class="s2">"LAYUPATT"</span><span class="p">,</span> <span class="s2">"LAYUPMD"</span><span class="p">]</span>
@@ -8803,7 +8735,7 @@ Missing coordinates among shot attempts: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">sample</span> <span class="o">=</span> <span class="n">shots</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">30000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">shots</span><span class="p">)),</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
@@ -8845,7 +8777,7 @@ Missing coordinates among shot attempts: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -8934,7 +8866,7 @@ shot-location statistics on top of it using the joins we already validated above
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">players_with_bio</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -8965,13 +8897,11 @@ shot-location statistics on top of it using the joins we already validated above
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>As we saw earlier, 27 players have no recorded height (<code>NaN</code>) and 54 have no recorded position.
-Height is a plausible model feature, so we kept the missing values as they are rather than
-filling them now, since we had not defined the final eligible training sample yet. Whether
-height enters the model, and how to handle players without a usable height, was still an open
-decision at this point. Whatever we decided, we would not estimate height from traditional
-position, since position is reserved for comparing the discovered roles afterwards and should
-not influence how the clusters are formed in the first place.</p>
+<p>We kept missing heights from <code>players_bio.csv</code> as they are rather than filling them at this
+point, since we had not defined the eligible training sample yet. Height is a plausible model
+feature, but we would not estimate it from traditional position, since position is reserved for
+comparing the discovered roles afterwards and should not influence how the clusters are formed
+in the first place.</p>
 <p>Position itself is never going to be a clustering feature, so a missing position does not
 remove a player from the table. We are not filling it with the most common position either,
 since that would invent a label and distort the later comparison between our clusters and the
@@ -9006,7 +8936,7 @@ a flag so they can be filtered out later.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">features</span><span class="p">[</span><span class="s2">"has_positive_minutes"</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s2">"minutes"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
@@ -9056,7 +8986,7 @@ a flag so they can be filtered out later.</p>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9144,7 +9074,7 @@ than treating them as candidate features.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">features</span><span class="p">[</span><span class="s2">"field_goal_attempts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s2">"two_points_attempted"</span><span class="p">]</span> <span class="o">+</span> <span class="n">features</span><span class="p">[</span><span class="s2">"three_points_attempted"</span><span class="p">]</span>
@@ -9177,7 +9107,7 @@ than treating them as candidate features.</p>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9268,7 +9198,7 @@ to the seasons that do record them.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">shots</span><span class="p">[</span><span class="s2">"shot_category"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">shots</span><span class="p">[</span><span class="s2">"action_id"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">THREE_PT_IDS</span><span class="p">),</span> <span class="s2">"three_point"</span><span class="p">,</span> <span class="s2">"two_point"</span><span class="p">)</span>
@@ -9319,7 +9249,7 @@ zone shares.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">KEY</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"season_code"</span><span class="p">,</span> <span class="s2">"player_id"</span><span class="p">,</span> <span class="s2">"team_id"</span><span class="p">]</span>
@@ -9360,7 +9290,7 @@ zone shares.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">spatial</span> <span class="o">=</span> <span class="n">valid_shots</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">KEY</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
@@ -9418,7 +9348,7 @@ inputs is decided later, when we select the final features.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">zone_counts</span> <span class="o">=</span> <span class="n">valid_shots</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">KEY</span><span class="p">)[</span><span class="s2">"zone"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -9467,7 +9397,7 @@ part of a player's actual attempts.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">season_totals</span> <span class="o">=</span> <span class="n">players_df</span><span class="p">[</span><span class="n">KEY</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"two_points_attempted"</span><span class="p">,</span> <span class="s2">"three_points_attempted"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -9529,7 +9459,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9579,7 +9509,7 @@ Name: count, dtype: int64
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">comparison_path</span> <span class="o">=</span> <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"outputs"</span> <span class="o">/</span> <span class="s2">"tables"</span> <span class="o">/</span> <span class="s2">"season_vs_event_shot_attempt_comparison.csv"</span>
@@ -9638,7 +9568,7 @@ totals.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">event_features</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">KEY</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
@@ -9683,7 +9613,7 @@ Rows with has_event_data == True but has_valid_spatial_data == False: 14 (free-t
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">no_event_rows</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="o">~</span><span class="n">features</span><span class="p">[</span><span class="s2">"has_event_data"</span><span class="p">]]</span>
@@ -9745,7 +9675,7 @@ coordinate/zone features -- which gives the complete feature table.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">zone_share_cols</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"zone_"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"_attempt_share"</span><span class="p">))</span>
@@ -9812,7 +9742,7 @@ few coverage counts directly.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">coverage_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>
@@ -9863,8 +9793,8 @@ few coverage counts directly.</p>
 rows have them, and the remaining 303 rows correctly keep a missing per-40 value instead of a
 meaningless rate. Event coverage drops slightly to 5,848 rows, and valid spatial coverage to
 5,834, which matches the free-throw-only rows we found above. <code>height_cm</code> is non-missing for
-6,253 of the 6,307 rows; the rows of the 27 players without a recorded height carry through as
-missing, as intended (like the earlier check, this count only looks for <code>NaN</code>).</p>
+6,253 of the 6,307 rows; the other 54 rows have no recorded height and carry through as
+missing, as intended (this count only looks for <code>NaN</code>).</p>
 </div>
 </div>
 </div>
@@ -9887,7 +9817,7 @@ excluding; we replaced these notes with the final decisions once we selected the
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">dict_row</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">definition</span><span class="p">,</span> <span class="n">calculation</span><span class="p">,</span> <span class="n">missing_meaning</span><span class="p">,</span> <span class="n">intended_use</span><span class="p">,</span>
@@ -9906,18 +9836,18 @@ excluding; we replaced these notes with the final decisions once we selected the
 
 <span class="n">dictionary_rows</span> <span class="o">+=</span> <span class="p">[</span>
     <span class="n">dict_row</span><span class="p">(</span><span class="s2">"height_cm"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"players_bio.csv"</span><span class="p">,</span> <span class="s2">"Player height in centimeters."</span><span class="p">,</span>
-             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"player's profile page could not be fully scraped"</span><span class="p">,</span>
+             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"not recorded in players_bio.csv"</span><span class="p">,</span>
              <span class="s2">"candidate physical feature"</span><span class="p">,</span> <span class="s2">"candidate"</span><span class="p">,</span>
              <span class="s2">"Kept unfilled until the eligible sample is defined and a handling decision is made."</span><span class="p">),</span>
     <span class="n">dict_row</span><span class="p">(</span><span class="s2">"position"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"players_bio.csv"</span><span class="p">,</span> <span class="s2">"Traditional position (Guard/Forward/Center)."</span><span class="p">,</span>
-             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"player's profile page could not be fully scraped"</span><span class="p">,</span>
+             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"not recorded in players_bio.csv"</span><span class="p">,</span>
              <span class="s2">"post-hoc comparison only"</span><span class="p">,</span> <span class="s2">"comparison_only"</span><span class="p">,</span>
              <span class="s2">"Never used as a clustering input; only for comparing clusters to positions afterwards."</span><span class="p">),</span>
     <span class="n">dict_row</span><span class="p">(</span><span class="s2">"nationality"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"players_bio.csv"</span><span class="p">,</span> <span class="s2">"Player nationality."</span><span class="p">,</span>
-             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"profile page could not be fully scraped"</span><span class="p">,</span> <span class="s2">"descriptive only"</span><span class="p">,</span>
+             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"not recorded in players_bio.csv"</span><span class="p">,</span> <span class="s2">"descriptive only"</span><span class="p">,</span>
              <span class="s2">"exclude"</span><span class="p">,</span> <span class="s2">"Demographic field, not a playing-style statistic."</span><span class="p">),</span>
     <span class="n">dict_row</span><span class="p">(</span><span class="s2">"born"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"players_bio.csv"</span><span class="p">,</span> <span class="s2">"Date of birth."</span><span class="p">,</span>
-             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"profile page could not be fully scraped"</span><span class="p">,</span> <span class="s2">"descriptive only"</span><span class="p">,</span>
+             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"not recorded in players_bio.csv"</span><span class="p">,</span> <span class="s2">"descriptive only"</span><span class="p">,</span>
              <span class="s2">"undecided"</span><span class="p">,</span> <span class="s2">"Could derive age-at-season later; not itself a style feature."</span><span class="p">),</span>
 <span class="p">]</span>
 
@@ -10080,7 +10010,7 @@ concentrated.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">participation_percentiles</span> <span class="o">=</span> <span class="n">features</span><span class="p">[[</span><span class="s2">"minutes"</span><span class="p">,</span> <span class="s2">"games_played"</span><span class="p">,</span> <span class="s2">"field_goal_attempts"</span><span class="p">]]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span>
@@ -10097,7 +10027,7 @@ concentrated.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -10258,7 +10188,7 @@ end is doing a lot of the work in deciding how much of the table is usable.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
@@ -10341,7 +10271,7 @@ retained by minutes/games alone but still be unusable for the spatial features.<
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">PARTICIPATION_RULES</span> <span class="o">=</span> <span class="p">[</span>
@@ -10380,7 +10310,7 @@ retained by minutes/games alone but still be unusable for the spatial features.<
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[31]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -10504,7 +10434,7 @@ if smaller, role.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">removed_summary_rows</span> <span class="o">=</span> <span class="p">[]</span>
@@ -10537,7 +10467,7 @@ if smaller, role.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[33]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -10690,7 +10620,7 @@ result, we can rerun it on that stricter sample and see whether the same role st
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="s2">"games_played"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="s2">"minutes"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">)</span>
@@ -10765,7 +10695,7 @@ table, while the modeling steps can filter on <code>eligible_for_modeling</code>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">feature_dictionary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
@@ -10822,7 +10752,7 @@ itself, so the complete 6,307-row table stays available for anything that still 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">eligible_df</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -10893,7 +10823,7 @@ grouped into one row so the table stays short.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">candidate_cols</span> <span class="o">=</span> <span class="p">(</span>
@@ -10941,7 +10871,7 @@ grouped into one row so the table stays short.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[37]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[36]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -11066,7 +10996,7 @@ checked how often that happens inside the eligible sample.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [38]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">pct_col</span><span class="p">,</span> <span class="n">attempt_col</span> <span class="ow">in</span> <span class="p">[</span>
@@ -11130,9 +11060,9 @@ columns, exactly one). No eligible row is in either situation, so nothing is lef
 <li><strong>Structurally undefined percentages.</strong> A <code>0.0</code> shooting percentage can mean "attempted and
 missed everything" or "never attempted," and only the first is a real shooting result. This
 needs a decision only if shooting efficiency ends up in the feature set.</li>
-<li><strong>Genuinely missing measurements.</strong> <code>height_cm</code> is missing for 31 eligible rows because the
-player's EuroLeague profile page could not be fully scraped. This has nothing to do with how
-the player played, so any fill must not come from playing statistics or traditional position.</li>
+<li><strong>Genuinely missing measurements.</strong> <code>height_cm</code> is missing for 31 eligible rows. Height is a
+physical attribute, not a result of how the player played, so any fill must not come from
+playing statistics or traditional position.</li>
 <li><strong>Comparison-only missingness.</strong> <code>position</code> is missing for 132 eligible rows. Since position is
 never a clustering input, this only limits how many rows enter the later position comparison,
 and it must not be filled in or used to estimate any other feature.</li>
@@ -11167,7 +11097,7 @@ eligible row has zero two-point attempts.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [39]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [38]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">zero_three_attempts</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s2">"three_points_attempted"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
@@ -11262,7 +11192,7 @@ never overwrite an existing positive height.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [39]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">height_overrides</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"processed"</span> <span class="o">/</span> <span class="s2">"height_overrides.csv"</span><span class="p">)</span>
@@ -11357,7 +11287,7 @@ gives zero-attempt rows the sample's attempt-weighted mean instead.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [41]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">eligible_attempted_three</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">features</span><span class="p">[</span><span class="s2">"has_three_point_attempts"</span><span class="p">]</span>
@@ -11415,7 +11345,7 @@ stays exactly as it is, since it is comparison-only.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [42]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [41]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">output_path</span> <span class="o">=</span> <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"processed"</span> <span class="o">/</span> <span class="s2">"player_season_team_features.csv"</span>
@@ -11473,7 +11403,7 @@ season the way our own recorded statistics do.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [43]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [42]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">wiki_lookup</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
@@ -11505,7 +11435,7 @@ Resolved matches backed by an exact birth-year match: 1893 (99.6%)
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[43]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[42]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -11583,7 +11513,7 @@ Ambiguous or unverifiable identities were left unresolved rather than guessed.</
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [44]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [43]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">scores_lookup</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"processed"</span> <span class="o">/</span> <span class="s2">"player_positions_365scores.csv"</span><span class="p">)</span>
@@ -11647,7 +11577,7 @@ further filtering is needed for those.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [45]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [44]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">VALID_POSITIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Point Guard"</span><span class="p">,</span> <span class="s2">"Shooting Guard"</span><span class="p">,</span> <span class="s2">"Small Forward"</span><span class="p">,</span> <span class="s2">"Power Forward"</span><span class="p">,</span> <span class="s2">"Center"</span><span class="p">}</span>
@@ -11699,7 +11629,7 @@ whichever one did.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [46]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [45]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">wiki_lookup</span><span class="p">[[</span><span class="s2">"player_id"</span><span class="p">,</span> <span class="s2">"position_wiki"</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s2">"player_id"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="s2">"m:1"</span><span class="p">)</span>
@@ -11757,7 +11687,7 @@ since that is the population the later comparison against clusters will actually
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [47]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [46]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">eligible_df</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]]</span>
@@ -11819,7 +11749,7 @@ Center unchanged, then compared the two labels for every player where both are a
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [48]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [47]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">CAT5_TO_3</span> <span class="o">=</span> <span class="p">{</span>
@@ -11855,7 +11785,7 @@ Agreement with EuroLeague position: 79.2%
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[48]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[47]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -11938,7 +11868,7 @@ input.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [49]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [48]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">output_path</span> <span class="o">=</span> <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"processed"</span> <span class="o">/</span> <span class="s2">"player_season_team_features_with_position.csv"</span>
@@ -12008,7 +11938,7 @@ indicator.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [50]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [49]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
@@ -12067,7 +11997,7 @@ indicator.</p>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[50]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[49]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -12158,7 +12088,7 @@ coordinates, and the location of each zone letter, between the two periods.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [51]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [50]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">shot_period</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">valid_shots</span><span class="p">[</span><span class="s2">"season_code"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">EARLY_SEASONS</span><span class="p">),</span> <span class="s2">"E2007-E2008"</span><span class="p">,</span> <span class="s2">"E2009-E2025"</span><span class="p">)</span>
@@ -12203,7 +12133,7 @@ E2009-E2025       -690.0             0.0        696.0        -37.0        828.0 
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[51]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[50]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -12421,7 +12351,7 @@ components.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [52]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [51]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">spatial_inputs</span> <span class="o">=</span> <span class="n">eligible_spatial</span><span class="p">[</span><span class="n">COORDINATE_SPATIAL_FEATURES</span><span class="p">]</span>
@@ -12458,7 +12388,7 @@ pc3                    0.1009      0.9359           0.0062
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[52]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[51]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -12556,7 +12486,7 @@ correlations to avoid keeping two versions of the same information.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [53]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">coordinate_correlation</span> <span class="o">=</span> <span class="n">spatial_inputs</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -12573,7 +12503,7 @@ correlations to avoid keeping two versions of the same information.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[53]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[52]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -12720,7 +12650,7 @@ than role. We checked each of these on the eligible sample.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [54]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [53]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]]</span>
@@ -12781,7 +12711,7 @@ Correlation of each per-40 rate with minutes per game:
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[54]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[53]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>fouls_committed_per_40        -0.570
 offensive_rebounds_per_40     -0.197
@@ -12849,7 +12779,7 @@ playing time, or data coverage, and are listed with the full decision below.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [55]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [54]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">FINAL_CLUSTERING_FEATURES</span> <span class="o">=</span> <span class="p">[</span>
@@ -13149,7 +13079,7 @@ features on the eligible sample and looked at their distributions.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [56]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [55]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">final_features</span> <span class="o">=</span> <span class="n">candidates</span><span class="p">[</span><span class="n">FINAL_CLUSTERING_FEATURES</span><span class="p">]</span>
@@ -13178,7 +13108,7 @@ Missing / infinite values: 0 / 0
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[56]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[55]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -13387,7 +13317,7 @@ correlations among the final features.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [57]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [56]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">final_correlation</span> <span class="o">=</span> <span class="n">final_features</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
@@ -13404,7 +13334,7 @@ correlations among the final features.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[57]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[56]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -13507,7 +13437,7 @@ features are our final clustering feature set.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [58]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [57]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">decision_by_column</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">decision</span><span class="p">,</span> <span class="n">reason</span><span class="p">)</span>
@@ -13615,7 +13545,7 @@ of each percentage before and after it, and how many of them rest on 1-9 attempt
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [59]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [58]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">SHOOTING_PERCENTAGE_COUNTS</span> <span class="o">=</span> <span class="p">{</span>
@@ -13663,7 +13593,7 @@ of each percentage before and after it, and how many of them rest on 1-9 attempt
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[59]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[58]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -13776,7 +13706,7 @@ unusual.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [60]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [59]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">modeling_metadata</span> <span class="o">=</span> <span class="n">modeling_rows</span><span class="p">[</span><span class="n">IDENTIFIER_COLS</span><span class="p">]</span>
@@ -13831,7 +13761,7 @@ so the components describe exactly the matrix the clustering will use.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [61]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [60]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">modeling_pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">svd_solver</span><span class="o">=</span><span class="s2">"full"</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">)</span>
@@ -13918,7 +13848,7 @@ each feature's variance that the PC1-PC2 plane keeps.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [62]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [61]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">component_correlations</span> <span class="o">=</span> <span class="n">modeling_pca</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">modeling_pca</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">)</span>
@@ -13939,7 +13869,7 @@ each feature's variance that the PC1-PC2 plane keeps.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[62]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[61]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <style type="text/css">
 #T_3f28b_row0_col0 {
@@ -14312,7 +14242,7 @@ plot.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [62]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">pca_projection</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pca_scores</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"PC1"</span><span class="p">,</span> <span class="s2">"PC2"</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">X_scaled</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -14399,7 +14329,7 @@ distance of the observations to their cluster centers), the silhouette score com
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [64]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
@@ -14517,7 +14447,7 @@ sample).</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [65]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [64]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">KMEANS_BASELINE_K</span> <span class="o">=</span> <span class="mi">4</span>
@@ -14613,7 +14543,7 @@ a component has no spread at all in some direction of the feature space.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [66]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [65]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
@@ -14707,7 +14637,7 @@ inspected the components of the k = 10 solution that behave this way.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [67]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [66]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">zero_three_point_attempts</span> <span class="o">=</span> <span class="n">modeling_rows</span><span class="p">[</span><span class="s2">"three_points_attempted"</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
@@ -14859,7 +14789,7 @@ collapses.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [68]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [67]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">gmm_models</span> <span class="o">=</span> <span class="p">{</span><span class="mf">1e-6</span><span class="p">:</span> <span class="n">default_gmm_models</span><span class="p">}</span>
@@ -14895,7 +14825,7 @@ collapses.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[68]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[67]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <style type="text/css">
 </style>
@@ -14979,7 +14909,7 @@ full-covariance models with <code>reg_covar = 0.01</code> that were fitted for t
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [69]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [68]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">GMM_REG_COVAR</span> <span class="o">=</span> <span class="mf">0.01</span>
@@ -15073,7 +15003,7 @@ solution.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [70]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [69]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">adjusted_rand_score</span>
@@ -15129,7 +15059,7 @@ Adjusted Rand index, K-Means k = 4 vs GMM k = 5: 0.409
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[70]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[69]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -15284,7 +15214,7 @@ matrix, to see what share of observations land in the same matched component.</p
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [71]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [70]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">linear_sum_assignment</span>
@@ -15401,7 +15331,7 @@ to confirm five components is still reasonable there.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [72]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [71]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">STRICT_MIN_GAMES</span><span class="p">,</span> <span class="n">STRICT_MIN_MINUTES</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">200</span>
@@ -15485,7 +15415,7 @@ k
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [73]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [72]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">strict_labels_aligned</span> <span class="o">=</span> <span class="n">strict_labels</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
@@ -15509,7 +15439,7 @@ k
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[73]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[72]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -15671,7 +15601,7 @@ playing-style role.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [74]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [73]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">season_is_early</span> <span class="o">=</span> <span class="n">modeling_metadata</span><span class="p">[</span><span class="s2">"season_code"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">EARLY_SEASONS</span><span class="p">)</span>
@@ -15743,7 +15673,7 @@ and those players support a basketball role.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [75]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [74]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">cluster_profile</span> <span class="o">=</span> <span class="n">X_scaled</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">gmm_labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
@@ -15780,7 +15710,7 @@ and those players support a basketball role.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [76]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [75]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">raw_cluster_profile</span> <span class="o">=</span> <span class="n">modeling_features</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">gmm_labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -15805,7 +15735,7 @@ and those players support a basketball role.</p>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[76]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[75]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -16023,7 +15953,7 @@ stretch bigs</strong>.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [77]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [76]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ROLE_NAMES</span> <span class="o">=</span> <span class="p">{</span>
@@ -16050,7 +15980,7 @@ stretch bigs</strong>.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[77]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[76]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -16141,7 +16071,7 @@ component, and exact ties are broken by <code>player_id</code>, season, and team
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [78]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [77]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">mahalanobis_to_own_component</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">gmm</span><span class="p">):</span>
@@ -16181,7 +16111,7 @@ component, and exact ties are broken by <code>player_id</code>, season, and team
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[78]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[77]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -16287,7 +16217,7 @@ found one in Alberto Abalde.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [79]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [78]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">abalde</span> <span class="o">=</span> <span class="n">modeling_metadata</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">modeling_metadata</span><span class="p">[</span><span class="s2">"player"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"ABALDE, ALBERTO"</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -16306,7 +16236,7 @@ found one in Alberto Abalde.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[79]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[78]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -16446,7 +16376,7 @@ same roles for the two labels decided when we built the feature table.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [80]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [79]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">"position_reconciled"</span><span class="p">,</span> <span class="s2">"position_reconciled (5-category, primary)"</span><span class="p">),</span>
@@ -16492,7 +16422,7 @@ unlabeled rows from each comparison below rather than imputing a position for th
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [81]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [80]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ROLE_ORDER</span> <span class="o">=</span> <span class="p">[</span><span class="n">ROLE_NAMES</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ROLE_NAMES</span><span class="p">)]</span>
@@ -16846,7 +16776,7 @@ the forward-center line that <code>position_reconciled</code> treats as a hard b
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [82]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [81]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">role_position3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
@@ -17126,7 +17056,7 @@ guards, and the forward label still absorbs several different roles rather than 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [83]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [82]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ari_position_reconciled</span> <span class="o">=</span> <span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">role_position</span><span class="p">[</span><span class="s2">"role"</span><span class="p">],</span> <span class="n">role_position</span><span class="p">[</span><span class="s2">"position_reconciled"</span><span class="p">])</span>

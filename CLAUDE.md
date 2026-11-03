@@ -225,8 +225,14 @@ paragraph, and the per-40 dictionary reason string: rates are computed from tota
 per-game values mix playing time with playing style. No numbers or outputs changed besides the
 deleted cell; execution counts renumbered; HTML re-rendered. Includes the user's own hand edits to the
 opening sections. Also removed the redundant non-positive minutes/games check (cells `666ce7b0`,
-`7ff87a3a`); the 303 zero-minute count stays backed by the per-40 cell's own output. Notebook now
-188 cells. The audit-era `audit_issues.csv` /
+`7ff87a3a`); the 303 zero-minute count stays backed by the per-40 cell's own output. Then removed
+the early bio audit (cells `8761555b` histogram + NaN counts, `81680e21`): it missed `0` heights
+and claimed an unsupported scraping cause (bio data came from the EuroLeague API). Rewrote
+`bf1873ea`, `bbdfb471`, `c206b9c1` (now "other 54 rows", backed by the coverage figure),
+`0c358b67`, `d3f5f13e` to drop the 27/54-player references and scraping wording; the feature
+dictionary's missing-reason strings (code `5ba5ff64` + the 4 CSV rows) now read "not recorded in
+players_bio.csv". `outputs/figures/height_distribution.png` is kept (still written by
+`01_data_audit.ipynb`). Height-override logic and all outputs unchanged. Notebook now 186 cells. The audit-era `audit_issues.csv` /
 `range_check_summary_euroleague_players.csv` still list the 0.01 check and are left as is.
 
 **Stage 15 decision (final):** rendered with `python -m nbconvert --to html` from the saved
