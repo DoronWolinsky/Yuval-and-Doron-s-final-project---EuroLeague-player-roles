@@ -232,7 +232,11 @@ and claimed an unsupported scraping cause (bio data came from the EuroLeague API
 `0c358b67`, `d3f5f13e` to drop the 27/54-player references and scraping wording; the feature
 dictionary's missing-reason strings (code `5ba5ff64` + the 4 CSV rows) now read "not recorded in
 players_bio.csv". `outputs/figures/height_distribution.png` is kept (still written by
-`01_data_audit.ipynb`). Height-override logic and all outputs unchanged. Notebook now 186 cells. The audit-era `audit_issues.csv` /
+`01_data_audit.ipynb`). Height-override logic and all outputs unchanged. Then removed the early
+shot-event key comparison (`ca212c81`, `1693cf4e`); `season_team_events` is now defined in
+`179c7e6e` right before `event_presence`, whose "(expected 459)" label was dropped (saved output
+edited to match). `979d78a9` and `b7c1e2d4` state the 459 no-event / 14 free-throw-only result
+directly. Notebook now 184 cells. The audit-era `audit_issues.csv` /
 `range_check_summary_euroleague_players.csv` still list the 0.01 check and are left as is.
 
 **Stage 15 decision (final):** rendered with `python -m nbconvert --to html` from the saved
