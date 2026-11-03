@@ -8765,48 +8765,7 @@ Missing coordinates among shot attempts: 0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Building-the-Player-Season-Team-Feature-Table">Building the Player-Season-Team Feature Table<a class="anchor-link" href="#Building-the-Player-Season-Team-Feature-Table">¶</a></h2>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bbdfb471">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We kept missing heights from <code>players_bio.csv</code> as they are rather than filling them at this
-point, since we had not defined the eligible training sample yet. Height is a plausible model
-feature, but we would not estimate it from traditional position, since position is reserved for
-comparing the discovered roles afterwards and should not influence how the clusters are formed
-in the first place.</p>
-<p>Position itself is never going to be a clustering feature, so a missing position does not
-remove a player from the table. We are not filling it with the most common position either,
-since that would invent a label and distort the later comparison between our clusters and the
-traditional positions. Rows with a missing position stay in the feature table and are simply
-left out of any analysis that explicitly compares clusters against position.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2cfd0ab6">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The file also provides per-game averages, but per-game values mix playing time with playing
-style, so we calculated every rate feature ourselves from the season totals. We used minutes as the denominator for
-playing-style volume and expressed every rate per 40 minutes (<code>season total / minutes * 40</code>).
-A EuroLeague regulation game lasts 40 minutes, so a per-40 value reads as the rate on the scale
-of one full regulation game. This does not assume that any player actually plays 40 minutes;
-it only puts players with very different playing time on a common scale. The per-36 convention
-common in NBA analysis would differ only by the constant factor 40/36 for every rate, so after
-standardization it would give exactly the same standardized values and the same clustering; we
-chose per 40 because it is easier to interpret in the EuroLeague context. A row with zero
-minutes does not have a meaningful rate, so we left those as missing rather than zero, and kept
-a flag so they can be filtered out later.</p>
+<h2 id="Building-the-Player-Season-Team-Feature-Table">Building the Player-Season-Team Feature Table<a class="anchor-link" href="#Building-the-Player-Season-Team-Feature-Table">¶</a></h2><p>We converted season totals into per-40-minute rates to compare players with different playing times. Each rate was calculated as <code>season total / minutes * 40</code>, matching the length of a regulation EuroLeague game. Rates were left missing for rows with zero recorded minutes.</p>
 </div>
 </div>
 </div>
@@ -8846,8 +8805,6 @@ a flag so they can be filtered out later.</p>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rows without positive minutes (per-40 values left as NaN): "</span>
       <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="p">(</span><span class="o">~</span><span class="n">features</span><span class="p">[</span><span class="s1">'has_positive_minutes'</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[[</span><span class="s2">"player"</span><span class="p">,</span> <span class="s2">"minutes"</span><span class="p">,</span> <span class="s2">"points"</span><span class="p">,</span> <span class="s2">"points_per_40"</span><span class="p">,</span> <span class="s2">"assists"</span><span class="p">,</span> <span class="s2">"assists_per_40"</span><span class="p">]]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
-    <span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8862,68 +8819,6 @@ a flag so they can be filtered out later.</p>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Rows without positive minutes (per-40 values left as NaN): 303
 </pre>
-</div>
-</div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>player</th>
-<th>minutes</th>
-<th>points</th>
-<th>points_per_40</th>
-<th>assists</th>
-<th>assists_per_40</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>1893</th>
-<td>GONLUM, KEREM</td>
-<td>400.6</td>
-<td>176</td>
-<td>17.573640</td>
-<td>14</td>
-<td>1.397903</td>
-</tr>
-<tr>
-<th>351</th>
-<td>BARTON, LUBOS</td>
-<td>4.1</td>
-<td>4</td>
-<td>39.024390</td>
-<td>0</td>
-<td>0.000000</td>
-</tr>
-<tr>
-<th>1498</th>
-<td>ERCEG, ZORAN</td>
-<td>284.6</td>
-<td>94</td>
-<td>13.211525</td>
-<td>8</td>
-<td>1.124385</td>
-</tr>
-</tbody>
-</table>
-</div>
 </div>
 </div>
 </div>
@@ -8967,8 +8862,6 @@ than treating them as candidate features.</p>
     <span class="n">has_fga</span><span class="p">,</span> <span class="n">features</span><span class="p">[</span><span class="s2">"free_throws_attempted"</span><span class="p">]</span> <span class="o">/</span> <span class="n">features</span><span class="p">[</span><span class="s2">"field_goal_attempts"</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rows with zero field-goal attempts (shares left as NaN): </span><span class="si">{</span><span class="p">(</span><span class="o">~</span><span class="n">has_fga</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">features</span><span class="p">[[</span><span class="s2">"player"</span><span class="p">,</span> <span class="s2">"field_goal_attempts"</span><span class="p">,</span> <span class="s2">"two_point_attempt_share"</span><span class="p">,</span>
-          <span class="s2">"three_point_attempt_share"</span><span class="p">,</span> <span class="s2">"free_throw_attempt_rate"</span><span class="p">]]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8983,64 +8876,6 @@ than treating them as candidate features.</p>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Rows with zero field-goal attempts (shares left as NaN): 473
 </pre>
-</div>
-</div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>player</th>
-<th>field_goal_attempts</th>
-<th>two_point_attempt_share</th>
-<th>three_point_attempt_share</th>
-<th>free_throw_attempt_rate</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>1893</th>
-<td>GONLUM, KEREM</td>
-<td>97</td>
-<td>0.989691</td>
-<td>0.010309</td>
-<td>0.608247</td>
-</tr>
-<tr>
-<th>351</th>
-<td>BARTON, LUBOS</td>
-<td>3</td>
-<td>0.666667</td>
-<td>0.333333</td>
-<td>0.000000</td>
-</tr>
-<tr>
-<th>1498</th>
-<td>ERCEG, ZORAN</td>
-<td>75</td>
-<td>0.506667</td>
-<td>0.493333</td>
-<td>0.320000</td>
-</tr>
-</tbody>
-</table>
-</div>
 </div>
 </div>
 </div>
