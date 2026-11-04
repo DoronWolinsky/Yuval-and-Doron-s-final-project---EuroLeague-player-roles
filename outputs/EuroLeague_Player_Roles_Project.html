@@ -11202,31 +11202,12 @@ interpretable coordinate features and examined their correlations.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The correlations support a smaller set of original summaries:</p>
-<ul>
-<li><code>mean_raw_shot_distance</code> and <code>median_raw_shot_distance</code> correlate at 0.924. We kept the
-<strong>median</strong>, the player's typical shooting range, because it is less sensitive to a few
-extreme shots than the mean.</li>
-<li><code>mean_longitudinal_shot_position</code> correlates at 0.923 with mean distance and 0.850 with
-median distance, so it mostly repeats shooting range. We excluded it.</li>
-<li><code>longitudinal_shot_position_std</code> correlates at 0.882 with <code>raw_shot_distance_std</code>. We kept
-<strong><code>raw_shot_distance_std</code></strong>, the variation in shooting distance, and excluded the
-longitudinal spread.</li>
-<li><strong><code>lateral_shot_position_std</code></strong> measures how widely a player's shots are spread across the
-court. It correlates at 0.826 with the median distance -- players who shoot from farther out
-also spread wider along the arc -- but it describes width rather than depth, so we kept it.</li>
-<li><code>mean_lateral_shot_position</code> is almost unrelated to everything else (0.034 to 0.048). It only
-says which side of the court a player favors, so we excluded it.</li>
-</ul>
-<p>The shot-location profile in the model is therefore <code>median_raw_shot_distance</code>,
-<code>raw_shot_distance_std</code>, and <code>lateral_shot_position_std</code>. The other four coordinate summaries,
-the ten zone shares, and the PCA components are not clustering inputs.</p>
-<h3 id="Other-candidate-features">Other candidate features<a class="anchor-link" href="#Other-candidate-features">¶</a></h3><p>The remaining candidates raised four questions. <code>points_per_40</code> might only repeat shooting
-volume and efficiency, which we already represent separately. Free-throw attempts per 40, the
-free-throw attempt rate, and fouls received per 40 might measure the same contact pressure
-three times. The two-point and three-point attempt shares, and their event-based versions,
-might duplicate each other. Finally, fouls committed might partly reflect playing time rather
-than role. We checked each of these on the eligible sample.</p>
+<p>We selected three shot-location features: <code>median_raw_shot_distance</code>
+(typical range), <code>raw_shot_distance_std</code> (distance variation), and
+<code>lateral_shot_position_std</code> (court width). We excluded the other
+coordinate summaries as redundant or unrelated to player roles.</p>
+<h3 id="Other-candidate-features">Other candidate features<a class="anchor-link" href="#Other-candidate-features">¶</a></h3><p>We checked whether points per 40, free-throw volume, attempt shares,
+and fouls introduced redundant information or reflected playing time.</p>
 </div>
 </div>
 </div>
@@ -11322,40 +11303,17 @@ dtype: float64</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<ul>
-<li><strong>Points.</strong> <code>points_per_40</code> is almost exactly rebuilt from attempts and shooting percentages
-(r = 1.000; the percentages are rounded to three decimals in the source file), so it is an
-outcome of volume and efficiency rather than a separate behavior. We excluded it and kept its
-components.</li>
-<li><strong>Contact pressure.</strong> Fouls received per 40 correlates at 0.871 with free-throw attempts per
-40 and at 0.694 with the free-throw attempt rate, and the two free-throw measures correlate
-at 0.847 with each other. We kept one measure, <code>fouls_received_per_40</code>, because it counts
-every foul a player draws rather than only those that lead to free throws, and excluded the
-two free-throw volume measures. <code>free_throws_percentage</code> stays as the free-throw efficiency
-measure. As a consequence, the 34 eligible rows without a free-throw attempt carry a neutral
-value for that percentage and give the model no explicit zero-attempt signal -- unlike
-three-pointers, where the selected <code>three_point_attempts_per_40</code> is zero. We did not add
-<code>has_free_throw_attempts</code> or another free-throw-volume feature to compensate: a rare binary
-flag would be one more representation of contact pressure, and the choice affects only 34 of
-the 4,568 eligible rows.</li>
-<li><strong>Attempt shares.</strong> The two-point and three-point attempt shares are exact complements (r =
--1.000), and the event-based shares differ from the season-level shares by at most 0.001.
-Shot selection is already represented by the two per-40 attempt rates and the shot-location
-profile, so we excluded all four shares.</li>
-<li><strong>Fouls committed and fouls received.</strong> The two correlate at only 0.010, so they are not
-interchangeable. Fouls committed can reflect defensive physicality, aggressive or interior
-defensive responsibility, and the cost of a player's defensive involvement; fouls received
-can reflect offensive pressure -- ball handling, attacks on the rim, and post play that force
-defensive contact. We kept both, because they may separate roles that scoring and efficiency
-features do not capture. <code>fouls_committed_per_40</code> has the strongest relationship with minutes per
-game of any per-40 rate (r = -0.570): players with shorter stints commit fouls at a higher
-rate per minute. We still kept it: the relationship is moderate rather than an exact
-duplication (r² of about 0.32), the rate can still carry genuine role information, and the
-eligibility rule of at least 5 games and 100 minutes already removes the least stable
-small-sample rates.</li>
-</ul>
-<p>The remaining exclusions follow directly from the goal of describing role rather than quality,
-playing time, or data coverage, and are listed with the full decision below.</p>
+<p>We excluded <code>points_per_40</code>, which was reconstructed from shooting
+volume and efficiency (r = 1.000), and redundant attempt shares
+(r = -1.000 for two-point versus three-point shares).</p>
+<p>We kept <code>fouls_received_per_40</code> rather than free-throw volume
+(r = 0.871 with free-throw attempts per 40), avoiding duplicate
+contact-pressure measures. We did not add a separate attempt
+indicator for the 34 eligible rows without free-throw attempts.</p>
+<p>We retained both fouls committed and received because they were
+nearly uncorrelated (r = 0.010). Although fouls committed per 40
+correlated with minutes per game (r = -0.570), we kept it as
+a potentially informative measure of defensive role.</p>
 </div>
 </div>
 </div>
@@ -11400,8 +11358,9 @@ playing time, or data coverage, and are listed with the full decision below.</p>
 <span class="n">FEATURE_DECISIONS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="s2">"Shooting volume"</span><span class="p">,</span> <span class="n">FINAL_CLUSTERING_FEATURES</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="s2">"include"</span><span class="p">,</span> <span class="s2">"used as is"</span><span class="p">,</span>
      <span class="s2">"How often a player takes two- and three-point shots, normalized to a 40-minute regulation game."</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"Shooting efficiency"</span><span class="p">,</span> <span class="n">FINAL_CLUSTERING_FEATURES</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="s2">"include"</span><span class="p">,</span> <span class="s2">"used as is"</span><span class="p">,</span>
-     <span class="s2">"Conversion of each shot type; 3P</span><span class="si">% a</span><span class="s2">nd FT% zero-attempt gaps median-filled, 2P</span><span class="si">% d</span><span class="s2">efined for every eligible row."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Shooting efficiency"</span><span class="p">,</span> <span class="n">FINAL_CLUSTERING_FEATURES</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="s2">"include"</span><span class="p">,</span> <span class="s2">"attempt-weighted shrinkage for modeling"</span><span class="p">,</span>
+     <span class="s2">"Three shooting percentages retained; missing 3P</span><span class="si">% a</span><span class="s2">nd FT% values were median-filled in the feature table, "</span>
+     <span class="s2">"while all three use attempt-weighted shrinkage in the clustering matrix."</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">"Playmaking"</span><span class="p">,</span> <span class="n">FINAL_CLUSTERING_FEATURES</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="s2">"include"</span><span class="p">,</span> <span class="s2">"used as is"</span><span class="p">,</span>
      <span class="s2">"Ball distribution and its cost."</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">"Rebounding"</span><span class="p">,</span> <span class="n">FINAL_CLUSTERING_FEATURES</span><span class="p">[</span><span class="mi">7</span><span class="p">:</span><span class="mi">9</span><span class="p">],</span> <span class="s2">"include"</span><span class="p">,</span> <span class="s2">"used as is"</span><span class="p">,</span>
@@ -11511,8 +11470,8 @@ Columns with more than one decision: []
 <td class="data row1 col0" id="T_ca6da_row1_col0">Shooting efficiency</td>
 <td class="data row1 col1" id="T_ca6da_row1_col1">two_points_percentage, three_points_percentage, free_throws_percentage</td>
 <td class="data row1 col2" id="T_ca6da_row1_col2">include</td>
-<td class="data row1 col3" id="T_ca6da_row1_col3">used as is</td>
-<td class="data row1 col4" id="T_ca6da_row1_col4">Conversion of each shot type; 3P% and FT% zero-attempt gaps median-filled, 2P% defined for every eligible row.</td>
+<td class="data row1 col3" id="T_ca6da_row1_col3">attempt-weighted shrinkage for modeling</td>
+<td class="data row1 col4" id="T_ca6da_row1_col4">Three shooting percentages retained; missing 3P% and FT% values were median-filled in the feature table, while all three use attempt-weighted shrinkage in the clustering matrix.</td>
 </tr>
 <tr>
 <td class="data row2 col0" id="T_ca6da_row2_col0">Playmaking</td>
@@ -11643,18 +11602,6 @@ Columns with more than one decision: []
 </tbody>
 </table>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bed15bb7">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Every column in the feature table has exactly one decision. We then checked the 17 selected
-features on the eligible sample and looked at their distributions.</p>
 </div>
 </div>
 </div>
@@ -11881,21 +11828,6 @@ Missing / infinite values: 0 / 0
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ac85a88b">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>All 17 features are complete for the 4,568 eligible rows. Most distributions are moderately
-skewed; the strongest cases are <code>blocks_per_40</code> (skew 2.08) and <code>assists_per_40</code> (1.30), with a long tail of players who block or assist far
-more than the rest, and <code>raw_shot_distance_std</code> (-1.30) and <code>free_throws_percentage</code> (-0.96),
-with a tail on the low side. As a last check on redundancy, we listed the strongest
-correlations among the final features.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d9128150">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -12004,14 +11936,12 @@ correlations among the final features.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The strongest correlation is 0.826, between <code>median_raw_shot_distance</code> and
-<code>lateral_shot_position_std</code>, followed by three-point attempts per 40 with median distance
-(0.816) and with lateral spread (0.757). These reflect a real basketball pattern -- perimeter
-shooters take more threes, from farther out and across a wider part of the arc -- rather than
-two versions of the same measurement, and no pair comes close to an exact duplicate. The
-rebounding rates and height are related in the expected direction (0.687 and 0.667), but
-height is a physical attribute and rebounding a responsibility, so both stay. These 17
-features are our final clustering feature set.</p>
+<p>The strongest remaining correlation was 0.826 between median shot
+distance and lateral shot spread. These reflected related but distinct
+aspects of perimeter play.</p>
+<p>We also retained height alongside rebounding rates despite their
+correlation, since physical profile and on-court responsibilities
+describe different aspects of a player.</p>
 </div>
 </div>
 </div>
@@ -12022,25 +11952,13 @@ features are our final clustering feature set.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Preparing-the-modeling-matrix">Preparing the modeling matrix<a class="anchor-link" href="#Preparing-the-modeling-matrix">¶</a></h2><p>Before clustering, two properties of the selected features needed attention: how reliable the
-shooting percentages are, and the very different scales of the 17 features.</p>
-<h3 id="Stabilizing-shooting-percentages-from-few-attempts">Stabilizing shooting percentages from few attempts<a class="anchor-link" href="#Stabilizing-shooting-percentages-from-few-attempts">¶</a></h3><p>A shooting percentage is an estimate of how well a player converts a shot type, and that
-estimate is only as good as the number of attempts behind it. Many eligible rows have very few
-attempts of a given type -- a forward who took one three-pointer all season is recorded at
-either 0% or 100%. Those values say almost nothing about the player's shooting, but after
-standardization they would be among the most extreme values in the whole matrix and could pull
-a player toward a cluster for no basketball reason.</p>
-<p>We therefore replaced each of the three percentages in the modeling matrix with an
-attempt-weighted shrinkage estimate,</p>
-<p><code>adjusted_percentage = (makes + k * prior_mean) / (attempts + k)</code>, with <code>k = 10</code>,</p>
-<p>where <code>prior_mean</code> is the attempt-weighted shooting percentage for that shot type across the
-eligible rows. This works like adding ten attempts at the sample's average rate: the prior
-carries a weight of 10/11 for a player with one attempt, one half at ten attempts, and less
-than one tenth beyond 90 attempts, so high-volume shooters keep almost exactly their observed
-percentage. A row with no attempts receives the prior mean, which keeps the earlier
-distinction between a genuine 0% and an undefined percentage. To check that the adjustment
-addresses the problem, we counted the rows more than three standard deviations from the mean
-of each percentage before and after it, and how many of them rest on 1-9 attempts.</p>
+<h2 id="Preparing-the-modeling-matrix">Preparing the modeling matrix<a class="anchor-link" href="#Preparing-the-modeling-matrix">¶</a></h2><h3 id="Stabilizing-shooting-percentages">Stabilizing shooting percentages<a class="anchor-link" href="#Stabilizing-shooting-percentages">¶</a></h3><p>The preceding checks used the feature-table percentages, including
+median-filled values. For clustering, we instead applied attempt-weighted
+shrinkage to all three shooting percentages to reduce small-sample noise:</p>
+<p><code>adjusted_percentage = (makes + k * prior_mean) / (attempts + k)</code></p>
+<p>We used <code>k = 10</code> and the attempt-weighted mean of eligible players
+as the prior for each shot type. We checked how many extreme percentages
+(|z| &gt; 3) were based on 1–9 attempts before and after adjustment.</p>
 </div>
 </div>
 </div>
@@ -12176,32 +12094,13 @@ of each percentage before and after it, and how many of them rest on 1-9 attempt
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>In the observed percentages, the extreme values were mostly small samples: 25 of the 26
-extreme three-point percentages and 25 of the 33 extreme free-throw percentages came from rows
-with 1-9 attempts, and so did 17 of the 42 extreme two-point percentages. After the adjustment,
-only one extreme value across the three features still rests on fewer than ten attempts. The
-extremes that remain belong to players with enough attempts for them to reflect real shooting
-differences, which is the information we included shooting efficiency for. We chose <code>k = 10</code>
-because the noisy extremes were concentrated below about ten attempts; a much larger value
-would also start to flatten genuine differences between players with a moderate number of
-attempts.</p>
-<p>The three percentage columns of the modeling matrix keep their names but hold these adjusted
-estimates; the feature table itself still keeps the observed percentages. The other 14
-features keep the representation chosen in the feature selection.</p>
-<h3 id="Scaling-the-features">Scaling the features<a class="anchor-link" href="#Scaling-the-features">¶</a></h3><p>The 17 features are measured in very different units: height in centimeters (standard
-deviation 8.6), shooting percentages as proportions, per-40 rates (standard deviations
-0.59-3.15), and the shot-location summaries in raw coordinate units (58-217). K-Means and GMM
-compare players through distances in feature space, so on these raw scales
-<code>median_raw_shot_distance</code> would dominate the distances simply because its numbers are larger,
-while a real difference in shooting percentage would barely count. We therefore standardized
-every feature to mean 0 and standard deviation 1 on the 4,568 eligible rows, so that each
-feature enters the clustering on the same scale.</p>
-<p>Apart from the shooting adjustment, we did not transform any feature. Several are skewed, most
-clearly <code>blocks_per_40</code> and <code>assists_per_40</code>, but those long tails come from a minority of
-players -- shot-blocking bigs and primary ball handlers -- whose unusual values are exactly the
-kind of role difference we want the clustering to find. Compressing them with a log or similar
-transformation would have no substantive justification, and no player is removed for being
-unusual.</p>
+<p>After shrinkage, only one extreme percentage was based on fewer than
+ten attempts, compared with many such cases beforehand.</p>
+<h3 id="Scaling-the-features">Scaling the features<a class="anchor-link" href="#Scaling-the-features">¶</a></h3><p>We standardized all 17 features to mean 0 and standard deviation 1
+across the 4,568 eligible rows, preventing differences in measurement
+units from dominating the clustering.</p>
+<p>We kept the skewed per-40 features unchanged, since extreme values
+could reflect meaningful playing-style differences.</p>
 </div>
 </div>
 </div>
@@ -12245,11 +12144,9 @@ unusual.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Exploring-the-structure-of-the-modeling-matrix-with-PCA">Exploring the structure of the modeling matrix with PCA<a class="anchor-link" href="#Exploring-the-structure-of-the-modeling-matrix-with-PCA">¶</a></h2><p>Before clustering, we wanted to see what the standardized 17-feature space looks like: how many
-independent directions of variation it really has, which basketball characteristics drive the
-largest differences between player-season-team observations, and whether the observations
-already fall into visibly separate groups. We fitted a PCA with all 17 components to <code>X_scaled</code>,
-so the components describe exactly the matrix the clustering will use.</p>
+<h2 id="Exploring-the-modeling-matrix-with-PCA">Exploring the modeling matrix with PCA<a class="anchor-link" href="#Exploring-the-modeling-matrix-with-PCA">¶</a></h2><p>We used PCA to examine the structure of the 17-feature space,
+identify its main directions of variation, and visualize how
+player observations were distributed.</p>
 </div>
 </div>
 </div>
@@ -12326,16 +12223,10 @@ cumulative                0.381  0.515  0.587  0.647  0.703  0.747  0.788  0.829
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The first component is clearly dominant: it carries 38.1% of the total variance (eigenvalue
-6.48, as much as six and a half of the original standardized features). The second adds 13.3%
-and the third 7.2%, so the first two together keep 51.5% and the first three 58.7%. After that
-the curve flattens: PC4 to PC10 each explain between 3.1% and 6.1%, there is no clear point
-where the remaining components become negligible, and eight components are needed to pass 80%.
-The playing-style space therefore has one strong main axis and one clear secondary axis, but
-about 41% of the variation lies beyond PC3, spread over many smaller directions.</p>
-<p>To see which characteristics define the leading components, we looked at the correlation
-between each feature and the scores of the first three components, together with the share of
-each feature's variance that the PC1-PC2 plane keeps.</p>
+<p>PC1 explained 38.1% of the variance, followed by PC2 (13.3%)
+and PC3 (7.2%).</p>
+<p>We examined how the original features correlated with these
+components to interpret the main differences between players.</p>
 </div>
 </div>
 </div>
@@ -12708,28 +12599,18 @@ each feature's variance that the PC1-PC2 plane keeps.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><strong>PC1 is an interior-to-perimeter axis.</strong> On the negative side are offensive rebounds (-0.86),
-height (-0.76), blocks (-0.73), defensive rebounds (-0.69), two-point attempts (-0.66), and
-two-point percentage (-0.51); on the positive side are lateral spread of shots (0.87), median
-shot distance (0.85), three-point attempts (0.84), variation in shot distance (0.69), free-throw
-percentage (0.52), and assists (0.49). A low PC1 score describes a tall player who shoots close
-to the basket, rebounds, and blocks shots; a high score describes a player who shoots from
-range, across the width of the court, and passes more.</p>
-<p><strong>PC2 is mainly on-ball offensive involvement.</strong> It is driven by turnovers (0.80), fouls
-received (0.67), assists (0.65), and two-point attempts (0.48), with height (-0.36) and lateral
-spread (-0.34) mildly negative. A high PC2 score describes a player who handles the ball,
-creates, attacks the basket, and draws fouls -- a difference that exists alongside the
-interior-perimeter split of PC1 rather than repeating it.</p>
-<p><strong>PC3 is weaker and mixed.</strong> Its largest correlations are three-point percentage (0.58),
-fouls committed (-0.50), free-throw percentage (0.47), and steals (-0.38). It contrasts shooting
-accuracy with defensive fouling and activity, but with 7.2% of the variance and no dominant
-feature, we read it as a secondary contrast rather than a role dimension of its own.</p>
-<p>The last column shows what a two-dimensional view leaves out. The PC1-PC2 plane keeps between
-0.49 and 0.87 of the variance of the shot-volume, shot-location, rebounding, playmaking,
-fouls-received, height, and blocks features, but only 0.04 of three-point percentage, 0.10 of
-steals, 0.18 of fouls committed, and 0.28 of two-point and free-throw percentage. Shooting
-efficiency and part of the defensive activity therefore lie largely outside the plane we can
-plot.</p>
+<p><strong>PC1 — interior to perimeter.</strong> Higher scores were associated with
+wider shot spread (r = 0.87), longer shot distance (0.85), and more
+three-point attempts (0.84). Lower scores were associated with
+offensive rebounds (-0.86), height (-0.76), and blocks (-0.73).
+This axis distinguished perimeter-oriented players from interior bigs.</p>
+<p><strong>PC2 — on-ball offensive involvement.</strong> Turnovers (0.80), fouls
+received (0.67), and assists (0.65) were its strongest signals.
+It reflected differences in ball-handling and offensive creation.</p>
+<p><strong>PC3</strong> showed a weaker contrast between shooting efficiency and
+defensive activity, explaining 7.2% of the variance.</p>
+<p>The PC1-PC2 plane represented some features poorly, particularly
+three-point percentage (4%), steals (10%), and fouls committed (18%).</p>
 </div>
 </div>
 </div>
@@ -12776,30 +12657,14 @@ plot.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The projection does not show clearly separated groups. Along PC1 the density is uneven: a dense
-peak of perimeter-oriented observations on the positive side, a broad and flatter band of
-interior-oriented observations on the negative side, and somewhat lower density between them --
-but that region is still populated, so players of every intermediate profile exist. Along PC2
-the observations form a single spread, slightly longer on the side of high on-ball involvement,
-without any visible split.</p>
-<p>We therefore read the structure as overlapping regions of different density within a continuous
-spectrum of playing styles, not as naturally isolated groups. The plot cannot tell us how many
-roles exist: it shows 51.5% of the variance, and some role differences, such as shooting
-efficiency and defensive activity, lie mostly in the directions it leaves out. It does indicate
-that the clusters will divide dense, connected regions of the feature space rather than
-separate isolated groups, so how firmly observations are assigned to their cluster will matter
-when we evaluate the models.</p>
-<h3 id="Using-PCA-for-exploration,-not-as-the-clustering-input">Using PCA for exploration, not as the clustering input<a class="anchor-link" href="#Using-PCA-for-exploration,-not-as-the-clustering-input">¶</a></h3><p>We decided to keep PCA as an exploratory and visualization tool and to fit K-Means and GMM on
-the original 17 standardized features. The results above give three reasons. First, the
-variance is not concentrated in a few components: beyond PC3, no component explains more than
-6.1% and there is no natural cut-off, so any truncation would be an arbitrary choice that
-discards a substantial share of the information -- 41% with three components and still 17% with
-eight. Second, what would be discarded is not noise: three-point percentage, steals, fouls
-committed, and two-point and free-throw percentage are mostly represented outside the leading
-components, and we selected these features deliberately as parts of a player's role. Third, the
-17 features are already a curated set without near-duplicates, and 17 dimensions for 4,568
-observations do not require reduction for K-Means or GMM. Clustering on the original features
-also lets us describe every cluster directly in basketball terms.</p>
+<p>The PC1-PC2 projection showed overlapping playing styles rather
+than clearly separated groups. The observations formed a continuous
+distribution, with no distinct gaps between player profiles.</p>
+<p>The projection captured only 51.5% of the total variance, so it
+could not establish how clearly groups were separated in the full
+feature space.</p>
+<p>We fitted the clustering models on all 17 standardized features,
+not on the PCA components.</p>
 </div>
 </div>
 </div>
@@ -12810,12 +12675,9 @@ also lets us describe every cluster directly in basketball terms.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="A-K-Means-baseline">A K-Means baseline<a class="anchor-link" href="#A-K-Means-baseline">¶</a></h2><p>As a first clustering model, and as a baseline for the Gaussian mixture models, we fitted
-K-Means to the 17 standardized features in <code>X_scaled</code> for every number of clusters from 2 to 12.
-Each fit keeps the best of 20 random initializations, which reduces the chance that a solution
-reflects an unlucky starting point. For each solution we recorded the inertia (the total squared
-distance of the observations to their cluster centers), the silhouette score computed on all
-4,568 observations, and the sizes of the smallest and largest clusters.</p>
+<h2 id="A-K-Means-baseline">A K-Means baseline<a class="anchor-link" href="#A-K-Means-baseline">¶</a></h2><p>We fitted K-Means with k = 2–12 on the 17 standardized features,
+using 20 initializations per k. We compared inertia, silhouette
+scores, and cluster sizes.</p>
 </div>
 </div>
 </div>
@@ -12916,23 +12778,13 @@ k
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Neither diagnostic points to a sharp optimum. The inertia curve bends gradually rather than at
-one clear elbow: adding a third cluster reduces inertia by 6,490 and a fourth by 3,856, but the
-fifth adds only 1,746, and from there each additional cluster reduces it by between 1,468 and
-595. Most of the gain from splitting the data is therefore achieved by k = 4, with
-diminishing returns afterwards.</p>
-<p>The silhouette score is highest at k = 2 (0.299) and then declines almost steadily, from 0.175
-at k = 3 and 0.148 at k = 4 to between 0.081 and 0.098 from k = 7 on. Values this low mean that
-many observations lie nearly as close to a neighboring cluster as to their own, which is what
-the continuous PC1-PC2 projection led us to expect: K-Means is dividing connected regions of the
-feature space rather than finding isolated groups. Because the score falls with every added
-cluster, it can rank k = 2 above everything else but does not identify a preferred number of
-clusters beyond that.</p>
-<p>We looked at cluster sizes only to detect degenerate or suspiciously small clusters, not as a
-criterion in itself: there is no reason to expect basketball roles to be equally common, so a
-valid solution may well contain clusters of very different sizes. None of the solutions shows
-such a problem. Even at k = 12 the smallest cluster still holds 300 observations (6.6% of the
-sample).</p>
+<p>The inertia curve showed no sharp elbow, although improvements
+became smaller after k = 4. Silhouette was highest at k = 2
+(0.299) and decreased as more clusters were added, reaching
+0.148 at k = 4.</p>
+<p>The low silhouette scores suggested overlapping clusters rather
+than clearly separated groups. None of the tested solutions
+produced suspiciously small clusters.</p>
 </div>
 </div>
 </div>
@@ -12987,22 +12839,13 @@ kmeans_cluster
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The k = 2 solution has the highest silhouette, and it is a valid partition of the data, but it
-mainly captures the broad interior-perimeter distinction we saw along PC1: one cluster of 1,226
-observations has a mean PC1 score of -3.68, the interior side, and the other, with 3,342
-observations, a mean of 1.35. It describes the one contrast that already dominates the PCA, so
-it says little about how playing styles differ beyond that broad division, which is what our
-research question is about.</p>
-<p>We selected <strong>k = 4</strong> as a practical K-Means baseline, mainly because it is where the inertia
-curve starts to flatten: the fifth cluster reduces inertia by less than half as much as the
-fourth. The support for it is modest. The elbow is gradual, the silhouette declines almost
-steadily as clusters are added (0.148 at k = 4), k = 5 is a similarly reasonable alternative
-(silhouette 0.134), and the low silhouette values throughout show that no K-Means solution here
-describes strongly separated groups. The baseline is therefore a reference solution for
-comparing models, not an estimate of how many player roles exist. K-Means assumes
-roughly spherical clusters of similar spread, and inertia and silhouette are not comparable with
-the likelihood-based criteria used for Gaussian mixture models, so the number of clusters in the
-final model is chosen separately, from the evidence for that model.</p>
+<p>The k = 2 solution mainly separated interior and perimeter players,
+matching the broad distinction observed along PC1. It did not capture
+much of the variation in playing styles beyond that split.</p>
+<p>We chose k = 4 as a practical K-Means baseline, where the inertia
+curve began to flatten. The evidence was not decisive, and k = 5
+was also reasonable. We treated this as a reference solution for
+comparison with GMM, not as the final number of player roles.</p>
 </div>
 </div>
 </div>
@@ -13013,22 +12856,12 @@ final model is chosen separately, from the evidence for that model.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Gaussian-mixture-models">Gaussian mixture models<a class="anchor-link" href="#Gaussian-mixture-models">¶</a></h2><p>K-Means assigns every observation to exactly one cluster and, because it measures plain
-Euclidean distance to the cluster centers, implicitly treats every cluster as a round group with
-the same spread. A Gaussian mixture model (GMM) instead describes the data as a mixture of
-multivariate normal components, each with its own mean and covariance matrix, and gives every
-observation a probability of belonging to each component. We used full covariance matrices,
-because different basketball roles may differ not only in their typical values but also in how
-much their features vary and how those features move together. To compare numbers of components
-we used the Bayesian information criterion (BIC), which rewards the likelihood of the data but
-penalizes every additional parameter; a lower BIC indicates a better balance between fit and
-complexity.</p>
-<p>We first fitted full-covariance models for k = 2 to 12 with the library's default covariance
-regularization, <code>reg_covar = 1e-6</code> -- a tiny constant added to the diagonal of every covariance
-matrix for numerical stability -- keeping the best of 10 initializations for each k. Next to BIC
-we recorded the smallest variance of any component in any direction: the smallest eigenvalue of
-a component's covariance matrix, minus the regularization constant. A value near zero means that
-a component has no spread at all in some direction of the feature space.</p>
+<h2 id="Gaussian-mixture-models">Gaussian mixture models<a class="anchor-link" href="#Gaussian-mixture-models">¶</a></h2><p>We fitted full-covariance GMMs on the 17 standardized features,
+allowing components to have different shapes and membership
+probabilities. We compared k = 2–12 using BIC, which balances
+model fit against complexity, with 10 initializations per k.</p>
+<p>We started with <code>reg_covar = 1e-6</code> and checked the smallest
+within-component variance for covariance collapse.</p>
 </div>
 </div>
 </div>
@@ -13116,13 +12949,10 @@ k
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Taken at face value, BIC favors a fairly detailed solution: the lowest value is at k = 10, with
-k = 9 only 108 higher, and every fit converged without a warning. The path to that minimum is
-irregular, though. The largest single drop comes from four to five components (from 154,726 to
-147,246), and another large one from eight to nine. The last column shows what changes at k = 5:
-from there on, every solution contains a component whose smallest variance is zero up to
-rounding error (of the order of 1e-16), which is not the case for two to four components. We
-inspected the components of the k = 10 solution that behave this way.</p>
+<p>BIC initially favored k = 10, but every solution from k = 5 onward
+contained at least one component with near-zero variance, despite
+converging without warnings.</p>
+<p>We inspected the collapsed components in the k = 10 solution.</p>
 </div>
 </div>
 </div>
@@ -13249,32 +13079,18 @@ Collapsed components in the default-regularization solution with k = 10:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Two components of the k = 10 solution have collapsed. The first consists of exactly the 443
-eligible observations without a three-point attempt. Within it, <code>three_point_attempts_per_40</code> is
-0 for every row and the shrinkage-adjusted <code>three_points_percentage</code> is the prior mean for every
-row, since zero attempts receive the prior, so the component has no variance in either feature.
-The second consists of 865 observations that all have zero blocks -- most of the 933 eligible
-observations without a block -- and has no variance in <code>blocks_per_40</code>.</p>
-<p>These zero values are legitimate basketball data: some players never attempt a three-pointer,
-and many go a whole season without blocking a shot. The problem is not the data or the
-preprocessing but the way a continuous Gaussian model treats a large group of identical values.
-As the variance of a normal component shrinks toward zero in one direction, its density at that
-exact value grows without bound, so a component that captures such a point mass can raise the
-likelihood almost arbitrarily; with <code>reg_covar = 1e-6</code>, nothing stops the variance from falling
-to practically zero. BIC rewards that likelihood gain, so part of the advantage of the solutions
-with five or more components comes from this covariance collapse rather than from additional
-structure in how players play. A lower BIC therefore does not mean that these solutions describe
-more meaningful roles, and the absence of convergence warnings does not reveal the problem,
-because the algorithm converges correctly to a degenerate solution.</p>
-<p>We therefore tested whether stronger regularization would prevent the collapse without
-restricting the model more than necessary. <code>reg_covar</code> adds a constant to the diagonal of every
-component covariance matrix. Every estimated variance is shifted up by that constant -- so none
-can fall below it -- and variances that were already large are inflated slightly as well. Since
-the features are standardized to unit variance, 0.01 corresponds to 1% of a feature's overall
-variance and 0.1 to 10%. We repeated the full sweep with both values. Absolute BIC values are not
-comparable across settings, because the regularization changes the fitted models themselves, so
-we compared how the settings behave: which solutions BIC prefers and whether any component still
-collapses.</p>
+<p>In the k = 10 solution, one collapsed component contained exactly
+443 observations with no three-point attempts, while another contained
+865 observations with zero blocks. The first had no variation in
+three-point volume or its shrinkage-adjusted percentage; the second
+had none in blocks per 40.</p>
+<p>These were legitimate zero values, but GMM could assign excessive
+likelihood to components with almost no variance. This distorted
+the BIC comparison, so the apparent preference for k = 10 was
+not reliable evidence of additional basketball roles.</p>
+<p>We repeated the k = 2–12 comparison with stronger covariance
+regularization (<code>reg_covar = 0.01</code> and <code>0.1</code>), checking both BIC
+and component collapse.</p>
 </div>
 </div>
 </div>
@@ -13380,21 +13196,11 @@ collapses.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>With either stronger setting, no solution between k = 2 and 12 contains a collapsed component;
-the smallest within-component variance in the two leading solutions is about 0.003 with
-<code>reg_covar = 0.01</code> and 0.007 with 0.1, against zero under the default. The preferred number of
-components changes as well. Instead of k = 10 and 9, BIC now prefers k = 5 under both settings;
-only the runner-up differs, k = 6 (23 higher) with 0.01 and k = 4 (12 higher) with 0.1. The
-selected k is therefore the same under both non-degenerate settings, although the conclusions
-below remain conditional on the regularization we chose.</p>
-<p>We kept <code>reg_covar = 0.01</code>. It is the smaller of the two stronger settings we tested and already
-prevents the collapse we observed. Compared with 0.1, it shifts every estimated variance by a
-smaller amount, so the components keep more freedom to represent genuine differences in spread
-and correlation between roles. Our aim was to remove a demonstrated numerical artifact, not to
-smooth the model further. We do not claim that 0.01 is the smallest value that would work, that
-it is optimal, or that it leaves the clustering unaffected: the regularization is a modeling
-assumption, and it cannot rule out every other kind of artifact. The remaining analysis uses the
-full-covariance models with <code>reg_covar = 0.01</code> that were fitted for this comparison.</p>
+<p>Neither stronger setting produced collapsed components. Both had
+their lowest BIC at k = 5, although the second-best solution differed.</p>
+<p>We selected <code>reg_covar = 0.01</code> for the remaining analysis, as it was
+the less restrictive of the two tested settings that prevented
+collapse.</p>
 </div>
 </div>
 </div>
@@ -13476,18 +13282,10 @@ k
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Under this specification, the BIC curve has a clear basin. It falls steeply up to k = 4, reaches
-its minimum at k = 5 (155,866), and k = 6 is almost level with it, only 23 higher; from k = 7 it
-rises steadily, to 3,741 above the minimum at k = 12, so there was no reason to extend the range.
-k = 4 is 884 above the minimum. All fits converged. The smallest within-component variance stays
-at about 0.003 up to k = 10 and falls to 0.0009 and 0.0002 at k = 11 and 12 -- still above our
-collapse threshold, but a sign that the largest solutions again start to concentrate a component
-on nearly identical values. None of the leading solutions shows this.</p>
-<p>We selected <strong>k = 5</strong>. It has the lowest BIC, and it is also the lowest-BIC solution under the
-stronger 0.1 setting. By the usual convention, a BIC difference above 10 counts as strong
-evidence, so the margin of 23 over k = 6 favors five components. It is still a modest margin
-that holds under a stated regularization assumption, so k = 6 remains a close competing
-solution.</p>
+<p>With <code>reg_covar = 0.01</code>, BIC was lowest at k = 5 (155,866),
+followed by k = 6 (ΔBIC = 23). The four-component solution was
+farther behind (ΔBIC = 884).</p>
+<p>We selected the five-component GMM for the subsequent analysis.</p>
 </div>
 </div>
 </div>
@@ -13635,35 +13433,20 @@ Adjusted Rand index, K-Means k = 4 vs GMM k = 5: 0.409
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The five components have weights between 0.140 and 0.246. The hard assignments, which place each
-observation in its most probable component, give similar shares, from 620 to 1,162
-observations. No component is small or degenerate; we report the sizes only for that reason,
-since roles need not be equally common. Most observations are assigned confidently -- 77.1% have
-a largest membership probability of at least 0.9, and only 3.5% have less than 0.6 -- although
-component 2 has a lower mean certainty (0.881) than the others, so its observations overlap more
-with neighboring components. Given the continuous structure in the PCA projection, some overlap
-of this kind is expected rather than a sign of failure.</p>
-<p>BIC and K-Means inertia are not comparable model-selection criteria: BIC is not defined for
-K-Means, and inertia is the quantity K-Means itself minimizes. A distance-based measure such as
-the silhouette could be computed for both partitions, but it rewards compact, well-separated
-groups, which is what K-Means optimizes, so we did not use it to rank the two models. Instead we
-compared the partitions themselves with the adjusted Rand index, which measures how far two
-partitions agree, not which one is better. With the number of clusters held at four, K-Means and
-the GMM agree
-only moderately (adjusted Rand index 0.513), so changing the model alone already reassigns a
-substantial part of the sample. The selected five-component GMM agrees with the K-Means baseline
-at 0.409. The cross-tabulation shows that this is not one K-Means cluster split in two: GMM
-component 1 almost coincides with K-Means cluster 3 (748 of its 756 observations), while the
-other three K-Means clusters are redistributed across several components.</p>
-<p>We selected the full-covariance GMM with five components and <code>reg_covar = 0.01</code> as our
-clustering model. We chose it over the K-Means baseline not because flexible covariances or soft
-assignments are better by definition, but because it provides a likelihood-based criterion for the
-number of components, whose minimum was clearer than anything the K-Means diagnostics showed, and
-because its membership probabilities show how firmly each observation belongs to its component in
-a feature space where groups overlap. This does not establish that the GMM partition is better
-than the K-Means one. The choice is conditional on the regularization, k = 6 is a close
-alternative, and whether the five components are stable and correspond to meaningful basketball
-roles is not settled by the selection itself.</p>
+<p>The five-component GMM assigned 620–1,162 observations to each
+component. For 77.1% of observations, the highest membership
+probability was at least 0.9; for 3.5%, it was below 0.6.
+Component 2 showed the most overlap (mean maximum probability 0.881).</p>
+<p>We compared the GMM and K-Means partitions using adjusted Rand
+index (ARI), which measures agreement rather than model quality.
+ARI was 0.513 with k = 4 for both models and 0.409 between the
+four-cluster K-Means baseline and the selected five-component GMM.
+The cross-tabulation showed that several groups were partitioned
+differently, rather than simply splitting one cluster.</p>
+<p>We preferred GMM because BIC offered clearer guidance on component
+count than the K-Means diagnostics, and its membership probabilities
+captured uncertainty in overlapping playing styles. This comparison
+did not establish that its roles were more meaningful.</p>
 </div>
 </div>
 </div>
@@ -13674,31 +13457,10 @@ roles is not settled by the selection itself.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Checking-the-robustness-of-the-five-component-GMM">Checking the robustness of the five-component GMM<a class="anchor-link" href="#Checking-the-robustness-of-the-five-component-GMM">¶</a></h2><p>The five-component solution raised two practical questions before we could rely on it for
-interpretation: whether the component assignments depend on the random initialization of the
-EM algorithm, and whether they depend on including the lowest-participation rows in the
-eligible sample. We checked both, and then whether the E2007-E2008
-recording-period difference we found when comparing coordinate systems shows up as a GMM
-component.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=032349f8">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Stability-under-different-random-initializations">Stability under different random initializations<a class="anchor-link" href="#Stability-under-different-random-initializations">¶</a></h3><p><code>GaussianMixture</code> already keeps the best of 10 initializations for a single call, but all of
-those initializations are drawn from the same <code>random_state</code>. To see whether a different draw
-of starting points would have landed on a different partition, we refit the selected
-specification -- five components, full covariance, <code>reg_covar = 0.01</code> -- nine more times, each
-with its own <code>random_state</code> and again the best of 10 initializations, and compared every run to
-the original (<code>random_state = 42</code>) and to each other. Because a GMM's component numbering is
-arbitrary, we used the adjusted Rand index (ARI), which is invariant to relabeling, and also
-matched each run's components to the original with the Hungarian algorithm on their confusion
-matrix, to see what share of observations land in the same matched component.</p>
+<h2 id="Checking-the-robustness-of-the-five-component-GMM">Checking the robustness of the five-component GMM<a class="anchor-link" href="#Checking-the-robustness-of-the-five-component-GMM">¶</a></h2><h3 id="Stability-under-different-random-initializations">Stability under different random initializations<a class="anchor-link" href="#Stability-under-different-random-initializations">¶</a></h3><p>We refitted the selected GMM with nine additional random seeds,
+using 10 initializations for each fit. We compared the ten
+partitions using adjusted Rand index (ARI) and matched component
+labels to measure assignment agreement.</p>
 </div>
 </div>
 </div>
@@ -13789,14 +13551,10 @@ Pairwise ARI across all 10 runs (including random_state = 42): min 0.929, mean 0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Across the ten runs (<code>random_state = 42</code> and nine others), BIC varies only from 155,864 to
-155,885 -- effectively the same optimum, reached repeatedly rather than depending on one lucky
-draw. Component labels are similarly stable: the adjusted Rand index between any two of the ten
-runs averages 0.978 and is never below 0.929, and after matching each run's components to the
-original with the Hungarian algorithm, every run keeps at least 96.8% of observations in the
-same matched component (99.6% for most seeds; <code>random_state = 8</code> is the least similar run at
-96.8%). The five-component partition is therefore a stable property of the specification, not
-an artifact of the particular initialization behind <code>random_state = 42</code>.</p>
+<p>Across the ten runs, mean pairwise ARI was 0.978 (minimum 0.929).
+After matching component labels to the original fit, at least
+96.8% of observations kept the same assignment. BIC also varied
+little, from 155,864 to 155,885.</p>
 </div>
 </div>
 </div>
@@ -13807,15 +13565,11 @@ an artifact of the particular initialization behind <code>random_state = 42</cod
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Rerunning-on-the-stricter-10-games-/-200-minutes-sample">Rerunning on the stricter <code>10 games / 200 minutes</code> sample<a class="anchor-link" href="#Rerunning-on-the-stricter-10-games-/-200-minutes-sample">¶</a></h3><p>When we selected the eligible sample, we kept <code>10 games / 200 minutes</code> in reserve: a stricter
-participation rule that retains 3,679 of the 6,307 player-season-team rows, all of them already
-inside the 4,568-row eligible sample. We rebuilt the modeling matrix for exactly this stricter
-sample -- recomputing the shrinkage prior for the three shooting percentages and refitting
-<code>StandardScaler</code> on these rows only, the same procedure used for the full sample, just on fewer
-rows -- and fit the same specification used for the main result. We then compared its component
-labels with the original model's labels on the 3,679 rows they share, again using the adjusted
-Rand index and Hungarian matching, and checked a narrow band of nearby k on the stricter sample
-to confirm five components is still reasonable there.</p>
+<h3 id="Stability-with-a-stricter-participation-threshold">Stability with a stricter participation threshold<a class="anchor-link" href="#Stability-with-a-stricter-participation-threshold">¶</a></h3><p>We refitted the GMM on 3,679 observations meeting at least
+10 games and 200 minutes, recalculating the shooting priors and
+standardization within this subset.</p>
+<p>We compared assignments on the shared rows and evaluated BIC
+for k = 4, 5, and 6.</p>
 </div>
 </div>
 </div>
@@ -14061,15 +13815,11 @@ k
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The stricter sample reproduces the same structure. Its own BIC is also minimized at five
-components (124,041, against 124,691 at four and 124,569 at six) -- the same ordering as on the
-full eligible sample. Restricting the original model's labels to the 3,679 common rows and
-comparing them with the labels from the model refit on just those rows gives an adjusted Rand
-index of 0.887, and after Hungarian matching 94.9% of the common rows fall in the same matched
-component. The matched component profiles line up closely as well: height, shot selection,
-playmaking, rebounding, and blocks differ by at most 0.8 units between the two models in every
-component (0.8 cm for one component's height; everything else differs by 0.3 or less).
-Removing the lowest-participation rows therefore does not change which roles the model finds.</p>
+<p>BIC again favored k = 5 (124,041), over k = 4 (124,691)
+and k = 6 (124,569).</p>
+<p>Comparing the strict-sample labels with the original model
+on the shared rows gave ARI = 0.887 and 94.9% matched agreement.
+The six compared profile features also remained similar.</p>
 </div>
 </div>
 </div>

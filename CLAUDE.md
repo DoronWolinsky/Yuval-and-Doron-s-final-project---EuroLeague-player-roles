@@ -220,7 +220,7 @@ walkthrough of the notebook by Doron and Yuval (not a slide presentation). Not s
 only remaining stage.
 
 **Final editorial cleanup (after Stage 15, commits `7974f44` onward):** the
-notebook is now **151 cells** (71 code); the HTML has 10 figures and 31 tables. Editorial and
+notebook is now **148 cells** (71 code); the HTML has 10 figures and 31 tables. Editorial and
 presentation-only: no calculation, threshold, feature, model, or reported result changed, and
 the HTML is always re-rendered from saved outputs (no Run All). Removed: the feature-dictionary
 builder, every `savefig`/`FIG_DIR`/`TABLE_DIR` line, the decision-table CSV writes, the
@@ -232,12 +232,14 @@ merged into the identical `shot_type`. Missing-value, height, position-enrichmen
 comparison, and spatial feature-selection prose was condensed to approved wording (the Kaggle
 link stays; the Giasemidis citation was dropped). The removed-rows table (`1b30c96c`) displays
 only rule, removed_rows, median_minutes and the four maximums. PyCharm can regenerate cell IDs
-when cells are moved; restore the original IDs if that happens. Open points left for Doron and
-Yuval, deliberately not changed: (1) the displayed feature-decision table (`5dac57c2`) still
-says shooting efficiency is "median-filled", while the model uses the shrinkage estimate;
-(2) `eec49154`/`d9128150` describe the median-filled percentages, not the modeling inputs;
-(3) `5d8556ca` says the coordinate summaries were "found compatible across periods", which is
-slightly stronger than the condensed `db42aee9` wording. `CheckList.md` and README were not
+when cells are moved; restore the original IDs if that happens. Feature-selection through
+robustness prose (`e00f2cb8` to `0088f3e8`) was also condensed; the shooting-efficiency row of
+the feature-decision table (`5dac57c2`, code string and saved output) now states the
+median-filled feature table vs. the shrinkage used in the clustering matrix, and `cb257aa6`
+notes that the preceding checks (`eec49154`/`d9128150`) used the feature-table percentages.
+The recording-period check (`5d8556ca` onward) has not been condensed yet. Open point left for
+Doron and Yuval, deliberately not changed: `5d8556ca` says the coordinate summaries were "found
+compatible across periods", which is slightly stronger than the condensed `db42aee9` wording. `CheckList.md` and README were not
 changed.
 
 **Post-Stage-15 edit:** removed the `minutes_per_game` vs `minutes / games_played` check
