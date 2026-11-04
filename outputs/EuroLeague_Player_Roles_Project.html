@@ -7847,8 +7847,6 @@ a.anchor-link {
 
 <span class="n">REPO_ROOT</span> <span class="o">=</span> <span class="n">find_repo_root</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"__file__"</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">())))</span>
 <span class="n">DATA_RAW</span> <span class="o">=</span> <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"raw"</span>
-<span class="n">FIG_DIR</span> <span class="o">=</span> <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"outputs"</span> <span class="o">/</span> <span class="s2">"figures"</span>
-<span class="n">FIG_DIR</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">players_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA_RAW</span> <span class="o">/</span> <span class="s2">"euroleague_players.csv"</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">points_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA_RAW</span> <span class="o">/</span> <span class="s2">"euroleague_points.csv"</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -8282,7 +8280,6 @@ Same set of seasons in both files: True
 <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"top"</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">]:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">spine</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"season_coverage.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -8526,11 +8523,6 @@ player_id values with no biography match: 0 (from euroleague_players.csv), 0 (fr
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">teams_per_player_season</span> <span class="o">=</span> <span class="n">players_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"season_code"</span><span class="p">,</span> <span class="s2">"player_id"</span><span class="p">])[</span><span class="s2">"team_id"</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
 <span class="n">multi_team</span> <span class="o">=</span> <span class="n">teams_per_player_season</span><span class="p">[</span><span class="n">teams_per_player_season</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Player-seasons split across more than one team: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">multi_team</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="n">example_season</span><span class="p">,</span> <span class="n">example_player</span> <span class="o">=</span> <span class="n">multi_team</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">players_df</span><span class="p">[(</span><span class="n">players_df</span><span class="p">[</span><span class="s2">"season_code"</span><span class="p">]</span> <span class="o">==</span> <span class="n">example_season</span><span class="p">)</span> <span class="o">&amp;</span>
-           <span class="p">(</span><span class="n">players_df</span><span class="p">[</span><span class="s2">"player_id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">example_player</span><span class="p">)][</span>
-    <span class="p">[</span><span class="s2">"season_player_id"</span><span class="p">,</span> <span class="s2">"season_code"</span><span class="p">,</span> <span class="s2">"player"</span><span class="p">,</span> <span class="s2">"team_id"</span><span class="p">,</span> <span class="s2">"games_played"</span><span class="p">,</span> <span class="s2">"minutes"</span><span class="p">]]</span>
 </pre></div>
 </div>
 </div>
@@ -8545,59 +8537,6 @@ player_id values with no biography match: 0 (from euroleague_players.csv), 0 (fr
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Player-seasons split across more than one team: 58
 </pre>
-</div>
-</div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>season_player_id</th>
-<th>season_code</th>
-<th>player</th>
-<th>team_id</th>
-<th>games_played</th>
-<th>minutes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>5773</th>
-<td>E2007_PASG_CSK</td>
-<td>E2007</td>
-<td>VAN DEN SPIEGEL, TOMAS</td>
-<td>CSK</td>
-<td>8</td>
-<td>79.4</td>
-</tr>
-<tr>
-<th>5774</th>
-<td>E2007_PASG_SOP</td>
-<td>E2007</td>
-<td>VAN DEN SPIEGEL, TOMAS</td>
-<td>SOP</td>
-<td>10</td>
-<td>237.8</td>
-</tr>
-</tbody>
-</table>
-</div>
 </div>
 </div>
 </div>
@@ -8685,7 +8624,6 @@ Missing coordinates among shot attempts: 0
 <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"top"</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">]:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">spine</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"shot_locations_2pt_3pt.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -8727,7 +8665,6 @@ Missing coordinates among shot attempts: 0
 <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"top"</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">]:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">spine</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"shot_locations_by_zone.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -8868,13 +8805,10 @@ Missing coordinates among shot attempts: 0
 <div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">shots</span><span class="p">[</span><span class="s2">"shot_category"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">shots</span><span class="p">[</span><span class="s2">"action_id"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">THREE_PT_IDS</span><span class="p">),</span> <span class="s2">"three_point"</span><span class="p">,</span> <span class="s2">"two_point"</span><span class="p">)</span>
-
-<span class="n">has_sentinel_coord</span> <span class="o">=</span> <span class="p">(</span><span class="n">shots</span><span class="p">[</span><span class="s2">"coord_x"</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">shots</span><span class="p">[</span><span class="s2">"coord_y"</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">has_sentinel_coord</span> <span class="o">=</span> <span class="p">(</span><span class="n">shots</span><span class="p">[</span><span class="s2">"coord_x"</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">shots</span><span class="p">[</span><span class="s2">"coord_y"</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">valid_shots</span> <span class="o">=</span> <span class="n">shots</span><span class="p">[</span><span class="o">~</span><span class="n">has_sentinel_coord</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">valid_shots</span><span class="p">[</span><span class="s2">"raw_shot_distance"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">valid_shots</span><span class="p">[</span><span class="s2">"coord_x"</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">valid_shots</span><span class="p">[</span><span class="s2">"coord_y"</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Field-goal attempts: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">shots</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Field-goal attempts with the free-throw sentinel coordinate: </span><span class="si">{</span><span class="n">has_sentinel_coord</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Field-goal attempts usable for spatial aggregation: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">valid_shots</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
@@ -8889,8 +8823,7 @@ Missing coordinates among shot attempts: 0
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Field-goal attempts: 614,219
-Field-goal attempts with the free-throw sentinel coordinate: 93
+<pre>Field-goal attempts with the free-throw sentinel coordinate: 93
 Field-goal attempts usable for spatial aggregation: 614,126
 </pre>
 </div>
@@ -8909,8 +8842,8 @@ Field-goal attempts usable for spatial aggregation: 614,126
 
 <span class="n">coverage</span> <span class="o">=</span> <span class="n">shots</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">KEY</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
     <span class="n">shot_event_count</span><span class="o">=</span><span class="p">(</span><span class="s2">"game_point_id"</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">),</span>
-    <span class="n">two_point_event_count</span><span class="o">=</span><span class="p">(</span><span class="s2">"shot_category"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="s2">"two_point"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
-    <span class="n">three_point_event_count</span><span class="o">=</span><span class="p">(</span><span class="s2">"shot_category"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="s2">"three_point"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+    <span class="n">two_point_event_count</span><span class="o">=</span><span class="p">(</span><span class="s2">"shot_type"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="s2">"Two-point"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+    <span class="n">three_point_event_count</span><span class="o">=</span><span class="p">(</span><span class="s2">"shot_type"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="s2">"Three-point"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
 <span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
 <span class="n">has_events</span> <span class="o">=</span> <span class="n">coverage</span><span class="p">[</span><span class="s2">"shot_event_count"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
@@ -9052,16 +8985,8 @@ part of a player's actual attempts.</p>
 <span class="n">exact_match</span> <span class="o">=</span> <span class="p">(</span><span class="n">comparison</span><span class="p">[</span><span class="s2">"field_goal_attempts_diff"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rows where season and event field-goal attempt totals match exactly: "</span>
       <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">exact_match</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">comparison</span><span class="p">)</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">exact_match</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">comparison</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Difference distribution (season total minus event total):"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">comparison</span><span class="p">[</span><span class="s2">"field_goal_attempts_diff"</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
-
-<span class="n">mismatches</span> <span class="o">=</span> <span class="n">comparison</span><span class="p">[</span><span class="n">comparison</span><span class="p">[</span><span class="s2">"field_goal_attempts_diff"</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Mismatched rows by season:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">mismatches</span><span class="p">[</span><span class="s2">"season_code"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
-<span class="n">mismatches</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">mismatches</span><span class="p">[</span><span class="s2">"field_goal_attempts_diff"</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">)[</span>
-    <span class="n">KEY</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"field_goal_attempts_season"</span><span class="p">,</span> <span class="s2">"field_goal_attempts_event"</span><span class="p">,</span> <span class="s2">"field_goal_attempts_diff"</span><span class="p">]</span>
-<span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">comparison</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comparison</span><span class="p">[</span><span class="s2">"field_goal_attempts_diff"</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">KEY</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"field_goal_attempts_season"</span><span class="p">,</span> <span class="s2">"field_goal_attempts_event"</span><span class="p">,</span> <span class="s2">"field_goal_attempts_diff"</span><span class="p">]]</span>
 </pre></div>
 </div>
 </div>
@@ -9075,22 +9000,6 @@ part of a player's actual attempts.</p>
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Rows where season and event field-goal attempt totals match exactly: 6306 of 6307 (99.98%)
-
-Difference distribution (season total minus event total):
-count    6307.000000
-mean       -0.002378
-std         0.188877
-min       -15.000000
-25%         0.000000
-50%         0.000000
-75%         0.000000
-max         0.000000
-Name: field_goal_attempts_diff, dtype: float64
-
-Mismatched rows by season:
-season_code
-E2017    1
-Name: count, dtype: int64
 </pre>
 </div>
 </div>
@@ -9301,181 +9210,6 @@ Rows with has_event_data == True but has_valid_spatial_data == False: 14 (free-t
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=55e0ba4b">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We also built a short data dictionary describing every column in the feature table, its
-source, and what a missing value means for that specific column, with a preliminary note on
-whether it looks like a clustering candidate, a comparison-only field, or something we are
-excluding; we replaced these notes with the final decisions once we selected the features.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=5ba5ff64">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">dict_row</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">definition</span><span class="p">,</span> <span class="n">calculation</span><span class="p">,</span> <span class="n">missing_meaning</span><span class="p">,</span> <span class="n">intended_use</span><span class="p">,</span>
-             <span class="n">eligible</span><span class="p">,</span> <span class="n">reason</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">"column"</span><span class="p">:</span> <span class="n">column</span><span class="p">,</span> <span class="s2">"group"</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span> <span class="s2">"source"</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">:</span> <span class="n">definition</span><span class="p">,</span>
-            <span class="s2">"calculation"</span><span class="p">:</span> <span class="n">calculation</span><span class="p">,</span> <span class="s2">"missing_value_meaning"</span><span class="p">:</span> <span class="n">missing_meaning</span><span class="p">,</span>
-            <span class="s2">"intended_use"</span><span class="p">:</span> <span class="n">intended_use</span><span class="p">,</span> <span class="s2">"eligible_for_clustering"</span><span class="p">:</span> <span class="n">eligible</span><span class="p">,</span> <span class="s2">"reason"</span><span class="p">:</span> <span class="n">reason</span><span class="p">}</span>
-
-
-<span class="n">dictionary_rows</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">IDENTIFIER_COLS</span><span class="p">:</span>
-    <span class="n">dictionary_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="n">col</span><span class="p">,</span> <span class="s2">"identifier"</span><span class="p">,</span> <span class="s2">"euroleague_players.csv"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> identifier."</span><span class="p">,</span> <span class="s2">"as provided"</span><span class="p">,</span>
-        <span class="s2">"not applicable (identifier)"</span><span class="p">,</span> <span class="s2">"join / lookup key"</span><span class="p">,</span> <span class="s2">"exclude"</span><span class="p">,</span> <span class="s2">"Identifier, not a statistic."</span><span class="p">))</span>
-
-<span class="n">dictionary_rows</span> <span class="o">+=</span> <span class="p">[</span>
-    <span class="n">dict_row</span><span class="p">(</span><span class="s2">"height_cm"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"players_bio.csv"</span><span class="p">,</span> <span class="s2">"Player height in centimeters."</span><span class="p">,</span>
-             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"not recorded in players_bio.csv"</span><span class="p">,</span>
-             <span class="s2">"candidate physical feature"</span><span class="p">,</span> <span class="s2">"candidate"</span><span class="p">,</span>
-             <span class="s2">"Kept unfilled until the eligible sample is defined and a handling decision is made."</span><span class="p">),</span>
-    <span class="n">dict_row</span><span class="p">(</span><span class="s2">"position"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"players_bio.csv"</span><span class="p">,</span> <span class="s2">"Traditional position (Guard/Forward/Center)."</span><span class="p">,</span>
-             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"not recorded in players_bio.csv"</span><span class="p">,</span>
-             <span class="s2">"post-hoc comparison only"</span><span class="p">,</span> <span class="s2">"comparison_only"</span><span class="p">,</span>
-             <span class="s2">"Never used as a clustering input; only for comparing clusters to positions afterwards."</span><span class="p">),</span>
-    <span class="n">dict_row</span><span class="p">(</span><span class="s2">"nationality"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"players_bio.csv"</span><span class="p">,</span> <span class="s2">"Player nationality."</span><span class="p">,</span>
-             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"not recorded in players_bio.csv"</span><span class="p">,</span> <span class="s2">"descriptive only"</span><span class="p">,</span>
-             <span class="s2">"exclude"</span><span class="p">,</span> <span class="s2">"Demographic field, not a playing-style statistic."</span><span class="p">),</span>
-    <span class="n">dict_row</span><span class="p">(</span><span class="s2">"born"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"players_bio.csv"</span><span class="p">,</span> <span class="s2">"Date of birth."</span><span class="p">,</span>
-             <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"not recorded in players_bio.csv"</span><span class="p">,</span> <span class="s2">"descriptive only"</span><span class="p">,</span>
-             <span class="s2">"undecided"</span><span class="p">,</span> <span class="s2">"Could derive age-at-season later; not itself a style feature."</span><span class="p">),</span>
-<span class="p">]</span>
-
-<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"games_played"</span><span class="p">,</span> <span class="s2">"games_started"</span><span class="p">,</span> <span class="s2">"minutes"</span><span class="p">]:</span>
-    <span class="n">dictionary_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="n">col</span><span class="p">,</span> <span class="s2">"coverage"</span><span class="p">,</span> <span class="s2">"euroleague_players.csv"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Season total for </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="s1">' '</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">,</span>
-        <span class="s2">"as provided"</span><span class="p">,</span> <span class="s2">"not applicable (always present)"</span><span class="p">,</span> <span class="s2">"denominator / eligibility filter"</span><span class="p">,</span>
-        <span class="s2">"exclude"</span><span class="p">,</span> <span class="s2">"Playing-time context, used as a denominator and filter, not a style feature."</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"has_positive_minutes"</span><span class="p">,</span> <span class="s2">"has_positive_games"</span><span class="p">,</span> <span class="s2">"has_event_data"</span><span class="p">,</span> <span class="s2">"has_valid_spatial_data"</span><span class="p">]:</span>
-    <span class="n">dictionary_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="n">col</span><span class="p">,</span> <span class="s2">"coverage"</span><span class="p">,</span> <span class="s2">"derived"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Flag: </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="s1">' '</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">,</span> <span class="s2">"boolean condition"</span><span class="p">,</span>
-        <span class="s2">"not applicable (always present)"</span><span class="p">,</span> <span class="s2">"eligibility filter"</span><span class="p">,</span> <span class="s2">"quality_flag"</span><span class="p">,</span>
-        <span class="s2">"Used to define the eligible training sample later, not itself a feature."</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"shot_event_count"</span><span class="p">,</span> <span class="s2">"valid_spatial_shot_count"</span><span class="p">,</span> <span class="s2">"valid_zone_shot_count"</span><span class="p">]:</span>
-    <span class="n">dictionary_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="n">col</span><span class="p">,</span> <span class="s2">"coverage"</span><span class="p">,</span> <span class="s2">"euroleague_points.csv (aggregated)"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Count of </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="s1">' '</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">,</span>
-        <span class="s2">"groupby size on the shot-attempt subset"</span><span class="p">,</span> <span class="s2">"0 shots recorded for this player-season-team"</span><span class="p">,</span>
-        <span class="s2">"denominator / reliability check"</span><span class="p">,</span> <span class="s2">"quality_flag"</span><span class="p">,</span>
-        <span class="s2">"Used to judge how much data the spatial statistics are based on."</span><span class="p">))</span>
-
-<span class="n">season_total_definitions</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"points"</span><span class="p">:</span> <span class="s2">"Total points scored."</span><span class="p">,</span> <span class="s2">"two_points_made"</span><span class="p">:</span> <span class="s2">"Made 2-point field goals."</span><span class="p">,</span>
-    <span class="s2">"two_points_attempted"</span><span class="p">:</span> <span class="s2">"Attempted 2-point field goals."</span><span class="p">,</span>
-    <span class="s2">"two_points_percentage"</span><span class="p">:</span> <span class="s2">"2-point shooting percentage."</span><span class="p">,</span>
-    <span class="s2">"three_points_made"</span><span class="p">:</span> <span class="s2">"Made 3-point field goals."</span><span class="p">,</span>
-    <span class="s2">"three_points_attempted"</span><span class="p">:</span> <span class="s2">"Attempted 3-point field goals."</span><span class="p">,</span>
-    <span class="s2">"three_points_percentage"</span><span class="p">:</span> <span class="s2">"3-point shooting percentage."</span><span class="p">,</span>
-    <span class="s2">"free_throws_made"</span><span class="p">:</span> <span class="s2">"Made free throws."</span><span class="p">,</span> <span class="s2">"free_throws_attempted"</span><span class="p">:</span> <span class="s2">"Attempted free throws."</span><span class="p">,</span>
-    <span class="s2">"free_throws_percentage"</span><span class="p">:</span> <span class="s2">"Free-throw percentage."</span><span class="p">,</span>
-    <span class="s2">"offensive_rebounds"</span><span class="p">:</span> <span class="s2">"Offensive rebounds."</span><span class="p">,</span> <span class="s2">"defensive_rebounds"</span><span class="p">:</span> <span class="s2">"Defensive rebounds."</span><span class="p">,</span>
-    <span class="s2">"total_rebounds"</span><span class="p">:</span> <span class="s2">"Total rebounds."</span><span class="p">,</span> <span class="s2">"assists"</span><span class="p">:</span> <span class="s2">"Assists."</span><span class="p">,</span> <span class="s2">"steals"</span><span class="p">:</span> <span class="s2">"Steals."</span><span class="p">,</span>
-    <span class="s2">"turnovers"</span><span class="p">:</span> <span class="s2">"Turnovers."</span><span class="p">,</span> <span class="s2">"blocks_favour"</span><span class="p">:</span> <span class="s2">"Blocks made by the player."</span><span class="p">,</span>
-    <span class="s2">"blocks_against"</span><span class="p">:</span> <span class="s2">"Times the player was blocked."</span><span class="p">,</span> <span class="s2">"fouls_committed"</span><span class="p">:</span> <span class="s2">"Personal fouls committed."</span><span class="p">,</span>
-    <span class="s2">"fouls_received"</span><span class="p">:</span> <span class="s2">"Fouls drawn."</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">season_total_definitions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">dictionary_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="n">col</span><span class="p">,</span> <span class="s2">"season_totals"</span><span class="p">,</span> <span class="s2">"euroleague_players.csv"</span><span class="p">,</span> <span class="n">definition</span><span class="p">,</span> <span class="s2">"as provided"</span><span class="p">,</span>
-        <span class="s2">"not applicable (always present)"</span><span class="p">,</span> <span class="s2">"candidate volume/efficiency statistic"</span><span class="p">,</span>
-        <span class="s2">"candidate"</span><span class="p">,</span> <span class="s2">"Season total from the source file."</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">per_40_col</span><span class="p">,</span> <span class="n">total_col</span> <span class="ow">in</span> <span class="n">PER_40_SOURCE_COLUMNS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">dictionary_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="n">per_40_col</span><span class="p">,</span> <span class="s2">"season_totals"</span><span class="p">,</span> <span class="s2">"derived"</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">total_col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="s1">' '</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2"> per 40 minutes played."</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">total_col</span><span class="si">}</span><span class="s2"> / minutes * 40, only where minutes &gt; 0"</span><span class="p">,</span> <span class="s2">"minutes == 0 for this row"</span><span class="p">,</span>
-        <span class="s2">"candidate playing-style rate feature"</span><span class="p">,</span> <span class="s2">"candidate"</span><span class="p">,</span>
-        <span class="s2">"Calculated from season totals, since per-game values mix playing time with playing style."</span><span class="p">))</span>
-
-<span class="n">shooting_mix_definitions</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"field_goal_attempts"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"Two-point plus three-point attempts (season totals)."</span><span class="p">,</span>
-                             <span class="s2">"two_points_attempted + three_points_attempted"</span><span class="p">,</span> <span class="s2">"not applicable"</span><span class="p">),</span>
-    <span class="s2">"two_point_attempt_share"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"Share of field-goal attempts that were two-pointers."</span><span class="p">,</span>
-                                 <span class="s2">"two_points_attempted / field_goal_attempts"</span><span class="p">,</span> <span class="s2">"field_goal_attempts == 0"</span><span class="p">),</span>
-    <span class="s2">"three_point_attempt_share"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"Share of field-goal attempts that were three-pointers."</span><span class="p">,</span>
-                                   <span class="s2">"three_points_attempted / field_goal_attempts"</span><span class="p">,</span> <span class="s2">"field_goal_attempts == 0"</span><span class="p">),</span>
-    <span class="s2">"free_throw_attempt_rate"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"Free-throw attempts relative to field-goal attempts."</span><span class="p">,</span>
-                                 <span class="s2">"free_throws_attempted / field_goal_attempts"</span><span class="p">,</span> <span class="s2">"field_goal_attempts == 0"</span><span class="p">),</span>
-    <span class="s2">"event_two_point_attempt_share"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"Share of recorded shot events that were two-point attempts."</span><span class="p">,</span>
-                                       <span class="s2">"two_point_event_count / shot_event_count"</span><span class="p">,</span> <span class="s2">"shot_event_count == 0"</span><span class="p">),</span>
-    <span class="s2">"event_three_point_attempt_share"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"Share of recorded shot events that were three-point attempts."</span><span class="p">,</span>
-                                         <span class="s2">"three_point_event_count / shot_event_count"</span><span class="p">,</span> <span class="s2">"shot_event_count == 0"</span><span class="p">),</span>
-<span class="p">}</span>
-<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="n">calc</span><span class="p">,</span> <span class="n">missing_meaning</span><span class="p">)</span> <span class="ow">in</span> <span class="n">shooting_mix_definitions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">dictionary_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="n">col</span><span class="p">,</span> <span class="s2">"shooting_mix"</span><span class="p">,</span> <span class="s2">"derived"</span><span class="p">,</span> <span class="n">definition</span><span class="p">,</span> <span class="n">calc</span><span class="p">,</span> <span class="n">missing_meaning</span><span class="p">,</span>
-        <span class="s2">"candidate shot-selection feature"</span><span class="p">,</span> <span class="s2">"candidate"</span><span class="p">,</span>
-        <span class="s2">"Undefined shares are left as NaN, not filled with zero or an average."</span><span class="p">))</span>
-
-<span class="n">spatial_definitions</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"mean_lateral_shot_position"</span><span class="p">:</span> <span class="s2">"Mean coord_x across valid field-goal attempts."</span><span class="p">,</span>
-    <span class="s2">"lateral_shot_position_std"</span><span class="p">:</span> <span class="s2">"Standard deviation of coord_x across valid field-goal attempts."</span><span class="p">,</span>
-    <span class="s2">"mean_longitudinal_shot_position"</span><span class="p">:</span> <span class="s2">"Mean coord_y across valid field-goal attempts."</span><span class="p">,</span>
-    <span class="s2">"longitudinal_shot_position_std"</span><span class="p">:</span> <span class="s2">"Standard deviation of coord_y across valid field-goal attempts."</span><span class="p">,</span>
-    <span class="s2">"mean_raw_shot_distance"</span><span class="p">:</span> <span class="s2">"Mean distance from (0, 0) across valid field-goal attempts, raw coordinate units."</span><span class="p">,</span>
-    <span class="s2">"median_raw_shot_distance"</span><span class="p">:</span> <span class="s2">"Median distance from (0, 0) across valid field-goal attempts, raw coordinate units."</span><span class="p">,</span>
-    <span class="s2">"raw_shot_distance_std"</span><span class="p">:</span> <span class="s2">"Standard deviation of distance from (0, 0), raw coordinate units."</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">spatial_definitions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">dictionary_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="n">col</span><span class="p">,</span> <span class="s2">"spatial"</span><span class="p">,</span> <span class="s2">"euroleague_points.csv (aggregated)"</span><span class="p">,</span> <span class="n">definition</span><span class="p">,</span>
-        <span class="s2">"computed on valid_spatial_shot_count field-goal attempts, basket at (0, 0)"</span><span class="p">,</span>
-        <span class="s2">"no valid spatial shots for this player-season-team, or only one shot (std only)"</span><span class="p">,</span>
-        <span class="s2">"candidate shot-location feature"</span><span class="p">,</span> <span class="s2">"candidate"</span><span class="p">,</span>
-        <span class="s2">"Basket location and raw-unit distance are empirical estimates, not documented facts; "</span>
-        <span class="s2">"see the coordinate discussion above."</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">zone_share_cols</span><span class="p">:</span>
-    <span class="n">zone_letter</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-    <span class="n">dictionary_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="n">col</span><span class="p">,</span> <span class="s2">"spatial"</span><span class="p">,</span> <span class="s2">"euroleague_points.csv (aggregated)"</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">"Share of valid field-goal attempts recorded in zone </span><span class="si">{</span><span class="n">zone_letter</span><span class="si">}</span><span class="s2">."</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">"count in zone </span><span class="si">{</span><span class="n">zone_letter</span><span class="si">}</span><span class="s2"> / valid_zone_shot_count"</span><span class="p">,</span> <span class="s2">"no valid spatial shots for this player-season-team"</span><span class="p">,</span>
-        <span class="s2">"candidate shot-location feature"</span><span class="p">,</span> <span class="s2">"candidate"</span><span class="p">,</span>
-        <span class="s2">"Zone boundaries are not documented; the letter is used as recorded, without an assumed name."</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">EXCLUDED_DESCRIPTIVE_COLS</span><span class="p">:</span>
-    <span class="n">dictionary_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="n">col</span><span class="p">,</span> <span class="s2">"excluded_descriptive"</span><span class="p">,</span> <span class="s2">"euroleague_players.csv"</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">"Season total for </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="s1">' '</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">,</span> <span class="s2">"as provided"</span><span class="p">,</span>
-        <span class="s2">"not applicable (always present)"</span><span class="p">,</span> <span class="s2">"descriptive reference only"</span><span class="p">,</span> <span class="s2">"exclude"</span><span class="p">,</span>
-        <span class="s2">"Mixes playing quality with playing style; not used as a clustering feature."</span><span class="p">))</span>
-
-<span class="n">feature_dictionary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dictionary_rows</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Feature table columns: </span><span class="si">{</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, dictionary rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_dictionary</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Feature table columns: 76, dictionary rows: 76
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=81d68ac7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -9507,190 +9241,12 @@ concentrated.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=01bfd718">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">participation_percentiles</span> <span class="o">=</span> <span class="n">features</span><span class="p">[[</span><span class="s2">"minutes"</span><span class="p">,</span> <span class="s2">"games_played"</span><span class="p">,</span> <span class="s2">"field_goal_attempts"</span><span class="p">]]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span>
-    <span class="n">percentiles</span><span class="o">=</span><span class="p">[</span><span class="mf">.01</span><span class="p">,</span> <span class="mf">.05</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.15</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.25</span><span class="p">,</span> <span class="mf">.3</span><span class="p">,</span> <span class="mf">.4</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">.9</span><span class="p">,</span> <span class="mf">.95</span><span class="p">,</span> <span class="mf">.99</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="n">participation_percentiles</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>minutes</th>
-<th>games_played</th>
-<th>field_goal_attempts</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>count</th>
-<td>6307.000000</td>
-<td>6307.000000</td>
-<td>6307.000000</td>
-</tr>
-<tr>
-<th>mean</th>
-<td>321.744601</td>
-<td>16.969241</td>
-<td>97.384493</td>
-</tr>
-<tr>
-<th>std</th>
-<td>269.884973</td>
-<td>11.287524</td>
-<td>93.371446</td>
-</tr>
-<tr>
-<th>min</th>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.000000</td>
-</tr>
-<tr>
-<th>1%</th>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.000000</td>
-</tr>
-<tr>
-<th>5%</th>
-<td>0.200000</td>
-<td>1.000000</td>
-<td>0.000000</td>
-</tr>
-<tr>
-<th>10%</th>
-<td>7.900000</td>
-<td>2.000000</td>
-<td>2.000000</td>
-</tr>
-<tr>
-<th>15%</th>
-<td>26.190000</td>
-<td>4.000000</td>
-<td>6.000000</td>
-</tr>
-<tr>
-<th>20%</th>
-<td>54.000000</td>
-<td>6.000000</td>
-<td>12.000000</td>
-</tr>
-<tr>
-<th>25%</th>
-<td>83.650000</td>
-<td>8.000000</td>
-<td>20.000000</td>
-</tr>
-<tr>
-<th>30%</th>
-<td>119.700000</td>
-<td>10.000000</td>
-<td>29.000000</td>
-</tr>
-<tr>
-<th>40%</th>
-<td>195.480000</td>
-<td>12.000000</td>
-<td>51.000000</td>
-</tr>
-<tr>
-<th>50%</th>
-<td>268.400000</td>
-<td>16.000000</td>
-<td>74.000000</td>
-</tr>
-<tr>
-<th>75%</th>
-<td>509.550000</td>
-<td>26.000000</td>
-<td>149.000000</td>
-</tr>
-<tr>
-<th>90%</th>
-<td>710.000000</td>
-<td>33.000000</td>
-<td>227.000000</td>
-</tr>
-<tr>
-<th>95%</th>
-<td>830.110000</td>
-<td>36.000000</td>
-<td>278.000000</td>
-</tr>
-<tr>
-<th>99%</th>
-<td>1026.994000</td>
-<td>40.000000</td>
-<td>388.940000</td>
-</tr>
-<tr>
-<th>max</th>
-<td>1243.800000</td>
-<td>44.000000</td>
-<td>594.000000</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dc0c341e">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>All three variables are heavily right-skewed, and a large share of rows sit very close to
-zero. 10% of rows have under 8 minutes, under 2 games played, and under 2 field-goal
-attempts; a quarter of rows have under 84 minutes, 8 games, and 20 attempts. The median row
-has 268 minutes, 16 games, and 74 attempts -- a full rotation player's season -- so the low
-end is doing a lot of the work in deciding how much of the table is usable.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4c0de71f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
@@ -9718,7 +9274,6 @@ end is doing a lot of the work in deciding how much of the table is usable.</p>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Cumulative Distributions of Participation Variables (dashed lines = candidate thresholds)"</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"participation_distributions.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -9744,11 +9299,12 @@ end is doing a lot of the work in deciding how much of the table is usable.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The three curves rise steeply near zero and then flatten out, which is the same story as the
-percentile table in chart form: there is no natural gap or elbow that separates "real"
-playing time from noise, just a continuous rise. That means any participation cutoff is a
-judgment call, not something the data picks for us on its own -- which is exactly why we
-compare several candidate rules below instead of picking one number outright.</p>
+<p>All three variables are heavily right-skewed: the curves rise steeply near zero, so a large
+share of rows have very little playing time, and then flatten out. There is no natural gap or
+elbow that separates "real" playing time from noise, just a continuous rise. That means any
+participation cutoff is a judgment call, not something the data picks for us on its own --
+which is exactly why we compare several candidate rules below instead of picking one number
+outright.</p>
 </div>
 </div>
 </div>
@@ -9773,7 +9329,7 @@ retained by minutes/games alone but still be unusable for the spatial features.<
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">PARTICIPATION_RULES</span> <span class="o">=</span> <span class="p">[</span>
@@ -9812,7 +9368,7 @@ retained by minutes/games alone but still be unusable for the spatial features.<
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -9936,7 +9492,7 @@ if smaller, role.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">removed_summary_rows</span> <span class="o">=</span> <span class="p">[]</span>
@@ -9969,7 +9525,7 @@ if smaller, role.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -10076,7 +9632,8 @@ if smaller, role.</p>
 <p>Under the loosest rule (5 games/100 minutes), the rows it removes top out at 136.6 minutes,
 21 games, 47 field-goal attempts, and 56 points across the whole season -- genuinely marginal
 appearances. Under the strictest rule (15 games/400 minutes), the removed rows can reach
-474.7 minutes, 36 games, 232 field-goal attempts, and 305 points, which is a full partial
+474.7 minutes, 36 games, 232 field-goal attempts, and 305 points (separate maximums, not
+necessarily one row), which is a full partial
 season for a real rotation player, not a token appearance. So the stricter rules do not only
 remove noise: they also start cutting player-season-team observations that look like
 legitimate, if smaller, playing roles.</p>
@@ -10101,10 +9658,7 @@ capture.</p>
 rows against 4,568, removing 889 more player-season-team rows. <code>10 games / 300 minutes</code> removes
 more than half of the complete table (3,410 of 6,307 rows) and brings at least one season down to
 only 96 eligible observations. <code>15 games / 400 minutes</code> keeps only 2,193 rows (34.8%) and brings
-the smallest season down to 49. The comparison above also showed that the removed rows reach up
-to 474.7 minutes, 36 games, 232 attempts, and 305 points under the strictest rule -- separate
-maximums rather than necessarily one row, but clear evidence that meaningful playing time is
-being cut.</p>
+the smallest season down to 49.</p>
 <p>We selected <code>5 games / 100 minutes</code>. It removes 1,739 clearly low-participation rows while
 keeping 4,568, 72.4% of the complete table, and it preserves all 19 seasons with between 196
 and 273 eligible observations each. Every retained row already has valid spatial data and at
@@ -10122,11 +9676,10 @@ result, we can rerun it on that stricter sample and see whether the same role st
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="s2">"games_played"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="s2">"minutes"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"eligible_for_modeling dtype:"</span><span class="p">,</span> <span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
 <span class="n">eligible</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]]</span>
 <span class="n">ineligible</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="o">~</span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]]</span>
@@ -10152,81 +9705,12 @@ result, we can rerun it on that stricter sample and see whether the same role st
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>eligible_for_modeling dtype: bool
-Eligible rows: 4568
+<pre>Eligible rows: 4568
 Ineligible rows: 1739
 Seasons represented among eligible rows: 19 of 19
 Eligible rows per season: min=196, max=273
 Eligible rows missing valid spatial data: 0
 Eligible rows with zero field-goal attempts: 0
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=83900d7d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The counts match the comparison above exactly: 4,568 eligible rows, 1,739 ineligible, all 19
-seasons represented with between 196 and 273 eligible rows each, and no eligible row missing
-spatial data or sitting at zero field-goal attempts.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3bfbd240">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We added the eligibility flag to the same complete feature table rather than creating a
-filtered copy -- all 6,307 rows are still there, now with one extra column marking which of
-them meet the selected participation rule. Anything that still needs every player-season-team
-observation (for example, describing the full 19-season dataset) can keep using the complete
-table, while the modeling steps can filter on <code>eligible_for_modeling</code>.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1a6b87e2">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">feature_dictionary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
-    <span class="n">feature_dictionary</span><span class="p">,</span>
-    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">dict_row</span><span class="p">(</span>
-        <span class="s2">"eligible_for_modeling"</span><span class="p">,</span> <span class="s2">"coverage"</span><span class="p">,</span> <span class="s2">"derived"</span><span class="p">,</span>
-        <span class="s2">"Flag: meets the selected participation rule for the modeling sample "</span>
-        <span class="s2">"(games_played &gt;= 5 and minutes &gt;= 100)."</span><span class="p">,</span>
-        <span class="s2">"games_played &gt;= 5 and minutes &gt;= 100"</span><span class="p">,</span> <span class="s2">"not applicable (always present)"</span><span class="p">,</span>
-        <span class="s2">"sample-selection indicator for later modeling stages"</span><span class="p">,</span> <span class="s2">"quality_flag"</span><span class="p">,</span>
-        <span class="s2">"Marks which rows are eligible for the modeling sample; it is a filter, not itself "</span>
-        <span class="s2">"a clustering feature."</span><span class="p">,</span>
-    <span class="p">)]),</span>
-<span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Feature table columns: </span><span class="si">{</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, dictionary rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_dictionary</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Feature table columns: 77, dictionary rows: 77
 </pre>
 </div>
 </div>
@@ -10239,69 +9723,9 @@ table, while the modeling steps can filter on <code>eligible_for_modeling</code>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Missing-values-in-the-eligible-sample">Missing values in the eligible sample<a class="anchor-link" href="#Missing-values-in-the-eligible-sample">¶</a></h2><p>The earlier audit looked at missingness across the whole source data, before we knew which
-rows would even be eligible for modeling. Now that we have selected <code>eligible_for_modeling</code>,
-the population has changed, so the question is narrower and more concrete: of the 4,568
-eligible player-season-team rows, which candidate modeling columns are still missing
+<h2 id="Missing-values-in-the-eligible-sample">Missing values in the eligible sample<a class="anchor-link" href="#Missing-values-in-the-eligible-sample">¶</a></h2><p>With <code>eligible_for_modeling</code> defined, the question became narrower and more concrete: of the
+4,568 eligible player-season-team rows, which candidate modeling columns are still missing
 something, and what does that missing value actually mean for that column?</p>
-<p>We build a view of the eligible rows from the complete table rather than filtering <code>features</code>
-itself, so the complete 6,307-row table stays available for anything that still needs it.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=82ca549f">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">eligible_df</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Eligible sample size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">eligible_df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"All eligible rows have positive minutes: </span><span class="si">{</span><span class="p">(</span><span class="n">eligible_df</span><span class="p">[</span><span class="s1">'minutes'</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"All eligible rows have positive games played: </span><span class="si">{</span><span class="p">(</span><span class="n">eligible_df</span><span class="p">[</span><span class="s1">'games_played'</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"All eligible rows have at least one field-goal attempt: "</span>
-      <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="p">(</span><span class="n">eligible_df</span><span class="p">[</span><span class="s1">'field_goal_attempts'</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"All eligible rows have valid spatial data: </span><span class="si">{</span><span class="n">eligible_df</span><span class="p">[</span><span class="s1">'has_valid_spatial_data'</span><span class="p">]</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Eligible rows with exactly one valid spatial shot: "</span>
-      <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="p">(</span><span class="n">eligible_df</span><span class="p">[</span><span class="s1">'valid_spatial_shot_count'</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Eligible sample size: 4568
-All eligible rows have positive minutes: True
-All eligible rows have positive games played: True
-All eligible rows have at least one field-goal attempt: True
-All eligible rows have valid spatial data: True
-Eligible rows with exactly one valid spatial shot: 0
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=36a1d362">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The participation rule does what we hoped: every eligible row has positive minutes and games,
-at least one field-goal attempt, and valid spatial data, and none of them are sitting on a
-single shot where a standard deviation would be undefined. That already tells us the
-structural gaps we saw in the complete table -- rows with no recorded field-goal attempts at
-all -- cannot be the source of any missingness left in the eligible sample.</p>
 </div>
 </div>
 </div>
@@ -10325,10 +9749,12 @@ grouped into one row so the table stays short.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">candidate_cols</span> <span class="o">=</span> <span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">eligible_df</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]]</span>
+
+<span class="n">candidate_cols</span> <span class="o">=</span> <span class="p">(</span>
     <span class="p">[</span><span class="s2">"height_cm"</span><span class="p">,</span> <span class="s2">"position"</span><span class="p">,</span>
      <span class="s2">"mean_lateral_shot_position"</span><span class="p">,</span> <span class="s2">"lateral_shot_position_std"</span><span class="p">,</span>
      <span class="s2">"mean_longitudinal_shot_position"</span><span class="p">,</span> <span class="s2">"longitudinal_shot_position_std"</span><span class="p">,</span>
@@ -10373,7 +9799,7 @@ grouped into one row so the table stays short.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -10498,7 +9924,7 @@ checked how often that happens inside the eligible sample.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">pct_col</span><span class="p">,</span> <span class="n">attempt_col</span> <span class="ow">in</span> <span class="p">[</span>
@@ -10599,7 +10025,7 @@ eligible row has zero two-point attempts.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">zero_three_attempts</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s2">"three_points_attempted"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
@@ -10643,14 +10069,11 @@ free_throws_percentage set to missing: 949 of 6307 rows (full table), 34 of 4568
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The eligible-sample counts match the earlier diagnostic exactly -- 443 rows for
-<code>three_points_percentage</code>, 34 for <code>free_throws_percentage</code> -- confirming this targets the same
-rows we already identified, just replacing the misleading <code>0.0</code> with a real missing value.
-<code>has_three_point_attempts</code> and <code>has_free_throw_attempts</code> record the relevant fact -- that the
+<p><code>has_three_point_attempts</code> and <code>has_free_throw_attempts</code> record the relevant fact -- that the
 player didn't take that kind of shot -- so it stays in the table once the percentage itself
-becomes missing. K-Means and GMM both need a complete numeric matrix, though,
-so we still need to decide what goes in place of the missing percentage -- we come back to that
-after resolving height, below.</p>
+becomes missing. K-Means and GMM both need a complete numeric matrix, though, so we still need
+to decide what goes in place of the missing percentage -- we come back to that after resolving
+height, below.</p>
 </div>
 </div>
 </div>
@@ -10694,7 +10117,7 @@ never overwrite an existing positive height.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">height_overrides</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"processed"</span> <span class="o">/</span> <span class="s2">"height_overrides.csv"</span><span class="p">)</span>
@@ -10789,7 +10212,7 @@ gives zero-attempt rows the sample's attempt-weighted mean instead.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">eligible_attempted_three</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">features</span><span class="p">[</span><span class="s2">"has_three_point_attempts"</span><span class="p">]</span>
@@ -10829,59 +10252,6 @@ Eligible rows still missing free_throws_percentage: 0
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d86f6928">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>That closes the shooting-percentage gap completely. Together with the height fix above,
-height and shooting efficiency -- the two genuine measurement gaps identified above -- are now
-fully resolved in the eligible sample. The only missingness left is <code>position</code> (132 rows), which
-stays exactly as it is, since it is comparison-only.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8021c831">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">output_path</span> <span class="o">=</span> <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"processed"</span> <span class="o">/</span> <span class="s2">"player_season_team_features.csv"</span>
-<span class="n">features</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Saved: </span><span class="si">{</span><span class="n">output_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">REPO_ROOT</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="n">reloaded</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reloaded shape: </span><span class="si">{</span><span class="n">reloaded</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Saved: data/processed/player_season_team_features.csv
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Reloaded shape: (6307, 79)
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a5ffe19c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -10905,7 +10275,7 @@ season the way our own recorded statistics do.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [38]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">wiki_lookup</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
@@ -10916,9 +10286,6 @@ season the way our own recorded statistics do.</p>
                      <span class="o">&amp;</span> <span class="p">(</span><span class="n">wiki_lookup</span><span class="p">[</span><span class="s2">"birth_evidence"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"exact_match"</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Wikipedia lookup: </span><span class="si">{</span><span class="n">wiki_resolved</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">wiki_lookup</span><span class="p">)</span><span class="si">}</span><span class="s2"> players resolved to one of the five positions"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Resolved matches backed by an exact birth-year match: </span><span class="si">{</span><span class="n">wiki_exact_birth</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">wiki_exact_birth</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">wiki_resolved</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
-
-<span class="n">wiki_lookup</span><span class="p">[[</span><span class="s2">"player_id"</span><span class="p">,</span> <span class="s2">"original_name"</span><span class="p">,</span> <span class="s2">"raw_position"</span><span class="p">,</span> <span class="s2">"position_wiki"</span><span class="p">,</span> <span class="s2">"birth_evidence"</span><span class="p">]]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
-    <span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -10934,64 +10301,6 @@ season the way our own recorded statistics do.</p>
 <pre>Wikipedia lookup: 1900 of 2363 players resolved to one of the five positions
 Resolved matches backed by an exact birth-year match: 1893 (99.6%)
 </pre>
-</div>
-</div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[38]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>player_id</th>
-<th>original_name</th>
-<th>raw_position</th>
-<th>position_wiki</th>
-<th>birth_evidence</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>1138</th>
-<td>PAON</td>
-<td>KRASIC, BARISA</td>
-<td>Power forward</td>
-<td>Power Forward</td>
-<td>exact_match</td>
-</tr>
-<tr>
-<th>1628</th>
-<td>P004945</td>
-<td>PAUL, BRANDON</td>
-<td>Shooting guard / small forward</td>
-<td>Shooting Guard</td>
-<td>exact_match</td>
-</tr>
-<tr>
-<th>1606</th>
-<td>PACJ</td>
-<td>PAPAMAKARIOS, MANOLIS</td>
-<td>Point guard / shooting guard</td>
-<td>Point Guard</td>
-<td>exact_match</td>
-</tr>
-</tbody>
-</table>
-</div>
 </div>
 </div>
 </div>
@@ -11015,12 +10324,14 @@ Ambiguous or unverifiable identities were left unresolved rather than guessed.</
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [39]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">scores_lookup</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"processed"</span> <span class="o">/</span> <span class="s2">"player_positions_365scores.csv"</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">scores_lookup</span><span class="p">[</span><span class="s2">"match_status"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="n">match_status</span> <span class="o">=</span> <span class="n">scores_lookup</span><span class="p">[</span><span class="s2">"match_status"</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span>
+    <span class="n">scores_lookup</span><span class="p">[</span><span class="s2">"match_status"</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"error"</span><span class="p">),</span> <span class="s2">"error (504 timeout)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">match_status</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">scores_lookup</span><span class="p">[</span><span class="s2">"formation_position_name"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
@@ -11036,12 +10347,11 @@ Ambiguous or unverifiable identities were left unresolved rather than guessed.</
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>match_status
-exact                                                                                                                                                                                               1391
-not_found                                                                                                                                                                                            586
-ambiguous                                                                                                                                                                                            377
-club_match                                                                                                                                                                                             7
-error: 504 Server Error: Gateway Time-out for url: https://webws.365scores.com/web/search/?appTypeId=5&amp;langId=9&amp;timezoneName=Asia%2FJerusalem&amp;userCountryId=6&amp;query=Kyle+Guy                           1
-error: 504 Server Error: Gateway Time-out for url: https://webws.365scores.com/web/athletes/?appTypeId=5&amp;langId=9&amp;timezoneName=Asia%2FJerusalem&amp;userCountryId=6&amp;athletes=117850&amp;fullDetails=True       1
+exact                  1391
+not_found               586
+ambiguous               377
+club_match                7
+error (504 timeout)       2
 Name: count, dtype: int64
 
 formation_position_name
@@ -11079,7 +10389,7 @@ further filtering is needed for those.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">VALID_POSITIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Point Guard"</span><span class="p">,</span> <span class="s2">"Shooting Guard"</span><span class="p">,</span> <span class="s2">"Small Forward"</span><span class="p">,</span> <span class="s2">"Power Forward"</span><span class="p">,</span> <span class="s2">"Center"</span><span class="p">}</span>
@@ -11131,7 +10441,7 @@ whichever one did.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [41]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">wiki_lookup</span><span class="p">[[</span><span class="s2">"player_id"</span><span class="p">,</span> <span class="s2">"position_wiki"</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s2">"player_id"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="s2">"m:1"</span><span class="p">)</span>
@@ -11189,7 +10499,7 @@ since that is the population the later comparison against clusters will actually
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [42]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">eligible_df</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]]</span>
@@ -11227,7 +10537,7 @@ reconciled (365scores + Wikipedia): 4469 of 4568 eligible rows (97.8%)
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>The reconciled five-category label covers 97.8% of the eligible sample -- higher coverage
 than the original <code>position</code> column itself (97.1%). Between the two external sources, we can
-resolve a position for some players whose EuroLeague biography page never listed one.</p>
+resolve a position for some players whose <code>players_bio.csv</code> record has no position.</p>
 </div>
 </div>
 </div>
@@ -11251,7 +10561,7 @@ Center unchanged, then compared the two labels for every player where both are a
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [43]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [38]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">CAT5_TO_3</span> <span class="o">=</span> <span class="p">{</span>
@@ -11287,7 +10597,7 @@ Agreement with EuroLeague position: 79.2%
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[43]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[38]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -11370,15 +10680,12 @@ input.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [44]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [39]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">output_path</span> <span class="o">=</span> <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"processed"</span> <span class="o">/</span> <span class="s2">"player_season_team_features_with_position.csv"</span>
 <span class="n">features</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"position_reconciled_3cat"</span><span class="p">])</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Saved: </span><span class="si">{</span><span class="n">output_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">REPO_ROOT</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="n">reloaded</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reloaded shape: </span><span class="si">{</span><span class="n">reloaded</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -11392,13 +10699,6 @@ input.</p>
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Saved: data/processed/player_season_team_features_with_position.csv
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Reloaded shape: (6307, 83)
 </pre>
 </div>
 </div>
@@ -11440,13 +10740,12 @@ indicator.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [45]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
 
-<span class="n">TABLE_DIR</span> <span class="o">=</span> <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"outputs"</span> <span class="o">/</span> <span class="s2">"tables"</span>
 <span class="n">EARLY_SEASONS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"E2007"</span><span class="p">,</span> <span class="s2">"E2008"</span><span class="p">]</span>
 <span class="n">COORDINATE_SPATIAL_FEATURES</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">"mean_lateral_shot_position"</span><span class="p">,</span>
@@ -11499,7 +10798,7 @@ indicator.</p>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[45]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[40]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -11590,11 +10889,11 @@ coordinates, and the location of each zone letter, between the two periods.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [46]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [41]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">shot_period</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">valid_shots</span><span class="p">[</span><span class="s2">"season_code"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">EARLY_SEASONS</span><span class="p">),</span> <span class="s2">"E2007-E2008"</span><span class="p">,</span> <span class="s2">"E2009-E2025"</span><span class="p">)</span>
-<span class="n">is_three_point</span> <span class="o">=</span> <span class="n">valid_shots</span><span class="p">[</span><span class="s2">"shot_category"</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">"three_point"</span><span class="p">)</span>
+<span class="n">is_three_point</span> <span class="o">=</span> <span class="n">valid_shots</span><span class="p">[</span><span class="s2">"shot_type"</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="s2">"Three-point"</span><span class="p">)</span>
 
 <span class="n">coordinate_check</span> <span class="o">=</span> <span class="n">valid_shots</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">shot_period</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
     <span class="n">coord_x_p01</span><span class="o">=</span><span class="p">(</span><span class="s2">"coord_x"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)),</span>
@@ -11635,7 +10934,7 @@ E2009-E2025       -690.0             0.0        696.0        -37.0        828.0 
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[46]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[41]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -11853,7 +11152,7 @@ components.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [47]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [42]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">spatial_inputs</span> <span class="o">=</span> <span class="n">eligible_spatial</span><span class="p">[</span><span class="n">COORDINATE_SPATIAL_FEATURES</span><span class="p">]</span>
@@ -11890,7 +11189,7 @@ pc3                    0.1009      0.9359           0.0062
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[47]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[42]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -11988,7 +11287,7 @@ correlations to avoid keeping two versions of the same information.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [48]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [43]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">coordinate_correlation</span> <span class="o">=</span> <span class="n">spatial_inputs</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -12005,7 +11304,7 @@ correlations to avoid keeping two versions of the same information.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[48]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[43]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -12152,7 +11451,7 @@ than role. We checked each of these on the eligible sample.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [49]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [44]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">candidates</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">features</span><span class="p">[</span><span class="s2">"eligible_for_modeling"</span><span class="p">]]</span>
@@ -12213,7 +11512,7 @@ Correlation of each per-40 rate with minutes per game:
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[49]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[44]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>fouls_committed_per_40        -0.570
 offensive_rebounds_per_40     -0.197
@@ -12281,7 +11580,7 @@ playing time, or data coverage, and are listed with the full decision below.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [50]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [45]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">FINAL_CLUSTERING_FEATURES</span> <span class="o">=</span> <span class="p">[</span>
@@ -12371,7 +11670,6 @@ playing time, or data coverage, and are listed with the full decision below.</p>
     <span class="p">[(</span><span class="n">group</span><span class="p">,</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cols</span><span class="p">),</span> <span class="n">decision</span><span class="p">,</span> <span class="n">representation</span><span class="p">,</span> <span class="n">reason</span><span class="p">)</span>
      <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">decision</span><span class="p">,</span> <span class="n">representation</span><span class="p">,</span> <span class="n">reason</span> <span class="ow">in</span> <span class="n">FEATURE_DECISIONS</span><span class="p">],</span>
     <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"feature_group"</span><span class="p">,</span> <span class="s2">"features"</span><span class="p">,</span> <span class="s2">"decision"</span><span class="p">,</span> <span class="s2">"final_representation"</span><span class="p">,</span> <span class="s2">"reason"</span><span class="p">])</span>
-<span class="n">feature_decisions</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLE_DIR</span> <span class="o">/</span> <span class="s2">"final_clustering_feature_decisions.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="n">decided_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="ow">in</span> <span class="n">FEATURE_DECISIONS</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final clustering features: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">FINAL_CLUSTERING_FEATURES</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -12581,7 +11879,7 @@ features on the eligible sample and looked at their distributions.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [51]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [46]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">final_features</span> <span class="o">=</span> <span class="n">candidates</span><span class="p">[</span><span class="n">FINAL_CLUSTERING_FEATURES</span><span class="p">]</span>
@@ -12610,7 +11908,7 @@ Missing / infinite values: 0 / 0
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[51]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[46]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -12819,7 +12117,7 @@ correlations among the final features.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [52]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [47]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">final_correlation</span> <span class="o">=</span> <span class="n">final_features</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
@@ -12836,7 +12134,7 @@ correlations among the final features.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[52]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[47]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -12930,86 +12228,6 @@ two versions of the same measurement, and no pair comes close to an exact duplic
 rebounding rates and height are related in the expected direction (0.687 and 0.667), but
 height is a physical attribute and rebounding a responsibility, so both stay. These 17
 features are our final clustering feature set.</p>
-<p>We recorded the same decisions in the feature dictionary.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9e5dfd04">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [53]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">decision_by_column</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">decision</span><span class="p">,</span> <span class="n">reason</span><span class="p">)</span>
-                      <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">decision</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">reason</span> <span class="ow">in</span> <span class="n">FEATURE_DECISIONS</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">}</span>
-<span class="n">saved_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="s2">"position_reconciled_3cat"</span><span class="p">]</span>
-
-<span class="n">later_columns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">"has_three_point_attempts"</span><span class="p">,</span> <span class="s2">"shooting_mix"</span><span class="p">,</span> <span class="s2">"derived"</span><span class="p">,</span> <span class="s2">"Flag: at least one three-point attempt."</span><span class="p">,</span>
-     <span class="s2">"three_points_attempted &gt; 0"</span><span class="p">,</span> <span class="s2">"not applicable (always present)"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"has_free_throw_attempts"</span><span class="p">,</span> <span class="s2">"shooting_mix"</span><span class="p">,</span> <span class="s2">"derived"</span><span class="p">,</span> <span class="s2">"Flag: at least one free-throw attempt."</span><span class="p">,</span>
-     <span class="s2">"free_throws_attempted &gt; 0"</span><span class="p">,</span> <span class="s2">"not applicable (always present)"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"position_wiki"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"Wikipedia (verified identity)"</span><span class="p">,</span> <span class="s2">"Five-category position from Wikipedia."</span><span class="p">,</span>
-     <span class="s2">"normalized from the infobox position"</span><span class="p">,</span> <span class="s2">"no verified Wikipedia match"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"position_365scores"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"365scores.com"</span><span class="p">,</span> <span class="s2">"Five-category position from 365scores."</span><span class="p">,</span>
-     <span class="s2">"formation position; staff matches set to missing"</span><span class="p">,</span> <span class="s2">"no player match on 365scores"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"position_reconciled"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"derived"</span><span class="p">,</span> <span class="s2">"Five-category position used for comparison."</span><span class="p">,</span>
-     <span class="s2">"position_365scores, falling back to position_wiki"</span><span class="p">,</span> <span class="s2">"neither source resolved"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"position_reconciled_source"</span><span class="p">,</span> <span class="s2">"descriptive"</span><span class="p">,</span> <span class="s2">"derived"</span><span class="p">,</span> <span class="s2">"Source of position_reconciled."</span><span class="p">,</span>
-     <span class="s2">"365scores or wikipedia"</span><span class="p">,</span> <span class="s2">"neither source resolved"</span><span class="p">),</span>
-<span class="p">]</span>
-<span class="n">feature_dictionary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">feature_dictionary</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
-    <span class="n">dict_row</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">definition</span><span class="p">,</span> <span class="n">calculation</span><span class="p">,</span> <span class="n">missing_meaning</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">definition</span><span class="p">,</span> <span class="n">calculation</span><span class="p">,</span> <span class="n">missing_meaning</span> <span class="ow">in</span> <span class="n">later_columns</span>
-    <span class="k">if</span> <span class="n">column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">feature_dictionary</span><span class="p">[</span><span class="s2">"column"</span><span class="p">])])],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">feature_dictionary</span> <span class="o">=</span> <span class="n">feature_dictionary</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"column"</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">saved_columns</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-
-<span class="n">CLUSTERING_STATUS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"include"</span><span class="p">:</span> <span class="s2">"selected"</span><span class="p">,</span> <span class="s2">"exclude"</span><span class="p">:</span> <span class="s2">"exclude"</span><span class="p">,</span>
-                     <span class="s2">"descriptive / QA only"</span><span class="p">:</span> <span class="s2">"descriptive_qa_only"</span><span class="p">,</span> <span class="s2">"QA only"</span><span class="p">:</span> <span class="s2">"qa_only"</span><span class="p">,</span>
-                     <span class="s2">"comparison only"</span><span class="p">:</span> <span class="s2">"comparison_only"</span><span class="p">}</span>
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">feature_dictionary</span><span class="p">[</span><span class="s2">"column"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">group</span><span class="p">,</span> <span class="n">decision</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="n">decision_by_column</span><span class="p">[</span><span class="n">column</span><span class="p">]</span>
-    <span class="n">feature_dictionary</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s2">"eligible_for_clustering"</span><span class="p">]</span> <span class="o">=</span> <span class="n">CLUSTERING_STATUS</span><span class="p">[</span><span class="n">decision</span><span class="p">]</span>
-    <span class="n">feature_dictionary</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s2">"intended_use"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">"clustering feature (</span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">)"</span> <span class="k">if</span> <span class="n">decision</span> <span class="o">==</span> <span class="s2">"include"</span> <span class="k">else</span> <span class="n">decision</span><span class="p">)</span>
-    <span class="n">feature_dictionary</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s2">"reason"</span><span class="p">]</span> <span class="o">=</span> <span class="n">reason</span>
-
-<span class="n">COORDINATE_EXCLUSION_REASONS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"mean_lateral_shot_position"</span><span class="p">:</span> <span class="s2">"Only shows which side of the court a player favors; not a role."</span><span class="p">,</span>
-    <span class="s2">"mean_raw_shot_distance"</span><span class="p">:</span> <span class="s2">"Repeats median_raw_shot_distance (r = 0.924)."</span><span class="p">,</span>
-    <span class="s2">"mean_longitudinal_shot_position"</span><span class="p">:</span> <span class="s2">"Repeats shooting range (r = 0.923 with mean, 0.850 with median distance)."</span><span class="p">,</span>
-    <span class="s2">"longitudinal_shot_position_std"</span><span class="p">:</span> <span class="s2">"Repeats raw_shot_distance_std (r = 0.882)."</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">reason</span> <span class="ow">in</span> <span class="n">COORDINATE_EXCLUSION_REASONS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">feature_dictionary</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">feature_dictionary</span><span class="p">[</span><span class="s2">"column"</span><span class="p">]</span> <span class="o">==</span> <span class="n">column</span><span class="p">,</span> <span class="s2">"reason"</span><span class="p">]</span> <span class="o">=</span> <span class="n">reason</span>
-
-<span class="n">dictionary_path</span> <span class="o">=</span> <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"outputs"</span> <span class="o">/</span> <span class="s2">"tables"</span> <span class="o">/</span> <span class="s2">"player_season_team_feature_dictionary.csv"</span>
-<span class="n">feature_dictionary</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">dictionary_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Saved: </span><span class="si">{</span><span class="n">dictionary_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">REPO_ROOT</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_dictionary</span><span class="p">)</span><span class="si">}</span><span class="s2"> columns documented)"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">feature_dictionary</span><span class="p">[</span><span class="s2">"eligible_for_clustering"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Saved: outputs/tables/player_season_team_feature_dictionary.csv (83 columns documented)
-eligible_for_clustering
-exclude                49
-selected               17
-descriptive_qa_only    10
-comparison_only         5
-qa_only                 2
-</pre>
-</div>
 </div>
 </div>
 </div>
@@ -13047,7 +12265,7 @@ of each percentage before and after it, and how many of them rest on 1-9 attempt
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [54]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [48]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">SHOOTING_PERCENTAGE_COUNTS</span> <span class="o">=</span> <span class="p">{</span>
@@ -13095,7 +12313,7 @@ of each percentage before and after it, and how many of them rest on 1-9 attempt
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[54]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[48]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -13208,7 +12426,7 @@ unusual.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [55]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [49]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">modeling_metadata</span> <span class="o">=</span> <span class="n">modeling_rows</span><span class="p">[</span><span class="n">IDENTIFIER_COLS</span><span class="p">]</span>
@@ -13216,13 +12434,6 @@ unusual.</p>
 <span class="n">feature_scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
 <span class="n">X_scaled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">feature_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">modeling_features</span><span class="p">),</span>
                         <span class="n">index</span><span class="o">=</span><span class="n">modeling_rows</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">FINAL_CLUSTERING_FEATURES</span><span class="p">)</span>
-
-<span class="n">feature_decisions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">feature_decisions</span><span class="p">[</span><span class="s2">"feature_group"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Shooting efficiency"</span><span class="p">,</span>
-                      <span class="p">[</span><span class="s2">"final_representation"</span><span class="p">,</span> <span class="s2">"reason"</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"attempt-weighted shrinkage toward the eligible-sample mean (k = 10)"</span><span class="p">,</span>
-    <span class="s2">"Conversion of each shot type, stabilized so that percentages from very few attempts "</span>
-    <span class="s2">"do not become extreme; zero-attempt rows receive the attempt-weighted mean."</span><span class="p">]</span>
-<span class="n">feature_decisions</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">TABLE_DIR</span> <span class="o">/</span> <span class="s2">"final_clustering_feature_decisions.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Modeling matrix: </span><span class="si">{</span><span class="n">X_scaled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> rows x </span><span class="si">{</span><span class="n">X_scaled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> standardized features"</span><span class="p">)</span>
 </pre></div>
@@ -13263,7 +12474,7 @@ so the components describe exactly the matrix the clustering will use.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [56]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [50]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">modeling_pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">svd_solver</span><span class="o">=</span><span class="s2">"full"</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">)</span>
@@ -13296,7 +12507,6 @@ so the components describe exactly the matrix the clustering will use.</p>
 <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"top"</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">]:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">spine</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"pca_explained_variance.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -13350,7 +12560,7 @@ each feature's variance that the PC1-PC2 plane keeps.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [57]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [51]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">component_correlations</span> <span class="o">=</span> <span class="n">modeling_pca</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">modeling_pca</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">)</span>
@@ -13371,7 +12581,7 @@ each feature's variance that the PC1-PC2 plane keeps.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[57]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[51]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <style type="text/css">
 #T_3f28b_row0_col0 {
@@ -13744,7 +12954,7 @@ plot.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [58]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">pca_projection</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pca_scores</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"PC1"</span><span class="p">,</span> <span class="s2">"PC2"</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">X_scaled</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -13757,7 +12967,6 @@ plot.</p>
 <span class="n">grid</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PC1: interior to perimeter (</span><span class="si">{</span><span class="n">modeling_pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
 <span class="n">grid</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PC2: on-ball offensive involvement (</span><span class="si">{</span><span class="n">modeling_pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
 <span class="n">grid</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Player-Season-Team Observations Projected onto PC1 and PC2"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span><span class="p">)</span>
-<span class="n">grid</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"pca_projection_pc1_pc2.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -13831,7 +13040,7 @@ distance of the observations to their cluster centers), the silhouette score com
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [59]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [53]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
@@ -13879,7 +13088,6 @@ distance of the observations to their cluster centers), the silhouette score com
         <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">spine</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"K-Means on the 17 Standardized Features, k = 2 to 12"</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"kmeans_model_selection.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -13949,7 +13157,7 @@ sample).</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [60]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [54]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">KMEANS_BASELINE_K</span> <span class="o">=</span> <span class="mi">4</span>
@@ -14045,7 +13253,7 @@ a component has no spread at all in some direction of the feature space.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [61]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [55]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
@@ -14139,7 +13347,7 @@ inspected the components of the k = 10 solution that behave this way.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [62]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [56]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">zero_three_point_attempts</span> <span class="o">=</span> <span class="n">modeling_rows</span><span class="p">[</span><span class="s2">"three_points_attempted"</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
@@ -14291,7 +13499,7 @@ collapses.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [57]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">gmm_models</span> <span class="o">=</span> <span class="p">{</span><span class="mf">1e-6</span><span class="p">:</span> <span class="n">default_gmm_models</span><span class="p">}</span>
@@ -14327,7 +13535,7 @@ collapses.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[63]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[57]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <style type="text/css">
 </style>
@@ -14411,7 +13619,7 @@ full-covariance models with <code>reg_covar = 0.01</code> that were fitted for t
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [64]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [58]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">GMM_REG_COVAR</span> <span class="o">=</span> <span class="mf">0.01</span>
@@ -14433,7 +13641,6 @@ full-covariance models with <code>reg_covar = 0.01</code> that were fitted for t
 <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"top"</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">]:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">spine</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"gmm_bic.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">gmm_comparison</span><span class="p">[[</span><span class="s2">"bic"</span><span class="p">,</span> <span class="s2">"delta_bic"</span><span class="p">,</span> <span class="s2">"converged"</span><span class="p">,</span> <span class="s2">"smallest_within_component_variance"</span><span class="p">,</span>
@@ -14505,7 +13712,7 @@ solution.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [65]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [59]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">adjusted_rand_score</span>
@@ -14561,7 +13768,7 @@ Adjusted Rand index, K-Means k = 4 vs GMM k = 5: 0.409
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[65]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[59]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -14716,7 +13923,7 @@ matrix, to see what share of observations land in the same matched component.</p
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [66]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [60]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">linear_sum_assignment</span>
@@ -14833,7 +14040,7 @@ to confirm five components is still reasonable there.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [67]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [61]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">STRICT_MIN_GAMES</span><span class="p">,</span> <span class="n">STRICT_MIN_MINUTES</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">200</span>
@@ -14917,7 +14124,7 @@ k
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [68]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [62]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">strict_labels_aligned</span> <span class="o">=</span> <span class="n">strict_labels</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
@@ -14941,7 +14148,7 @@ k
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[68]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[62]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -15103,7 +14310,7 @@ playing-style role.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [69]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">season_is_early</span> <span class="o">=</span> <span class="n">modeling_metadata</span><span class="p">[</span><span class="s2">"season_code"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">EARLY_SEASONS</span><span class="p">)</span>
@@ -15164,9 +14371,8 @@ what each component represents.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Interpreting-the-five-components">Interpreting the five components<a class="anchor-link" href="#Interpreting-the-five-components">¶</a></h2><p>With the five-component GMM shown to be a stable result, we turned to what each component
-actually represents: its feature profile, the players it contains, and whether that profile
-and those players support a basketball role.</p>
+<h2 id="Interpreting-the-five-components">Interpreting the five components<a class="anchor-link" href="#Interpreting-the-five-components">¶</a></h2><p>For each component we looked at its feature profile, the players it contains, and whether that
+profile and those players support a basketball role.</p>
 </div>
 </div>
 </div>
@@ -15175,7 +14381,7 @@ and those players support a basketball role.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [70]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [64]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">cluster_profile</span> <span class="o">=</span> <span class="n">X_scaled</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">gmm_labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
@@ -15188,7 +14394,6 @@ and those players support a basketball role.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"GMM component"</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"gmm_cluster_profiles.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -15212,7 +14417,7 @@ and those players support a basketball role.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [71]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [65]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">raw_cluster_profile</span> <span class="o">=</span> <span class="n">modeling_features</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">gmm_labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -15237,7 +14442,7 @@ and those players support a basketball role.</p>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[71]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[65]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -15455,7 +14660,7 @@ stretch bigs</strong>.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [72]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [66]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ROLE_NAMES</span> <span class="o">=</span> <span class="p">{</span>
@@ -15482,7 +14687,7 @@ stretch bigs</strong>.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[72]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[66]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -15573,7 +14778,7 @@ component, and exact ties are broken by <code>player_id</code>, season, and team
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [73]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [67]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">mahalanobis_to_own_component</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">gmm</span><span class="p">):</span>
@@ -15613,7 +14818,7 @@ component, and exact ties are broken by <code>player_id</code>, season, and team
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[73]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[67]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -15719,7 +14924,7 @@ found one in Alberto Abalde.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [74]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [68]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">abalde</span> <span class="o">=</span> <span class="n">modeling_metadata</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">modeling_metadata</span><span class="p">[</span><span class="s2">"player"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"ABALDE, ALBERTO"</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -15738,7 +14943,7 @@ found one in Alberto Abalde.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[74]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[68]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -15868,54 +15073,10 @@ Abalde's case, a sensible within-career trajectory from one role to another.</p>
 <h2 id="Comparing-the-roles-with-traditional-positions">Comparing the roles with traditional positions<a class="anchor-link" href="#Comparing-the-roles-with-traditional-positions">¶</a></h2><p>Position labels were never used as a clustering input -- we used them only now, to see whether
 the five discovered roles reveal distinctions that the traditional position labels do not.
 <code>position_reconciled</code> (the five-category label built from 365scores and Wikipedia) is the main
-comparison, and the three-category EuroLeague <code>position</code> is a coarser, supplementary check, the
-same roles for the two labels decided when we built the feature table.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c508f401">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [75]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">"position_reconciled"</span><span class="p">,</span> <span class="s2">"position_reconciled (5-category, primary)"</span><span class="p">),</span>
-                    <span class="p">(</span><span class="s2">"position"</span><span class="p">,</span> <span class="s2">"position (3-category, supplementary)"</span><span class="p">)]:</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">modeling_rows</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="n">n_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">modeling_rows</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">n_total</span><span class="si">}</span><span class="s2"> eligible rows have a label "</span>
-          <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">n_total</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">); </span><span class="si">{</span><span class="n">n_total</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">n</span><span class="si">}</span><span class="s2"> rows have no label and are left out of the "</span>
-          <span class="sa">f</span><span class="s2">"comparison using that label."</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>position_reconciled (5-category, primary): 4469 of 4568 eligible rows have a label (97.8%); 99 rows have no label and are left out of the comparison using that label.
-position (3-category, supplementary): 4436 of 4568 eligible rows have a label (97.1%); 132 rows have no label and are left out of the comparison using that label.
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=af3df711">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Both labels are missing for only a small share of the eligible rows, so we simply drop the
-unlabeled rows from each comparison below rather than imputing a position for them.</p>
+comparison, and the three-category EuroLeague <code>position</code> is a coarser, supplementary check, as
+we decided when we compared the two labels. Both labels are missing for only a small share of
+the eligible rows (2.2% and 2.9%), so we simply drop the unlabeled rows from each comparison
+below rather than imputing a position for them.</p>
 </div>
 </div>
 </div>
@@ -15924,7 +15085,7 @@ unlabeled rows from each comparison below rather than imputing a position for th
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [76]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [69]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ROLE_ORDER</span> <span class="o">=</span> <span class="p">[</span><span class="n">ROLE_NAMES</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ROLE_NAMES</span><span class="p">)]</span>
@@ -15942,8 +15103,6 @@ unlabeled rows from each comparison below rather than imputing a position for th
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Player-season-team counts, role x position_reconciled:"</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Each role's position mix (row-normalized):"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">role_share</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Each position's role mix (column-normalized):"</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">position_share</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
@@ -15954,7 +15113,6 @@ unlabeled rows from each comparison below rather than imputing a position for th
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">FIG_DIR</span> <span class="o">/</span> <span class="s2">"role_vs_position_reconciled.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -16048,96 +15206,6 @@ unlabeled rows from each comparison below rather than imputing a position for th
 <td>87</td>
 <td>301</td>
 <td>189</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-Each role's position mix (row-normalized):
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th>position_reconciled</th>
-<th>Point Guard</th>
-<th>Shooting Guard</th>
-<th>Small Forward</th>
-<th>Power Forward</th>
-<th>Center</th>
-</tr>
-<tr>
-<th>role</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>playmaking guards</th>
-<td>0.52</td>
-<td>0.30</td>
-<td>0.14</td>
-<td>0.04</td>
-<td>0.00</td>
-</tr>
-<tr>
-<th>low-post centers</th>
-<td>0.00</td>
-<td>0.01</td>
-<td>0.02</td>
-<td>0.23</td>
-<td>0.74</td>
-</tr>
-<tr>
-<th>low-usage forwards</th>
-<td>0.05</td>
-<td>0.15</td>
-<td>0.38</td>
-<td>0.37</td>
-<td>0.06</td>
-</tr>
-<tr>
-<th>perimeter shooters</th>
-<td>0.36</td>
-<td>0.33</td>
-<td>0.22</td>
-<td>0.08</td>
-<td>0.00</td>
-</tr>
-<tr>
-<th>mobile stretch bigs</th>
-<td>0.01</td>
-<td>0.03</td>
-<td>0.14</td>
-<td>0.50</td>
-<td>0.31</td>
 </tr>
 </tbody>
 </table>
@@ -16278,7 +15346,7 @@ the forward-center line that <code>position_reconciled</code> treats as a hard b
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [77]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [70]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">role_position3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
@@ -16558,7 +15626,7 @@ guards, and the forward label still absorbs several different roles rather than 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [78]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [71]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ari_position_reconciled</span> <span class="o">=</span> <span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">role_position</span><span class="p">[</span><span class="s2">"role"</span><span class="p">],</span> <span class="n">role_position</span><span class="p">[</span><span class="s2">"position_reconciled"</span><span class="p">])</span>
