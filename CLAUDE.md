@@ -220,7 +220,7 @@ walkthrough of the notebook by Doron and Yuval (not a slide presentation). Not s
 only remaining stage.
 
 **Final editorial cleanup (after Stage 15, commits `7974f44` onward):** the
-notebook is now **148 cells** (71 code); the HTML has 10 figures and 31 tables. Editorial and
+notebook is now **142 cells** (69 code); the HTML has 10 figures and 28 tables. Editorial and
 presentation-only: no calculation, threshold, feature, model, or reported result changed, and
 the HTML is always re-rendered from saved outputs (no Run All). Removed: the feature-dictionary
 builder, every `savefig`/`FIG_DIR`/`TABLE_DIR` line, the decision-table CSV writes, the
@@ -237,9 +237,15 @@ robustness prose (`e00f2cb8` to `0088f3e8`) was also condensed; the shooting-eff
 the feature-decision table (`5dac57c2`, code string and saved output) now states the
 median-filled feature table vs. the shrinkage used in the clustering matrix, and `cb257aa6`
 notes that the preceding checks (`eec49154`/`d9128150`) used the feature-table percentages.
-The recording-period check (`5d8556ca` onward) has not been condensed yet. Open point left for
-Doron and Yuval, deliberately not changed: `5d8556ca` says the coordinate summaries were "found
-compatible across periods", which is slightly stronger than the condensed `db42aee9` wording. `CheckList.md` and README were not
+The final batch deleted the late E2007-E2008 share-by-component check (`5d8556ca`, `ce10d548`,
+`c728ebbb`; `early_share_by_component` no longer exists), the paragraph after the representative
+table (`95673848`), and the supplementary three-category role comparison (`f2c32eb0`, `5204d0aa`;
+`role_position3`/`counts3`/`ari_position` no longer exist). `74ff1786` now prints only the
+five-position ARI (0.210). The earlier position-source agreement and coordinate/zone checks stay.
+The interpretation, Abalde (E2017/E2019 at Valencia, `PAM`), position comparison, Discussion, and
+Limitations prose was replaced with approved wording; the Discussion is deliberately short and
+repeats no results. Where the Stage 10/12/13 notes below mention the early-period check, the
+3-category comparison, or ARI 0.288, those are no longer in the notebook. `CheckList.md` and README were not
 changed.
 
 **Post-Stage-15 edit:** removed the `minutes_per_game` vs `minutes / games_played` check

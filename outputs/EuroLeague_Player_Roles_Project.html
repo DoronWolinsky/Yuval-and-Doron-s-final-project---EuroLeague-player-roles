@@ -10501,8 +10501,8 @@ Agreement with EuroLeague position: 79.2%
 <p>The labels agreed for 79.2% of 2,058 comparable players. Most
 disagreements involved Guard/Forward or Forward/Center; only 17 players
 were classified as Guard by one source and Center by the other.</p>
-<p>We used <code>position_reconciled</code> as our primary five-category reference
-and the EuroLeague <code>position</code> as a supplementary three-category comparison.</p>
+<p>We used <code>position_reconciled</code> as the five-category reference
+for our final role comparison.</p>
 </div>
 </div>
 </div>
@@ -13824,89 +13824,13 @@ The six compared profile features also remained similar.</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5d8556ca">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Checking-whether-a-component-is-really-a-recording-period-effect">Checking whether a component is really a recording-period effect<a class="anchor-link" href="#Checking-whether-a-component-is-really-a-recording-period-effect">¶</a></h3><p>The coordinate-system comparison earlier found that the undocumented zone letters, not the
-coordinates themselves, differ between E2007-E2008 and the rest of the data. The clustering
-features use only the raw coordinate summaries, which we found compatible across periods, but
-we checked directly whether any of the five components is disproportionately made up of
-E2007-E2008 observations, since that would point to a methodological artifact rather than a
-playing-style role.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ce10d548">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">season_is_early</span> <span class="o">=</span> <span class="n">modeling_metadata</span><span class="p">[</span><span class="s2">"season_code"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">EARLY_SEASONS</span><span class="p">)</span>
-<span class="n">early_share_by_component</span> <span class="o">=</span> <span class="n">season_is_early</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">gmm_labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">"share_E2007_E2008"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Share of E2007-E2008 rows in the full eligible sample: </span><span class="si">{</span><span class="n">season_is_early</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">early_share_by_component</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Share of E2007-E2008 rows in the full eligible sample: 10.8%
-
-gmm_component
-0    0.120
-1    0.111
-2    0.084
-3    0.092
-4    0.148
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c728ebbb">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>None of the five components is disproportionately made up of early-period rows. The overall
-eligible sample is 10.8% E2007-E2008, and the per-component share ranges from 8.4% (component 2)
-to 14.8% (component 4) -- a narrow band around the overall share, not the near-exclusive
-concentration we saw for the exact zero-attempt and zero-block point masses earlier. The
-recording-period difference in the zone letters does not drive the discovered components, so we
-did not run a further sensitivity comparison here.</p>
-<p>The five-component GMM holds up under all three checks: it does not depend on the random
-initialization, it reappears with closely matching profiles under a stricter participation
-rule, and no component is an artifact of the recording-period difference between the earliest
-two seasons and the rest. We therefore treat it as a stable result and move on to interpreting
-what each component represents.</p>
-</div>
-</div>
-</div>
-</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=434d5170">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Interpreting-the-five-components">Interpreting the five components<a class="anchor-link" href="#Interpreting-the-five-components">¶</a></h2><p>For each component we looked at its feature profile, the players it contains, and whether that
-profile and those players support a basketball role.</p>
+<h2 id="Interpreting-the-five-components">Interpreting the five components<a class="anchor-link" href="#Interpreting-the-five-components">¶</a></h2>
 </div>
 </div>
 </div>
@@ -13915,7 +13839,7 @@ profile and those players support a basketball role.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [64]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">cluster_profile</span> <span class="o">=</span> <span class="n">X_scaled</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">gmm_labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
@@ -13951,7 +13875,7 @@ profile and those players support a basketball role.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [65]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [64]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">raw_cluster_profile</span> <span class="o">=</span> <span class="n">modeling_features</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">gmm_labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -13976,7 +13900,7 @@ profile and those players support a basketball role.</p>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[65]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[64]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -14154,38 +14078,24 @@ profile and those players support a basketball role.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Each component has a clear set of standardized means that set it apart from the others, so we
-went through them one at a time, citing both the standardized mean and the raw-unit mean
-from the table above.</p>
-<p><strong>Component 0</strong> stands out for assists per 40 (z = +0.88, 4.84 raw) and turnovers per 40
-(z = +0.54, 2.97), together with below-average height (z = -0.79, 192.8 cm), offensive rebounds
-(z = -0.72, 0.85), and blocks (z = -0.56, 0.16). This is the profile of a player who creates and
-carries the ball more than the other components, and plays away from the basket on defense and
-the offensive glass. We call it <strong>playmaking guards</strong>.</p>
-<p><strong>Component 1</strong> is the most extreme profile in the whole solution: its shot-distance spread
-(z = -1.90, 127.7 raw units) and lateral spread (z = -1.73, 140.4) are both far below every other
-component, three-point attempts per 40 are essentially zero (z = -1.50, 0.12), and height
-(z = +1.13, 209.3 cm), offensive rebounds (z = +1.50, 3.78), and blocks (z = +1.29, 1.38) are all
-far above average. These are players whose shots come from one small area near the basket and
-almost nowhere else. We call it <strong>low-post centers</strong>.</p>
-<p><strong>Component 2</strong> has no standardized mean larger than 0.66 in absolute value -- clearly the
-flattest of the five. Its largest signals are below-average turnovers (z = -0.55, 1.88) and
-fouls received (z = -0.47, 3.16), with mildly above-average shot-distance and lateral spread
-(z = +0.66 and +0.52). Height (202.0 cm) and every shot-selection feature sit close to the
-sample average. This looks like a genuinely lower-usage role rather than a role defined by one
-strong signal, so we kept the name simple: <strong>low-usage forwards</strong>.</p>
-<p><strong>Component 3</strong> is the mirror image of component 1 in shot location: the longest median shot
-distance of the five (z = +1.23, 696.2 raw units), the most three-point attempts per 40
-(z = +1.01, 7.18), the fewest two-point attempts (z = -0.93, 4.47), and the widest lateral spread
-of shots (z = +0.88, 406.4). Offensive rebounding is low (z = -0.72, 0.85), consistent with a
-player who plays away from the basket. We call it <strong>perimeter shooters</strong>.</p>
-<p><strong>Component 4</strong> combines above-average height (z = +0.73, 205.8 cm), defensive and offensive
-rebounding (z = +0.75 and +0.72), blocks (z = +0.52, 0.87), and two-point attempts per 40
-(z = +0.72, 9.67 -- the second-highest of any component) with a median shot distance well short
-of average (z = -0.93, 226.8) but nowhere near as extreme as component 1's 147.6, and a
-non-trivial three-point rate (2.66 per 40 against component 1's 0.12). These are big, productive
-interior players who still shoot from more than one spot on the floor. We call it <strong>mobile
-stretch bigs</strong>.</p>
+<p><strong>Component 0 — playmaking guards.</strong> This group had the highest
+assists (4.84 per 40) and turnovers (2.97), with below-average
+height (192.8 cm) and offensive rebounding (0.85).</p>
+<p><strong>Component 1 — low-post centers.</strong> These were the tallest players
+on average (209.3 cm), with the highest offensive rebounding (3.78)
+and blocks (1.38). They rarely attempted threes (0.12 per 40)
+and had the most concentrated shot locations.</p>
+<p><strong>Component 2 — low-usage forwards.</strong> This group had the least
+pronounced feature profile, with relatively few turnovers (1.88)
+and fouls received (3.16). We interpreted it as a role with
+lower on-ball involvement.</p>
+<p><strong>Component 3 — perimeter shooters.</strong> These players had the most
+three-point attempts (7.18 per 40), the longest median shot distance
+(696.2 raw coordinate units), and the widest lateral shot spread.</p>
+<p><strong>Component 4 — mobile stretch bigs.</strong> These players combined
+height (205.8 cm), rebounding, and blocks with substantial
+two-point volume (9.67 per 40) and more three-point attempts
+(2.66) than the low-post centers.</p>
 </div>
 </div>
 </div>
@@ -14194,7 +14104,7 @@ stretch bigs</strong>.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [66]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [65]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ROLE_NAMES</span> <span class="o">=</span> <span class="p">{</span>
@@ -14221,7 +14131,7 @@ stretch bigs</strong>.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[66]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[65]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -14297,13 +14207,11 @@ stretch bigs</strong>.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>To check these profiles against real players rather than only summary statistics, we listed
-three representative player-season-team observations per component: those closest to the mean
-of their own component. We measured closeness with the Mahalanobis distance under that
-component's fitted covariance matrix, in the same standardized feature space used for
-clustering, so a feature that varies widely within a role counts less than one the role holds
-tightly, and correlated features are not counted twice. Each player appears at most once per
-component, and exact ties are broken by <code>player_id</code>, season, and team.</p>
+<p>We selected three representative player-season-team observations
+per component, using Mahalanobis distance to the fitted component
+mean. This distance accounts for the component's covariance,
+rather than treating all feature directions equally.</p>
+<p>Each player appears at most once within a component.</p>
 </div>
 </div>
 </div>
@@ -14312,7 +14220,7 @@ component, and exact ties are broken by <code>player_id</code>, season, and team
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [67]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [66]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">mahalanobis_to_own_component</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">gmm</span><span class="p">):</span>
@@ -14352,7 +14260,7 @@ component, and exact ties are broken by <code>player_id</code>, season, and team
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[67]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[66]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -14422,34 +14330,13 @@ component, and exact ties are broken by <code>player_id</code>, season, and team
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=95673848">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>In every component, the observations closest to the mean belong to players whose known playing
-style matches the role's statistical profile: lead ball handlers among the playmaking guards,
-interior centers among the low-post centers, perimeter-oriented guards and wings among the
-perimeter shooters, and frontcourt players who also shoot from farther out among the mobile
-stretch bigs. The low-usage forwards are forwards rather than primary ball handlers or post
-players, which supports reading component 2 as a genuine, if broad, role rather than a
-statistical leftover. Because these are typical rather than extreme members, they show what an
-ordinary observation of each role looks like.</p>
-</div>
-</div>
-</div>
-</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=69ba33f9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="A-player-who-changes-role">A player who changes role<a class="anchor-link" href="#A-player-who-changes-role">¶</a></h3><p>Because player-season-team is the unit of observation, a player who appears in several eligible
-seasons can fall into different components over their career. We looked for a case where that
-change tells a coherent story rather than reflecting noise between two similar components, and
-found one in Alberto Abalde.</p>
+<h3 id="Alberto-Abalde-across-seasons">Alberto Abalde across seasons<a class="anchor-link" href="#Alberto-Abalde-across-seasons">¶</a></h3>
 </div>
 </div>
 </div>
@@ -14458,7 +14345,7 @@ found one in Alberto Abalde.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [68]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [67]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">abalde</span> <span class="o">=</span> <span class="n">modeling_metadata</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">modeling_metadata</span><span class="p">[</span><span class="s2">"player"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"ABALDE, ALBERTO"</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -14477,7 +14364,7 @@ found one in Alberto Abalde.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[68]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[67]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -14583,17 +14470,15 @@ found one in Alberto Abalde.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>In his first eligible season (E2017, at Joventut) Abalde is a playmaking guard (component 0,
-posterior 0.83); from E2020 onward, after moving to Real Madrid, he is a perimeter shooter
-(component 3) in five of his six seasons there, with one season (E2021) as a low-usage forward
-(component 2). The shift is consistent with a change in role from a young player given the ball
-more at a smaller club to a catch-and-shoot wing on a deeper roster. The clustering
-tracks this change using only the season's statistics, without being told anything about
-Abalde's career or his team.</p>
-<p>None of the five components looked incoherent enough to revise the model over: each has a
-distinct standardized profile (even component 2, whose profile is comparatively flat), real
-players whose statistics and -- where we recognized them -- known games match the role, and in
-Abalde's case, a sensible within-career trajectory from one role to another.</p>
+<p>Abalde was assigned to playmaking guards at Valencia in E2017
+(posterior 0.83) and low-usage forwards in E2019 (0.85).</p>
+<p>After joining Real Madrid in E2020, he was assigned to perimeter
+shooters in five of his six eligible seasons through E2025;
+E2021 was assigned to low-usage forwards.</p>
+<p>One possible basketball interpretation is that Abalde had more
+ball-handling responsibility earlier in his career, while his
+move to Real Madrid's deeper roster coincided with a greater
+emphasis on perimeter shooting.</p>
 </div>
 </div>
 </div>
@@ -14604,13 +14489,10 @@ Abalde's case, a sensible within-career trajectory from one role to another.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Comparing-the-roles-with-traditional-positions">Comparing the roles with traditional positions<a class="anchor-link" href="#Comparing-the-roles-with-traditional-positions">¶</a></h2><p>Position labels were never used as a clustering input -- we used them only now, to see whether
-the five discovered roles reveal distinctions that the traditional position labels do not.
-<code>position_reconciled</code> (the five-category label built from 365scores and Wikipedia) is the main
-comparison, and the three-category EuroLeague <code>position</code> is a coarser, supplementary check, as
-we decided when we compared the two labels. Both labels are missing for only a small share of
-the eligible rows (2.2% and 2.9%), so we simply drop the unlabeled rows from each comparison
-below rather than imputing a position for them.</p>
+<h2 id="Comparing-roles-with-traditional-positions">Comparing roles with traditional positions<a class="anchor-link" href="#Comparing-roles-with-traditional-positions">¶</a></h2><p>We compared the five discovered roles with the five traditional
+basketball positions.</p>
+<p>Position labels were not used for clustering. Observations
+without a position label were excluded from the comparison.</p>
 </div>
 </div>
 </div>
@@ -14619,7 +14501,7 @@ below rather than imputing a position for them.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [69]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [68]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ROLE_ORDER</span> <span class="o">=</span> <span class="p">[</span><span class="n">ROLE_NAMES</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ROLE_NAMES</span><span class="p">)]</span>
@@ -14851,307 +14733,16 @@ Each position's role mix (column-normalized):
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Reading down each position's column shows how far a single traditional position can split
-into different roles. Center is the most concentrated position: 69% of Centers are low-post
-centers and 24% are mobile stretch bigs, two roles with clearly different profiles -- almost no
-three-point shooting for low-post centers, against a real three-point rate for mobile stretch
-bigs. Point Guard is similarly concentrated but
-into a different two-role split: 54% playmaking guards and 40% perimeter shooters. Shooting
-Guard splits almost the same way (44% perimeter shooters, 36% playmaking guards), but with the
-two roles' shares reversed, so the official point guard/shooting guard distinction does not line
-up cleanly with the ball-handling-versus-shooting distinction the roles capture -- many nominal
-point guards are mainly shooters and many nominal shooting guards are mainly ball-handlers.
-Small Forward and Power Forward are the least concentrated: Small Forward splits across
-low-usage forwards (42%), perimeter shooters (30%), and playmaking guards (16%), and Power
-Forward splits across low-usage forwards (37%), mobile stretch bigs (31%), and low-post centers
-(18%).</p>
-<p>The same pattern appears from the role side. Low-post centers and playmaking guards each draw
-almost entirely from one or two positions that are already similar to each other (74% Center +
-23% Power Forward; 52% Point Guard + 30% Shooting Guard), so these two roles mostly refine
-positions that were already close. Low-usage forwards and mobile stretch bigs instead each
-combine two positions that the label keeps separate: low-usage forwards are 38% Small Forward
-and 37% Power Forward, and mobile stretch bigs are 50% Power Forward and 31% Center, spanning
-the forward-center line that <code>position_reconciled</code> treats as a hard boundary.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f2c32eb0">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [70]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">role_position3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">"role"</span><span class="p">:</span> <span class="n">gmm_labels</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">ROLE_NAMES</span><span class="p">),</span>
-    <span class="s2">"position"</span><span class="p">:</span> <span class="n">modeling_rows</span><span class="p">[</span><span class="s2">"position"</span><span class="p">],</span>
-<span class="p">})</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-
-<span class="n">counts3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">role_position3</span><span class="p">[</span><span class="s2">"role"</span><span class="p">],</span> <span class="n">role_position3</span><span class="p">[</span><span class="s2">"position"</span><span class="p">])</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span>
-    <span class="n">index</span><span class="o">=</span><span class="n">ROLE_ORDER</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"Guard"</span><span class="p">,</span> <span class="s2">"Forward"</span><span class="p">,</span> <span class="s2">"Center"</span><span class="p">])</span>
-<span class="n">role_share3</span> <span class="o">=</span> <span class="n">counts3</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">counts3</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">position_share3</span> <span class="o">=</span> <span class="n">counts3</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">counts3</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Player-season-team counts, role x position (3-category, supplementary):"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">counts3</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Each role's position mix (row-normalized):"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">role_share3</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Each position's role mix (column-normalized):"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">position_share3</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Player-season-team counts, role x position (3-category, supplementary):
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th>position</th>
-<th>Guard</th>
-<th>Forward</th>
-<th>Center</th>
-</tr>
-<tr>
-<th>role</th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>playmaking guards</th>
-<td>838</td>
-<td>161</td>
-<td>2</td>
-</tr>
-<tr>
-<th>low-post centers</th>
-<td>1</td>
-<td>84</td>
-<td>656</td>
-</tr>
-<tr>
-<th>low-usage forwards</th>
-<td>167</td>
-<td>709</td>
-<td>80</td>
-</tr>
-<tr>
-<th>perimeter shooters</th>
-<td>782</td>
-<td>325</td>
-<td>12</td>
-</tr>
-<tr>
-<th>mobile stretch bigs</th>
-<td>14</td>
-<td>325</td>
-<td>280</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-Each role's position mix (row-normalized):
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th>position</th>
-<th>Guard</th>
-<th>Forward</th>
-<th>Center</th>
-</tr>
-<tr>
-<th>role</th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>playmaking guards</th>
-<td>0.84</td>
-<td>0.16</td>
-<td>0.00</td>
-</tr>
-<tr>
-<th>low-post centers</th>
-<td>0.00</td>
-<td>0.11</td>
-<td>0.89</td>
-</tr>
-<tr>
-<th>low-usage forwards</th>
-<td>0.17</td>
-<td>0.74</td>
-<td>0.08</td>
-</tr>
-<tr>
-<th>perimeter shooters</th>
-<td>0.70</td>
-<td>0.29</td>
-<td>0.01</td>
-</tr>
-<tr>
-<th>mobile stretch bigs</th>
-<td>0.02</td>
-<td>0.53</td>
-<td>0.45</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-Each position's role mix (column-normalized):
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th>position</th>
-<th>Guard</th>
-<th>Forward</th>
-<th>Center</th>
-</tr>
-<tr>
-<th>role</th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>playmaking guards</th>
-<td>0.47</td>
-<td>0.10</td>
-<td>0.00</td>
-</tr>
-<tr>
-<th>low-post centers</th>
-<td>0.00</td>
-<td>0.05</td>
-<td>0.64</td>
-</tr>
-<tr>
-<th>low-usage forwards</th>
-<td>0.09</td>
-<td>0.44</td>
-<td>0.08</td>
-</tr>
-<tr>
-<th>perimeter shooters</th>
-<td>0.43</td>
-<td>0.20</td>
-<td>0.01</td>
-</tr>
-<tr>
-<th>mobile stretch bigs</th>
-<td>0.01</td>
-<td>0.20</td>
-<td>0.27</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5204d0aa">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The supplementary three-category position -- EuroLeague's own label, an independent source from
-the reconciled one -- shows the same basic shape. Center is dominated by low-post centers (64%)
-with mobile stretch bigs as a clear second group (27%); Guard splits almost evenly between
-playmaking guards (47%) and perimeter shooters (43%); Forward is the most spread out, with
-low-usage forwards (44%), perimeter shooters (20%), and mobile stretch bigs (20%) all
-substantial. This matches the picture from <code>position_reconciled</code>: the most position-predictable
-role is still low-post centers, the clearest even split is still among ball-handling/shooting
-guards, and the forward label still absorbs several different roles rather than one.</p>
+<p>Among observations labeled Center, 69% were low-post centers
+and 24% mobile stretch bigs. Point Guards split between
+playmaking guards (54%) and perimeter shooters (40%), while
+Shooting Guards showed a similar split in reverse (36% and 44%).</p>
+<p>Small Forwards were mainly low-usage forwards (42%) or perimeter
+shooters (30%). Power Forwards were divided between low-usage
+forwards (37%) and mobile stretch bigs (31%).</p>
+<p>Looking from the role side, low-usage forwards included both
+Small Forwards (38%) and Power Forwards (37%), while mobile
+stretch bigs included Power Forwards (50%) and Centers (31%).</p>
 </div>
 </div>
 </div>
@@ -15160,15 +14751,15 @@ guards, and the forward label still absorbs several different roles rather than 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [71]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [69]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">ari_position_reconciled</span> <span class="o">=</span> <span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">role_position</span><span class="p">[</span><span class="s2">"role"</span><span class="p">],</span> <span class="n">role_position</span><span class="p">[</span><span class="s2">"position_reconciled"</span><span class="p">])</span>
-<span class="n">ari_position</span> <span class="o">=</span> <span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">role_position3</span><span class="p">[</span><span class="s2">"role"</span><span class="p">],</span> <span class="n">role_position3</span><span class="p">[</span><span class="s2">"position"</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Adjusted Rand index, roles vs position_reconciled (5-category, primary): "</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ari_position_reconciled</span> <span class="o">=</span> <span class="n">adjusted_rand_score</span><span class="p">(</span>
+    <span class="n">role_position</span><span class="p">[</span><span class="s2">"role"</span><span class="p">],</span>
+    <span class="n">role_position</span><span class="p">[</span><span class="s2">"position_reconciled"</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ARI, discovered roles vs traditional positions: "</span>
       <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ari_position_reconciled</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Adjusted Rand index, roles vs position (3-category, supplementary): "</span>
-      <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ari_position</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -15181,8 +14772,7 @@ guards, and the forward label still absorbs several different roles rather than 
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Adjusted Rand index, roles vs position_reconciled (5-category, primary): 0.210
-Adjusted Rand index, roles vs position (3-category, supplementary): 0.288
+<pre>ARI, discovered roles vs traditional positions: 0.210
 </pre>
 </div>
 </div>
@@ -15195,15 +14785,11 @@ Adjusted Rand index, roles vs position (3-category, supplementary): 0.288
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Both adjusted Rand indices are low -- 0.210 against the five-category <code>position_reconciled</code>
-and 0.288 against the coarser three-category <code>position</code> -- far below the 0.4-0.5 agreement
-between our own K-Means and GMM solutions. The index is likely a little higher for the coarser
-label because collapsing Point Guard/Shooting Guard and Small Forward/Power Forward into
-Guard/Forward removes some of the within-position splits our roles create, rather than because
-it captures more of the role structure.</p>
-<p>Given the splits and merges above, we treat the discovered roles as adding real information
-beyond the position labels, not as a finer-grained restatement of them, and not because there
-are more roles than positions.</p>
+<p>Agreement between the discovered roles and traditional positions
+was limited (ARI = 0.210).</p>
+<p>Together with the position distributions above, this suggests
+that the discovered roles capture playing-style differences
+not reflected in traditional positions.</p>
 </div>
 </div>
 </div>
@@ -15214,25 +14800,11 @@ are more roles than positions.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Discussion">Discussion<a class="anchor-link" href="#Discussion">¶</a></h2><p>The eligible player-season-team rows separate into five roles: playmaking guards, low-post
-centers, low-usage forwards, perimeter shooters, and mobile stretch bigs, each with its own
-standardized profile and representative players. We reached this result with a full-covariance
-Gaussian mixture on the 17 standardized features, with K-Means as a simpler baseline. A small
-covariance regularization was needed to keep the likelihood from rewarding components collapsed
-onto the exact zero-attempt and zero-block point masses; under it, BIC selected five components,
-with six as a close alternative.</p>
-<p>The five-component solution reproduced closely across ten random initializations, reappeared
-with matching profiles on the stricter participation sample, and showed no component tied to the
-earliest recorded seasons. Within these checks, we treat it as a stable result rather than an
-artifact of one fit, while it remains conditional on the feature set and the regularization.</p>
-<p>The roles are also not simply a repackaging of the traditional positions: the adjusted Rand
-index is low against both <code>position_reconciled</code> (0.210) and <code>position</code> (0.288), well below the
-0.4-0.5 agreement between our own K-Means and GMM solutions. The clearest evidence is the split
-of Centers into low-post centers and mobile stretch bigs and the two roles that combine positions
-the labels keep separate, not the number of roles. Within the limitations below, this answers
-our research question: unsupervised learning on player-season-team performance data, without
-any position input, finds interpretable roles that carry information beyond the traditional
-positions.</p>
+<h2 id="Discussion">Discussion<a class="anchor-link" href="#Discussion">¶</a></h2><p>Our findings suggest that a player's role is better described by
+what they do on the court than by their traditional position alone.</p>
+<p>The discovered roles offer another way to understand playing
+styles in EuroLeague basketball, complementing rather than
+replacing traditional positions.</p>
 </div>
 </div>
 </div>
@@ -15243,31 +14815,30 @@ positions.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Limitations">Limitations<a class="anchor-link" href="#Limitations">¶</a></h3><p>The robustness checks and the position comparison are backed by direct evidence above. The
-points below are choices and assumptions we did not test as thoroughly.</p>
-<ul>
-<li><strong>Participation threshold.</strong> The 5-games/100-minutes rule decides which rows enter the model.
-A stricter rule reproduced the same roles, but we did not test a looser one.</li>
-<li><strong>Feature representation.</strong> The 17 features, the shrinkage of the shooting percentages, and
-the choice among correlated candidates are defensible but not the only possible choices; a
-different feature set could emphasize other aspects of play.</li>
-<li><strong>Regularization.</strong> Five components were selected under both <code>reg_covar = 0.01</code> and 0.1, but
-the regularization is still a modeling assumption, and k = 6 was close behind in BIC.</li>
-<li><strong>Shot data.</strong> Shot-type detail and the zone letters are not recorded consistently across
-seasons, so we use only the coordinate summaries, whose units are undocumented. Standardization
-puts them on a common numeric scale, but it does not by itself show that coordinates were
-recorded consistently across seasons, and we cannot state distances in meters.</li>
-<li><strong>Change over time.</strong> No component is tied to the two earliest seasons, but we did not test
-for a more gradual drift in playing style over the 19 seasons.</li>
-<li><strong>Overlapping roles.</strong> The PCA projection showed a continuum rather than separated groups,
-and 3.5% of rows have a largest membership probability below 0.6, so some rows sit between
-roles rather than inside one; the Gaussian components impose elliptical groups on that
-continuum.</li>
-<li><strong>Repeated players.</strong> A player active for many eligible seasons contributes many rows, so role
-sizes count player-seasons, not distinct players.</li>
-<li><strong>Missing position labels.</strong> 2.2% (<code>position_reconciled</code>) and 2.9% (<code>position</code>) of eligible
-rows have no label and are left out of the comparison. We expect this small share to have
-little effect, but we did not test it.</li>
+<h3 id="Limitations">Limitations<a class="anchor-link" href="#Limitations">¶</a></h3><ul>
+<li><p><strong>Sample selection.</strong> We required at least five games and
+100 minutes. A stricter threshold produced similar roles,
+but other thresholds could affect the results.</p>
+</li>
+<li><p><strong>Feature choices.</strong> The selected features and shooting-percentage
+shrinkage influence which differences the model emphasizes.</p>
+</li>
+<li><p><strong>Model assumptions.</strong> The five-component solution depends on
+covariance regularization, and k = 6 was a close alternative.</p>
+</li>
+<li><p><strong>Shot coordinates.</strong> Coordinate units are undocumented,
+and consistent recording across all seasons has not been
+established. We excluded the inconsistent zone labels.</p>
+</li>
+<li><p><strong>Overlapping roles.</strong> Some observations fall between roles;
+3.5% had a maximum membership probability below 0.6.</p>
+</li>
+<li><p><strong>Repeated players.</strong> Each player-season-team observation
+counts separately, so role sizes do not represent unique players.</p>
+</li>
+<li><p><strong>Traditional positions.</strong> The comparison excluded the 2.2%
+of eligible observations without a five-category position label.</p>
+</li>
 </ul>
 </div>
 </div>
