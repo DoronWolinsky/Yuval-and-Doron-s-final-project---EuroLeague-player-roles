@@ -11356,14 +11356,14 @@ a potentially informative measure of defensive role.</p>
                         <span class="s2">"event_two_point_attempt_share"</span><span class="p">,</span> <span class="s2">"event_three_point_attempt_share"</span><span class="p">],</span> <span class="s2">"exclude"</span><span class="p">,</span>
      <span class="s2">"per-40 attempt rates and shot-location profile"</span><span class="p">,</span>
      <span class="s2">"Exact complements; event shares duplicate the season shares."</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"Attempt flags"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"has_three_point_attempts"</span><span class="p">,</span> <span class="s2">"has_free_throw_attempts"</span><span class="p">],</span> <span class="s2">"QA only"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span>
-     <span class="s2">"Retained for QA and missing-value handling; not clustering inputs."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Attempt flags"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"has_three_point_attempts"</span><span class="p">,</span> <span class="s2">"has_free_throw_attempts"</span><span class="p">],</span> <span class="s2">"exclude"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span>
+     <span class="s2">"Retained to identify zero-attempt rows when handling missing shooting percentages; not clustering inputs."</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">"Unused coordinate summaries"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"mean_lateral_shot_position"</span><span class="p">,</span> <span class="s2">"mean_raw_shot_distance"</span><span class="p">,</span>
                                      <span class="s2">"mean_longitudinal_shot_position"</span><span class="p">,</span> <span class="s2">"longitudinal_shot_position_std"</span><span class="p">],</span>
      <span class="s2">"exclude"</span><span class="p">,</span> <span class="s2">"shot-location profile"</span><span class="p">,</span>
      <span class="s2">"Court side is not a role; the others repeat median distance or distance spread."</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"A-J zone shares"</span><span class="p">,</span> <span class="n">ZONE_SHARE_FEATURES</span><span class="p">,</span> <span class="s2">"descriptive / QA only"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span>
-     <span class="s2">"Undocumented zone letters mark different court areas in E2007-E2008 than later."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"A-J zone shares"</span><span class="p">,</span> <span class="n">ZONE_SHARE_FEATURES</span><span class="p">,</span> <span class="s2">"exclude"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span>
+     <span class="s2">"Used descriptively; excluded because the undocumented zone letters mark different court areas in E2007-E2008 than in later seasons."</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">"Spatial PCA components"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"spatial_pc1"</span><span class="p">,</span> <span class="s2">"spatial_pc2"</span><span class="p">,</span> <span class="s2">"spatial_pc3"</span><span class="p">],</span> <span class="s2">"exclude"</span><span class="p">,</span>
      <span class="s2">"shot-location profile"</span><span class="p">,</span> <span class="s2">"Abstract components; one is only court side. Not created as model inputs."</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">"Raw season totals"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"points"</span><span class="p">,</span> <span class="s2">"two_points_made"</span><span class="p">,</span> <span class="s2">"two_points_attempted"</span><span class="p">,</span> <span class="s2">"three_points_made"</span><span class="p">,</span>
@@ -11514,9 +11514,9 @@ Columns with more than one decision: []
 <tr>
 <td class="data row11 col0" id="T_ca6da_row11_col0">Attempt flags</td>
 <td class="data row11 col1" id="T_ca6da_row11_col1">has_three_point_attempts, has_free_throw_attempts</td>
-<td class="data row11 col2" id="T_ca6da_row11_col2">QA only</td>
+<td class="data row11 col2" id="T_ca6da_row11_col2">exclude</td>
 <td class="data row11 col3" id="T_ca6da_row11_col3">-</td>
-<td class="data row11 col4" id="T_ca6da_row11_col4">Retained for QA and missing-value handling; not clustering inputs.</td>
+<td class="data row11 col4" id="T_ca6da_row11_col4">Retained to identify zero-attempt rows when handling missing shooting percentages; not clustering inputs.</td>
 </tr>
 <tr>
 <td class="data row12 col0" id="T_ca6da_row12_col0">Unused coordinate summaries</td>
@@ -11528,9 +11528,9 @@ Columns with more than one decision: []
 <tr>
 <td class="data row13 col0" id="T_ca6da_row13_col0">A-J zone shares</td>
 <td class="data row13 col1" id="T_ca6da_row13_col1">zone_a_attempt_share, zone_b_attempt_share, zone_c_attempt_share, zone_d_attempt_share, zone_e_attempt_share, zone_f_attempt_share, zone_g_attempt_share, zone_h_attempt_share, zone_i_attempt_share, zone_j_attempt_share</td>
-<td class="data row13 col2" id="T_ca6da_row13_col2">descriptive / QA only</td>
+<td class="data row13 col2" id="T_ca6da_row13_col2">exclude</td>
 <td class="data row13 col3" id="T_ca6da_row13_col3">-</td>
-<td class="data row13 col4" id="T_ca6da_row13_col4">Undocumented zone letters mark different court areas in E2007-E2008 than later.</td>
+<td class="data row13 col4" id="T_ca6da_row13_col4">Used descriptively; excluded because the undocumented zone letters mark different court areas in E2007-E2008 than in later seasons.</td>
 </tr>
 <tr>
 <td class="data row14 col0" id="T_ca6da_row14_col0">Spatial PCA components</td>
