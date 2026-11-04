@@ -10,10 +10,10 @@ Can unsupervised learning discover meaningful EuroLeague player roles from perfo
 and do these roles offer useful distinctions beyond the traditional basketball positions?
 
 Position labels are **never used as a clustering input**; they are external reference labels
-used only after clustering. The primary comparison is with the five traditional positions
+used only after clustering. The roles are compared with the five traditional positions
 (Point Guard, Shooting Guard, Small Forward, Power Forward, Center) in `position_reconciled`,
-compiled from 365scores and Wikipedia; the EuroLeague three-category `position` (Guard,
-Forward, Center) is a supplementary, coarser comparison. The value of the discovered roles
+compiled from 365scores and Wikipedia, because the EuroLeague biography data records only
+three broad categories (Guard, Forward, Center). The value of the discovered roles
 lies in their basketball meaning and in what they add beyond these positions, not in whether
 there are more clusters than positions.
 
@@ -79,17 +79,16 @@ final clustering features, preparing the modeling matrix (stabilizing shooting p
 based on few attempts, then standardizing all features), exploring the matrix with PCA,
 establishing a K-Means baseline (k = 4), selecting the clustering model (a full-covariance
 Gaussian mixture model with five components and covariance regularization `reg_covar = 0.01`),
-checking the robustness of that result against different random initializations, the stricter
-`10 games / 200 minutes` participation rule, and the E2007-E2008 recording-period difference,
-and interpreting the five components as playmaking guards, low-post centers, low-usage
+checking the robustness of that result against different random initializations and the
+stricter `10 games / 200 minutes` participation rule, and interpreting the five components as playmaking guards, low-post centers, low-usage
 forwards, perimeter shooters, and mobile stretch bigs. PCA is used only for exploration and
 visualization; clustering uses the 17 standardized features.
 
-The roles were then compared with the traditional positions: the adjusted Rand index is low
-against both the five-category `position_reconciled` (0.210) and the three-category `position`
-(0.288), with Centers splitting into low-post centers and mobile stretch bigs and two roles
-combining positions the labels keep separate. The notebook ends with a discussion that answers
-the research question and a limitations section, and stages 1-15 are complete, including a
+The roles were then compared with the five traditional positions: agreement is limited
+(adjusted Rand index 0.210 against `position_reconciled`), with Centers splitting into low-post
+centers and mobile stretch bigs and two roles combining positions the labels keep separate. The
+notebook ends with a discussion that answers the research question without claiming the roles
+are more accurate than positions, and a limitations section. Stages 1-15 are complete, including a
 final editorial review and the rendered HTML version of the notebook,
 `outputs/EuroLeague_Player_Roles_Project.html`. The only remaining stage is a 20-minute recorded
 Hebrew walkthrough of the notebook (stage 16).

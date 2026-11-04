@@ -4,7 +4,7 @@
 
 Our goal is to use unsupervised machine learning to discover meaningful EuroLeague player roles based on how players actually play.
 
-The model will not receive any position label. Positions are used only after clustering, as external reference labels: the main comparison is with the five traditional basketball positions (Point Guard, Shooting Guard, Small Forward, Power Forward, Center) in `position_reconciled`, compiled from 365scores and Wikipedia, and the EuroLeague three-category `position` (Guard, Forward, Center) is a supplementary, coarser comparison. The discovered roles are valuable if they have a clear basketball meaning and show distinctions the positions do not, not because there are more of them than there are positions.
+The model will not receive any position label. Positions are used only after clustering, as external reference labels: the comparison is with the five traditional basketball positions (Point Guard, Shooting Guard, Small Forward, Power Forward, Center) in `position_reconciled`, compiled from 365scores and Wikipedia, since the EuroLeague biography data records only three broad categories (Guard, Forward, Center). The discovered roles are valuable if they have a clear basketball meaning and show distinctions the positions do not, not because there are more of them than there are positions.
 
 The notebook should present the project as one continuous investigation. At every stage, we should explain:
 
@@ -231,11 +231,10 @@ matching against the original run kept at least 96.8% of observations in the sam
 Refitting the full pipeline (shrinkage prior, scaler, GMM) on the stricter `10 games / 200
 minutes` sample (3,679 of the 4,568 eligible rows) also chose five components by BIC and
 reproduced closely matching cluster profiles on the shared rows (ARI 0.887, 94.9% matched
-agreement; profile means within 0.8 units, mostly within 0.3). A check of each component's share
-of E2007-E2008 rows (8.4%-14.8%, against 10.8% overall) found no component disproportionately
-tied to the early recording period, so no further sensitivity comparison was needed. The
-five-component GMM is a stable result, not an artifact of initialization, the participation
-threshold, or the recording-period difference.
+agreement; profile means within 0.8 units, mostly within 0.3). A share-of-E2007-E2008-rows check
+per component was run and later removed from the final notebook as redundant; the
+recording-period difference remains a stated data limitation. The five-component GMM is stable
+across initializations and the stricter participation threshold.
 
 ---
 
@@ -263,7 +262,7 @@ strong signal), **perimeter shooters** (component 3, n = 1,162; longest shot dis
 three-point attempts, fewest two-point attempts), and **mobile stretch bigs** (component 4,
 n = 620; tall with high rebounding/blocks like component 1, but with much more shot variety and a
 real three-point rate). No component was incoherent enough to revise the model. Alberto Abalde's
-career (playmaking guard at Joventut in E2017, then perimeter shooter at Real Madrid from E2020
+career (playmaking guard at Valencia Basket in E2017, then perimeter shooter at Real Madrid from E2020
 on, with one low-usage-forward season) illustrates the clustering tracking a real role change
 using only season statistics.
 
@@ -271,7 +270,7 @@ using only season statistics.
 
 ## 12. Compare the Discovered Roles with Traditional Positions — Completed
 
-- [x] Show how the discovered roles are distributed across the five traditional positions (`position_reconciled`, the main comparison), and add the coarser 3-category `position` as a supplementary comparison.
+- [x] Show how the discovered roles are distributed across the five traditional positions (`position_reconciled`).
 - [x] Examine whether players with the same position are split into meaningfully different roles, and whether players from different positions are combined when they play alike.
 - [x] Decide whether the discovered roles add useful information beyond the position labels.
 - [x] State how many observations lack a position label, and treat it further only if it affects the interpretation.
@@ -288,12 +287,9 @@ Forward and Power Forward split three ways each and the Point Guard/Shooting Gua
 ball-handling-vs-shooting more than the official label (Shooting Guard: 44% perimeter shooters,
 36% playmaking guards -- the same two roles as Point Guard, with shares reversed). From the role
 side, mobile stretch bigs (50% Power Forward + 31% Center) and low-usage forwards (38% Small
-Forward + 37% Power Forward) each combine two positions the label keeps separate. The
-supplementary 3-category `position` shows the same shape (Center 64% low-post centers / 27%
-mobile stretch bigs; Guard 47%/43% playmaking guards vs. perimeter shooters; Forward spread
-across three roles). Adjusted Rand index is low against both labels (0.210 vs
-`position_reconciled`, 0.288 vs `position`), well below the 0.4-0.5 internal agreement between
-the Stage 9 K-Means/GMM solutions. Decision: the discovered roles add real information beyond
+Forward + 37% Power Forward) each combine two positions the label keeps separate. Agreement with
+`position_reconciled` is limited (adjusted Rand index 0.210). A supplementary 3-category
+comparison was later removed from the final notebook. Decision: the discovered roles add real information beyond
 position -- most clearly by splitting Center into two basketball-distinct groups and by
 combining Power Forward with Center (mobile stretch bigs) and with Small Forward (low-usage
 forwards) -- not by having more roles than positions. New figure:
@@ -322,16 +318,15 @@ forwards) -- not by having more roles than positions. New figure:
 
 ### Result of this stage
 
-A short "Discussion" section in the notebook recaps the five roles, the GMM/k = 5 choice, and
-the Stage 10 robustness checks, then states the answer to the research question: the roles are
-basketball-meaningful and add information beyond `position_reconciled`/`position` (low ARI,
-0.210/0.288; the Center split and the two cross-position merges from Stage 12 are the concrete
-evidence), not because there are more roles than positions. A "Limitations" subsection separates
-better-supported points (stability checks, the position comparison itself, the small missing-label
-share) from more tentative ones (the participation threshold, the 17-feature representation,
-inconsistent event/zone recording, undocumented shot-distance units, untested longer-term
-playing-style drift across the 19 seasons, the clustering assumptions against the continuum PCA
-showed, and repeated players across seasons). No new code, data, or figures; prose only.
+A short "Discussion" section answers the research question: the five GMM components are
+interpretable, data-driven patterns of play that capture distinctions the five traditional
+positions do not (the Center split, the guard split by ball-handling vs. shooting, and the two
+cross-position roles), so they complement positions; without an independent validation
+criterion, this does not show that they are more accurate than positions. A "Limitations" list
+covers the participation threshold, feature choices and shrinkage, model selection (k = 6 second
+by BIC, +23), undocumented and possibly inconsistently recorded shot coordinates, overlapping
+roles, repeated players, and imperfect position labels (365scores and Wikipedia disagree for 383
+of 1,141 players). No new code, data, or figures; prose only.
 
 ---
 

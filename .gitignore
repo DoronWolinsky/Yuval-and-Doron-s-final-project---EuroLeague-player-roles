@@ -1,5 +1,5 @@
 # Data files exceeding GitHub's 100MB per-file limit.
-# Obtain/regenerate these separately; see README.md and docs/project-state.md.
+# Obtain these separately; see README.md.
 data/raw/euroleague_points.csv
 data/processed/merged_euroleague_players.csv
 
