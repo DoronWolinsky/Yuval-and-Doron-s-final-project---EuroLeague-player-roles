@@ -9514,7 +9514,10 @@ if smaller, role.</p>
     <span class="p">})</span>
 
 <span class="n">removed_by_rule_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">removed_summary_rows</span><span class="p">)</span>
-<span class="n">removed_by_rule_summary</span>
+<span class="n">removed_by_rule_summary</span><span class="p">[</span>
+    <span class="p">[</span><span class="s2">"rule"</span><span class="p">,</span> <span class="s2">"removed_rows"</span><span class="p">,</span> <span class="s2">"median_minutes"</span><span class="p">,</span>
+     <span class="s2">"max_minutes"</span><span class="p">,</span> <span class="s2">"max_games"</span><span class="p">,</span> <span class="s2">"max_fga"</span><span class="p">,</span> <span class="s2">"max_points"</span><span class="p">]</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -9548,13 +9551,9 @@ if smaller, role.</p>
 <th>rule</th>
 <th>removed_rows</th>
 <th>median_minutes</th>
-<th>p90_minutes</th>
 <th>max_minutes</th>
-<th>median_games</th>
 <th>max_games</th>
-<th>median_fga</th>
 <th>max_fga</th>
-<th>median_points</th>
 <th>max_points</th>
 </tr>
 </thead>
@@ -9564,13 +9563,9 @@ if smaller, role.</p>
 <td>5 games / 100 minutes</td>
 <td>1739</td>
 <td>20.90</td>
-<td>82.80</td>
 <td>136.6</td>
-<td>3.0</td>
 <td>21</td>
-<td>5.0</td>
 <td>47</td>
-<td>4.0</td>
 <td>56</td>
 </tr>
 <tr>
@@ -9578,13 +9573,9 @@ if smaller, role.</p>
 <td>10 games / 200 minutes</td>
 <td>2628</td>
 <td>58.50</td>
-<td>174.80</td>
 <td>323.1</td>
-<td>6.0</td>
 <td>30</td>
-<td>13.0</td>
 <td>144</td>
-<td>15.0</td>
 <td>170</td>
 </tr>
 <tr>
@@ -9592,13 +9583,9 @@ if smaller, role.</p>
 <td>10 games / 300 minutes</td>
 <td>3410</td>
 <td>97.90</td>
-<td>257.71</td>
 <td>323.1</td>
-<td>9.0</td>
 <td>36</td>
-<td>24.0</td>
 <td>144</td>
-<td>27.0</td>
 <td>192</td>
 </tr>
 <tr>
@@ -9606,13 +9593,9 @@ if smaller, role.</p>
 <td>15 games / 400 minutes</td>
 <td>4114</td>
 <td>137.45</td>
-<td>340.51</td>
 <td>474.7</td>
-<td>10.0</td>
 <td>36</td>
-<td>34.0</td>
 <td>232</td>
-<td>40.0</td>
 <td>305</td>
 </tr>
 </tbody>
@@ -9723,24 +9706,8 @@ Eligible rows with zero field-goal attempts: 0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Missing-values-in-the-eligible-sample">Missing values in the eligible sample<a class="anchor-link" href="#Missing-values-in-the-eligible-sample">¶</a></h2><p>With <code>eligible_for_modeling</code> defined, the question became narrower and more concrete: of the
-4,568 eligible player-season-team rows, which candidate modeling columns are still missing
-something, and what does that missing value actually mean for that column?</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=07c121c2">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We then compared missingness before and after eligibility filtering for every column that is
-either a candidate playing-style feature or still has a missing value in the eligible sample
--- height, position, the spatial location and spread features, the shot-selection shares, and
-the shooting-efficiency percentages. Columns with an identical missing-count pattern are
-grouped into one row so the table stays short.</p>
+<h2 id="Missing-values-in-the-eligible-sample">Missing values in the eligible sample<a class="anchor-link" href="#Missing-values-in-the-eligible-sample">¶</a></h2><p>We compared missing values before and after filtering the 4,568 eligible
+rows, grouping columns with identical missing-value counts.</p>
 </div>
 </div>
 </div>
@@ -9893,29 +9860,10 @@ grouped into one row so the table stays short.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Two columns still have missing values in the eligible sample: <code>height_cm</code> (31 of 4,568, down
-from 54 of 6,307, counting <code>NaN</code> values) and <code>position</code> (132 of 4,568, down from 172 of
-6,307). Every spatial location, spread, and share column drops to zero missing rows once we
-restrict to the eligible sample -- both the group of 19 columns that were undefined whenever a
-player-season-team had no recorded field-goal attempts, and the 3 standard-deviation columns
-that were additionally undefined for the single-shot rows. The eligibility rule removes both
-problems at once, since a row cannot pass 5 games and 100 minutes without also recording more
-than one valid shot.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=81659691">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The shooting-percentage columns show zero missing values in the table above, but that is not
-the same as saying every value is a real measurement. A shooting percentage is only meaningful
-if the player actually attempted that shot type -- with zero attempts, "percentage" has no
-defined value, yet the source file records it as <code>0.0</code> rather than leaving it blank. We
-checked how often that happens inside the eligible sample.</p>
+<p>After filtering, no spatial or shot-selection features had missing values.
+Height still had 31 <code>NaN</code> values, and position was missing in 132 rows.
+We also found that the source recorded shooting percentages as <code>0.0</code>
+when no shots of that type were attempted, so we checked these cases separately.</p>
 </div>
 </div>
 </div>
@@ -9963,60 +9911,12 @@ free_throws_percentage: 34 eligible rows (0.7%) have free_throws_attempted == 0,
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>443 eligible rows (9.7%) never attempted a three-pointer, so their <code>three_points_percentage</code>
-of <code>0.0</code> really means "no attempts," not "missed every three." <code>free_throws_percentage</code> has
-the same problem for 34 rows (0.7%), and no eligible row has zero two-point attempts, so
-<code>two_points_percentage</code> is unaffected. If shooting efficiency is used as a feature later, this
-needs a real decision -- treating a volume-zero player the same as a 0-for-many shooter would
-misrepresent both.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0c358b67">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Putting the checks above together, the remaining missing-value questions are of four different
-kinds, and they do not call for the same treatment.</p>
-<ul>
-<li><strong>Already eliminated by the participation rule.</strong> The spatial and shot-selection columns were
-missing only for rows with no recorded field-goal attempt (or, for the standard-deviation
-columns, exactly one). No eligible row is in either situation, so nothing is left to decide.</li>
-<li><strong>Structurally undefined percentages.</strong> A <code>0.0</code> shooting percentage can mean "attempted and
-missed everything" or "never attempted," and only the first is a real shooting result. This
-needs a decision only if shooting efficiency ends up in the feature set.</li>
-<li><strong>Genuinely missing measurements.</strong> <code>height_cm</code> is missing for 31 eligible rows. Height is a
-physical attribute, not a result of how the player played, so any fill must not come from
-playing statistics or traditional position.</li>
-<li><strong>Comparison-only missingness.</strong> <code>position</code> is missing for 132 eligible rows. Since position is
-never a clustering input, this only limits how many rows enter the later position comparison,
-and it must not be filled in or used to estimate any other feature.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e72400c6">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Deciding-on-height-and-shooting-efficiency-as-clustering-features">Deciding on height and shooting efficiency as clustering features<a class="anchor-link" href="#Deciding-on-height-and-shooting-efficiency-as-clustering-features">¶</a></h2><p>Going back to the two open questions from the missing-value check: we decided to include both
-height and shooting efficiency in the final feature set. Height is a fixed physical attribute
-that plausibly shapes playing style on its own, independent of the counting and rate statistics
-we already have. Shooting efficiency (two-point, three-point, and free-throw percentage)
-captures how well a player converts the shots they take, which is a different question from how
-many shots they take or what kind, already covered by the volume and shot-selection features.</p>
-<p>Including shooting efficiency means resolving the structural-zero problem above. We fixed it at
-the source: any percentage is set to a true missing
-value whenever the corresponding attempt count is zero, so "no attempts" is no longer confused
-with "attempted and missed everything," and we added a boolean flag recording whether the
-player attempted that shot type at all. <code>two_points_percentage</code> needs no such fix, since no
-eligible row has zero two-point attempts.</p>
+<p>We found 443 eligible rows with no three-point attempts and 34 with no
+free-throw attempts; all eligible rows had two-point attempts.</p>
+<p>We included height and shooting efficiency as clustering features,
+while keeping traditional position for external comparison only.
+We treated percentages with zero attempts as undefined and recorded
+separate attempt indicators.</p>
 </div>
 </div>
 </div>
@@ -10069,11 +9969,7 @@ free_throws_percentage set to missing: 949 of 6307 rows (full table), 34 of 4568
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><code>has_three_point_attempts</code> and <code>has_free_throw_attempts</code> record the relevant fact -- that the
-player didn't take that kind of shot -- so it stays in the table once the percentage itself
-becomes missing. K-Means and GMM both need a complete numeric matrix, though, so we still need
-to decide what goes in place of the missing percentage -- we come back to that after resolving
-height, below.</p>
+<p>We applied these corrections to the full dataset, not only the eligible sample.</p>
 </div>
 </div>
 </div>
@@ -10084,31 +9980,11 @@ height, below.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Height is a fixed physical attribute, not something derived from playing behavior, so for the
-31 eligible rows (11 unique players) still missing it, we looked up each player's height
-directly from an external source (Wikipedia, or 365scores.com for the one player without a
-Wikipedia page) rather than imputing a statistical estimate. This is a manual, cited
-correction, kept in <code>data/processed/height_overrides.csv</code> alongside the player it belongs to
-and the source used, rather than mixed silently into the raw biography data.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=468b65d4">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>When we came back to height, a closer check of the raw biography data showed that
-<code>players_bio.csv</code> also uses <code>0</code>, not only <code>NaN</code>, to mark a missing height -- a second sentinel
-that the <code>.isna()</code> checks above do not catch, so the earlier height counts did not include
-these players. We handled them the same way: each zero-height player in our modeling sample was
-matched to an externally verified height, preferring 365Scores when a reliable identity match
-was available and falling back to Wikipedia otherwise -- a verified physical measurement, not a
-statistical imputation. All verified heights are kept in <code>height_overrides.csv</code>. The override
-step is restricted to the <code>player_id</code>s listed there and replaces only <code>NaN</code> or <code>0</code>, so it can
-never overwrite an existing positive height.</p>
+<p>We treated both <code>NaN</code> and <code>0</code> as missing heights in <code>players_bio.csv</code>.
+We verified the affected eligible players' heights using Wikipedia
+and 365scores, documented the sources in
+<code>data/processed/height_overrides.csv</code>, and replaced only missing
+or zero values.</p>
 </div>
 </div>
 </div>
@@ -10176,34 +10052,11 @@ Eligible rows still missing height_cm or recorded at 0: 0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The output keeps the two corrections apart: 31 eligible rows from 11 players had no recorded
-height, and 167 eligible rows from 51 players were recorded at 0 -- 198 eligible rows in total,
-covered by the 62 verified player IDs. Of the 58 players recorded at 0 cm in
-<code>players_bio.csv</code>, the 7 without a verified height have no eligible rows, so we left them as
-recorded. No eligible row is still missing a height.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f6d2c341">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Back to the shooting-percentage gap: these are players who genuinely never attempted that shot
-type, so there is no real percentage hiding behind the missing value -- unlike height, there is
-nothing to look up. Dropping the rows instead would bias the sample against exactly the
-low-usage and traditional-big roles this project is trying to distinguish (443 rows are 9.7% of
-the eligible sample). We filled the missing percentage with the median computed only from
-eligible rows that did attempt that shot type -- never from traditional position, for the same
-reason we didn't use it for height. This keeps every row in the modeling sample and gives these
-rows a neutral percentage rather than an invented skill level. The zero attempt volume itself
-stays recorded in the table (<code>three_point_attempts_per_40</code>, <code>free_throw_attempts_per_40</code>, and
-the two flags above); which of these columns enter the model is decided when we select the
-final features. The median fill only completes the feature table: when we built the modeling
-matrix, we replaced all three percentages with a more stable attempt-weighted estimate, which
-gives zero-attempt rows the sample's attempt-weighted mean instead.</p>
+<p>We corrected 198 eligible rows across 62 players: 31 missing heights
+and 167 recorded as zero. No eligible row remained without a valid height.</p>
+<p>We filled undefined shooting percentages with the median among eligible
+players who attempted that shot type, without using position labels.
+This allowed us to retain players with no attempts of that type.</p>
 </div>
 </div>
 </div>
@@ -10258,15 +10111,10 @@ Eligible rows still missing free_throws_percentage: 0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Enriching-position-from-two-external-sources">Enriching position from two external sources<a class="anchor-link" href="#Enriching-position-from-two-external-sources">¶</a></h2><p><code>position</code> is comparison-only, never a clustering input, but on its own it only separates
-players into three broad groups (Guard, Forward, Center) and is still missing for 132 of the
-4,568 eligible rows. To get a finer, more informative label for comparing against the
-discovered roles later, we independently looked up each unique player (<code>player_id</code>, matched
-against <code>players_bio.csv</code>) on Wikipedia and on 365scores.com, and normalized whatever
-position each site listed to one of five standard positions: Point Guard, Shooting Guard,
-Small Forward, Power Forward, Center. Both lookups are per player, not per
-player-season-team, since a player's listed position on these sites does not change season by
-season the way our own recorded statistics do.</p>
+<h2 id="Enriching-player-positions">Enriching player positions<a class="anchor-link" href="#Enriching-player-positions">¶</a></h2><p>The EuroLeague data provided only three position categories, with 132
+eligible rows missing a label. We collected five-category positions
+from Wikipedia and 365scores for each unique player, using them only
+for comparison with the clustering results.</p>
 </div>
 </div>
 </div>
@@ -10312,10 +10160,8 @@ Resolved matches backed by an exact birth-year match: 1893 (99.6%)
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The Wikipedia lookup resolves 1,900 of 2,363 players. To avoid attaching the wrong player's
-position, we only accepted a Wikipedia match once the identity was verified -- almost always
-by an exact match on birth year between <code>players_bio.csv</code> and the Wikipedia infobox.
-Ambiguous or unverifiable identities were left unresolved rather than guessed.</p>
+<p>We resolved 1,900 of 2,363 players through Wikipedia, verifying identities
+primarily by birth year and leaving ambiguous matches unresolved.</p>
 </div>
 </div>
 </div>
@@ -10369,21 +10215,6 @@ Name: count, dtype: int64
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6d29624c">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>365scores' own formation label is usually one of the five positions we want, but 27 players
-were matched to a staff member instead of the athlete ("Coach" or "General Manager"), which we
-treat as an unresolved lookup rather than a position. Rows with <code>match_status</code> of
-<code>not_found</code>, <code>ambiguous</code>, or a fetch error already come through with no formation label, so no
-further filtering is needed for those.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=91ebc6dd">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -10422,17 +10253,27 @@ further filtering is needed for those.</p>
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6d29624c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>We excluded 27 incorrect 365scores matches to coaches or general managers,
+leaving 1,341 players with valid position labels.</p>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fbf8d2a2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>With both sources reduced to one row per player, we compared them directly. Wikipedia
-infoboxes can go stale or list a player's original amateur/draft position, while 365scores is
-a dedicated, actively maintained basketball database, so when both sources resolve a position
-and they disagree, we kept the 365scores value; when only one source resolves, we used
-whichever one did.</p>
+<p>We prioritized 365scores when the sources disagreed, as it is a
+basketball-specific database, and used Wikipedia when no valid
+365scores position was available.</p>
 </div>
 </div>
 </div>
@@ -10488,9 +10329,8 @@ Players with a reconciled position overall: 2100 of 2363
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Combining the two sources resolves 2,100 of 2,363 players overall, up from 1,900 with
-Wikipedia alone. We then checked what this does specifically to the eligible modeling sample,
-since that is the population the later comparison against clusters will actually use.</p>
+<p>Combining both sources resolved 2,100 of 2,363 players.
+We also measured position coverage within the eligible sample.</p>
 </div>
 </div>
 </div>
