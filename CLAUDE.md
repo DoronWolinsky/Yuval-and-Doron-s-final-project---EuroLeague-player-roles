@@ -207,16 +207,38 @@ not mark Stage 14, or any of its items, complete early.
   verify the result is actually `bool` dtype before applying `~` to it — `fillna` alone
   leaves it `object`-dtype, and `~` on Python `True`/`False` objects silently computes a
   bitwise complement instead of a logical negation, with no error. Cast with `.astype(bool)`.
-- A Run All rewrites both processed feature CSVs (with last-digit float drift in the three
-  `*_std` spatial columns) and re-renders the notebook's figures. Unless a regeneration is
-  intended, restore those files with `git checkout`; when a column change is intended, replace
-  only the intended fields in the existing CSV text so unaffected columns stay byte-identical.
+- A Run All rewrites `data/processed/player_season_team_features_with_position.csv` (with
+  last-digit float drift in the three `*_std` spatial columns); it no longer writes any figure or
+  table file. Unless a regeneration is intended, restore that CSV with `git checkout`; when a
+  column change is intended, replace only the intended fields in the existing CSV text so
+  unaffected columns stay byte-identical.
 
 ## Current Work State
 
 **Completed:** CheckList stages 1-15. **Next:** Stage 16, a ~20-minute recorded Hebrew
 walkthrough of the notebook by Doron and Yuval (not a slide presentation). Not started; it is the
 only remaining stage.
+
+**Final editorial cleanup (after Stage 15, commits `7974f44` onward):** the
+notebook is now **151 cells** (71 code); the HTML has 10 figures and 31 tables. Editorial and
+presentation-only: no calculation, threshold, feature, model, or reported result changed, and
+the HTML is always re-rendered from saved outputs (no Run All). Removed: the feature-dictionary
+builder, every `savefig`/`FIG_DIR`/`TABLE_DIR` line, the decision-table CSV writes, the
+intermediate `player_season_team_features.csv` export (the with-position CSV export stays, as
+README lists it), random `.sample()` previews outside the Data Structure section, the
+participation percentile table (the ECDF figure stays), repeated eligibility/coverage checks, the
+row-share position table (the heatmap shows it), and verbose debug prints; `shot_category` was
+merged into the identical `shot_type`. Missing-value, height, position-enrichment, position-label
+comparison, and spatial feature-selection prose was condensed to approved wording (the Kaggle
+link stays; the Giasemidis citation was dropped). The removed-rows table (`1b30c96c`) displays
+only rule, removed_rows, median_minutes and the four maximums. PyCharm can regenerate cell IDs
+when cells are moved; restore the original IDs if that happens. Open points left for Doron and
+Yuval, deliberately not changed: (1) the displayed feature-decision table (`5dac57c2`) still
+says shooting efficiency is "median-filled", while the model uses the shrinkage estimate;
+(2) `eec49154`/`d9128150` describe the median-filled percentages, not the modeling inputs;
+(3) `5d8556ca` says the coordinate summaries were "found compatible across periods", which is
+slightly stronger than the condensed `db42aee9` wording. `CheckList.md` and README were not
+changed.
 
 **Post-Stage-15 edit:** removed the `minutes_per_game` vs `minutes / games_played` check
 (0.01 tolerance; all differences were <= 0.05, i.e. rounding of `minutes` to one decimal, so the
@@ -236,7 +258,7 @@ players_bio.csv". `outputs/figures/height_distribution.png` is kept (still writt
 shot-event key comparison (`ca212c81`, `1693cf4e`); `season_team_events` is now defined in
 `179c7e6e` right before `event_presence`, whose "(expected 459)" label was dropped (saved output
 edited to match). `979d78a9` and `b7c1e2d4` state the 459 no-event / 14 free-throw-only result
-directly. Notebook now 184 cells. The audit-era `audit_issues.csv` /
+directly (184 cells at that point). The audit-era `audit_issues.csv` /
 `range_check_summary_euroleague_players.csv` still list the 0.01 check and are left as is.
 
 **Stage 15 decision (final):** rendered with `python -m nbconvert --to html` from the saved
@@ -420,8 +442,9 @@ and write `outputs/figures/pca_explained_variance.png` and `pca_projection_pc1_p
 - The last two code cells build `modeling_features` (adjusted, unscaled), `X_scaled` (4,568 × 17,
   columns in `FINAL_CLUSTERING_FEATURES` order, index = `features` row index),
   `modeling_metadata` (`IDENTIFIER_COLS`), and `feature_scaler`, all kept in notebook state; no
-  modeling-matrix file is written. The last cell also rewrites the Shooting efficiency row of
-  `outputs/tables/final_clustering_feature_decisions.csv` with the shrinkage representation.
+  modeling-matrix file is written. (The notebook no longer writes
+  `outputs/tables/final_clustering_feature_decisions.csv`; the existing file keeps the shrinkage
+  representation in its Shooting efficiency row.)
 
 **Data and sample (stages 1-4):**
 - Eligible sample: `eligible_for_modeling` = at least **5 games and 100 minutes** — 4,568 of
@@ -466,12 +489,14 @@ distance vs lateral spread).
   identifiers/metadata, and all position columns.
 
 **Files:**
-- `data/processed/player_season_team_features.csv` (6,307 × 79, complete table) and
-  `data/processed/player_season_team_features_with_position.csv` (6,307 × 83, adds the four
-  position-enrichment columns; the table the later stages should use). Neither is the
-  modeling matrix yet.
-- `outputs/tables/final_clustering_feature_decisions.csv` (one decision per column) and
-  `outputs/tables/player_season_team_feature_dictionary.csv` (83 rows; `selected` for the 17).
+- `data/processed/player_season_team_features_with_position.csv` (6,307 × 83; complete table
+  plus the four position-enrichment columns, not the modeling matrix) is the only file the main
+  notebook still writes. The audience-facing artifact is the notebook and its rendered HTML.
+- No longer written by the notebook, but kept on disk as previously produced:
+  `data/processed/player_season_team_features.csv`,
+  `outputs/tables/final_clustering_feature_decisions.csv`,
+  `outputs/tables/player_season_team_feature_dictionary.csv`, and all PNGs in `outputs/figures/`.
+  Do not delete or regenerate them unless asked.
 - Position provenance: `data/processed/wikipedia_position_lookup/wikipedia_position_lookup.csv`
   (from `scripts/wikipedia_position_lookup.py`), `data/processed/player_positions_365scores.csv`,
   and the QA tables `outputs/tables/position_source_agreement_summary.csv`,

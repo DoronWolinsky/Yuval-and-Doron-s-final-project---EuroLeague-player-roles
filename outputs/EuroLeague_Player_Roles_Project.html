@@ -10388,11 +10388,8 @@ resolve a position for some players whose <code>players_bio.csv</code> record ha
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Checking-the-reconciled-position-against-EuroLeague's-own-label">Checking the reconciled position against EuroLeague's own label<a class="anchor-link" href="#Checking-the-reconciled-position-against-EuroLeague's-own-label">¶</a></h2><p>Since we now have a finer five-category label built from two outside sources, we checked it
-against EuroLeague's own three-category <code>position</code> -- the source we treat as authoritative for
-the coarse split, since it is the site the rest of this project's data comes from. We mapped
-Point Guard and Shooting Guard to Guard, Small Forward and Power Forward to Forward, and left
-Center unchanged, then compared the two labels for every player where both are available.</p>
+<h2 id="Comparing-the-reconciled-and-EuroLeague-positions">Comparing the reconciled and EuroLeague positions<a class="anchor-link" href="#Comparing-the-reconciled-and-EuroLeague-positions">¶</a></h2><p>We mapped our five-category positions to the EuroLeague's three
+categories and compared the labels for players covered by both sources.</p>
 </div>
 </div>
 </div>
@@ -10501,17 +10498,11 @@ Agreement with EuroLeague position: 79.2%
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The two labels agree for 79.2% of the 2,058 comparable players. The disagreement is
-concentrated where we would expect real ambiguity rather than a data problem: the two largest
-off-diagonal cells are Center-labeled-by-EuroLeague-but-Forward-by-reconciliation (141
-players) and Forward-labeled-by-EuroLeague-but-Guard-by-reconciliation (121 players), which is
-consistent with combo/tweener players who get listed differently depending on the source.
-Only 17 players swap directly between Guard and Center, the two positions with the least
-basketball overlap. This supports treating <code>position_reconciled</code> as a genuine five-category
-refinement of the same underlying label rather than a different signal. We therefore use
-<code>position_reconciled</code> as our main reference label for interpreting the discovered roles, with the
-three-category <code>position</code> as a coarser supplementary comparison; neither is ever a clustering
-input.</p>
+<p>The labels agreed for 79.2% of 2,058 comparable players. Most
+disagreements involved Guard/Forward or Forward/Center; only 17 players
+were classified as Guard by one source and Center by the other.</p>
+<p>We used <code>position_reconciled</code> as our primary five-category reference
+and the EuroLeague <code>position</code> as a supplementary three-category comparison.</p>
 </div>
 </div>
 </div>
@@ -10551,27 +10542,12 @@ input.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Selecting-the-final-clustering-features">Selecting the final clustering features<a class="anchor-link" href="#Selecting-the-final-clustering-features">¶</a></h2><p>With a complete eligible sample, the next question was which of the candidate columns should
-define a player role. We wanted features that describe how a player contributes on the court --
-shot volume, shooting efficiency, playmaking, rebounding, defense, physical profile, and shot
-location -- rather than general quality, playing time, or data coverage, and we did not want to
-give any single behavior extra weight by including several mathematical versions of it.
-Traditional position stays out of the model entirely. We started with shot location, which had
-the largest group of candidate variables.</p>
-<h3 id="Shot-location">Shot location<a class="anchor-link" href="#Shot-location">¶</a></h3><p>We had 17 spatial variables available: seven summaries calculated directly from the shot
-coordinates (mean lateral and longitudinal position, their standard deviations, and the mean,
-median, and standard deviation of raw shot distance) and ten shares of attempts in the recorded
-zones A-J. Entering all 17 as separate columns would give shot location far more weight in a
-distance-based clustering than any other feature group, simply because it has more columns,
-and the columns overlap heavily -- mean and median distance measure nearly the same thing, and
-the zone shares are built from the same shots as the coordinate summaries. One option was to
-compress the spatial block with its own PCA, fitted on the standardized values of the 4,568
-eligible rows.</p>
-<p>As a first test we fitted a five-component PCA to all 17 standardized variables and checked
-whether any component tracks the recording period rather than shooting behavior. For each
-component we measured the R² between an indicator for the two earliest seasons (E2007-E2008)
-and the component scores, i.e. the share of that component's score variance explained by the
-indicator.</p>
+<h2 id="Selecting-the-final-clustering-features">Selecting the final clustering features<a class="anchor-link" href="#Selecting-the-final-clustering-features">¶</a></h2><p>We selected features that describe player roles without giving
+redundant measures excessive weight.</p>
+<h3 id="Shot-location">Shot location<a class="anchor-link" href="#Shot-location">¶</a></h3><p>We examined 17 spatial features: seven coordinate summaries and
+ten zone shares (A-J). We applied PCA to the standardized features
+and checked whether the components were associated with the
+E2007-E2008 recording period.</p>
 </div>
 </div>
 </div>
@@ -10714,13 +10690,9 @@ indicator.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The second component of this initial PCA is mainly a recording-period indicator. The
-E2007-E2008 indicator explains 62.5% of the variance of its scores -- not 62.5% of the total
-spatial variance, of which this component carries 15.2% -- and the 492 early rows average
-+3.66 on it against -0.44 for the later seasons. The fourth component shows the same pattern
-more weakly (0.196). A change in playing style would not separate two seasons from the
-following seventeen this sharply, so we went back to the shot records and compared the
-coordinates, and the location of each zone letter, between the two periods.</p>
+<p>PC2 was strongly associated with E2007-E2008 (R² = 0.625),
+suggesting a recording-period effect. We therefore compared
+shot coordinates and zone labels across the two periods.</p>
 </div>
 </div>
 </div>
@@ -10951,39 +10923,14 @@ E2009-E2025       -690.0             0.0        696.0        -37.0        828.0 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The coordinate frame appears compatible across the two periods. The median lateral position
-is 0 in both, the lateral range (1st to 99th percentile) is -683 to 687 in E2007-E2008 and
--690 to 696 afterwards, and the longitudinal range starts at the same place (about -35).
-Together with the basket location at <code>(0, 0)</code> that we found earlier, this points to a stable
-origin and lateral scale. The shot distributions themselves are not identical: the 99th
-percentile of <code>coord_y</code> is 759 against 828, and the median three-point attempt is taken at 694
-against 728 raw units. We therefore treat the coordinate summaries as usable across seasons,
-while the typical shot locations differ somewhat between eras.</p>
-<p>The zone letters are not. From E2009 onward, A sits at the basket (median position (0, 6)), B
-and C are short-range shots on either side of it, D and E are mid-range, F and G are long
-two-pointers, H and I are three-pointers on each side, and J is a rare long-distance zone (593
-attempts). In E2007-E2008 the same letters mark different places: A has a median position of
-(658, 143) and consists essentially of three-point attempts, H and I contain almost no
-three-pointers, and J holds 5,834 attempts, essentially all of them threes. The same letter
-therefore refers to a different area of the court depending on the season, which is what the
-second component of the initial PCA picked up.</p>
-<p>We looked for an official definition of the zones. The Kaggle page for the dataset
-(<a href="https://www.kaggle.com/datasets/babissamothrakis/euroleague-datasets">https://www.kaggle.com/datasets/babissamothrakis/euroleague-datasets</a>) states that the CSV
-files were generated from the official EuroLeague API, but it does not provide a map, boundary
-definitions, or a historical dictionary for zones A-J. An independent analysis by Georgios
-Giasemidis of shot data from the same official API
-(<a href="https://giasemidis.github.io/2022/11/06/euroleague-shots-data-errors.html">https://giasemidis.github.io/2022/11/06/euroleague-shots-data-errors.html</a>) reports systematic
-inconsistencies in the recorded shot data, such as shots tagged as three-pointers that are
-located well inside the arc. That article supports the general point that the official shot
-records are not fully consistent, but it does not examine the A-J zone definitions or show
-that they changed; the evidence for that specific change is our own comparison above.</p>
-<p>Because the zone definitions are undocumented and not consistent over time, we decided not to
-infer corrected historical zone labels. The ten zone shares stay in the feature table as
-descriptive and quality-control fields but are excluded from the clustering input, and we
-relied on the seven summaries calculated directly from the recorded coordinates. We first
-tested whether a PCA of these seven summaries would represent shot location better than the
-summaries themselves, standardizing them on the 4,568 eligible rows and keeping three
-components.</p>
+<p>We found similar lateral coordinate ranges across the periods,
+although shot distributions differed. The A-J zone labels were
+inconsistent: zone A represented three-point shots in E2007-E2008
+but near-basket shots in later seasons.</p>
+<p>We found no historical zone definitions in the
+<a href="https://www.kaggle.com/datasets/babissamothrakis/euroleague-datasets">dataset documentation</a>.
+We excluded the ten zone shares from clustering and tested PCA
+on the seven coordinate summaries instead.</p>
 </div>
 </div>
 </div>
@@ -11111,14 +11058,11 @@ pc3                    0.1009      0.9359           0.0062
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Three components keep 93.6% of the variance of the seven coordinate summaries (69.2%, 14.3%, and
-10.1%), and none of them tracks the recording period (the largest early-period R² is 0.006).
-But the second component is almost entirely <code>mean_lateral_shot_position</code> (loading 0.999) --
-which side of the court a player shoots from on average -- and shooting from the left or the
-right is not in itself a player role. With only seven candidate variables, the reduction in
-dimensionality was too small to justify replacing understandable variables with abstract
-components. Instead, we chose a few of the original summaries directly, using their
-correlations to avoid keeping two versions of the same information.</p>
+<p>Three PCs retained 93.6% of the variance, with negligible
+recording-period association (maximum R² = 0.006). However,
+PC2 mainly described court side (loading 0.999), which was
+not meaningful for player roles. We therefore preferred
+interpretable coordinate features and examined their correlations.</p>
 </div>
 </div>
 </div>
