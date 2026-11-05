@@ -1,116 +1,126 @@
-# Discovering New EuroLeague Player Roles Using Unsupervised Learning
+# Discovering EuroLeague Player Roles with Unsupervised Learning
 
-An academic data science project by Doron and Yuval exploring whether unsupervised machine
-learning can discover meaningful EuroLeague player roles from performance data, and whether
-those roles add useful distinctions beyond traditional basketball positions.
+**Doron and Yuval**: an academic data science project.
+
+**Start here:**
+- [Rendered report (HTML)](outputs/EuroLeague_Player_Roles_Project.html). Download it and open it in a browser, because GitHub shows only the HTML source.
+- [Main notebook](notebooks/EuroLeague_Player_Roles_Project.ipynb), which has the full analysis with saved outputs.
 
 ## Research question
 
-Can unsupervised learning discover meaningful EuroLeague player roles from performance data,
-and do these roles offer useful distinctions beyond the traditional basketball positions?
+Can unsupervised learning find meaningful EuroLeague player roles in performance data? And do those roles distinguish players in ways the traditional basketball positions do not?
 
-Position labels are **never used as a clustering input**; they are external reference labels
-used only after clustering. The roles are compared with the five traditional positions
-(Point Guard, Shooting Guard, Small Forward, Power Forward, Center) in `position_reconciled`,
-compiled from 365scores and Wikipedia, because the EuroLeague biography data records only
-three broad categories (Guard, Forward, Center). The value of the discovered roles
-lies in their basketball meaning and in what they add beyond these positions, not in whether
-there are more clusters than positions.
+A position label such as "Power Forward" says little about how a player actually plays. We clustered player-season-team observations by their statistical profiles alone. Position labels were never used as clustering inputs; we brought them in only afterwards, to interpret the roles we found.
 
-## Data
+## Key findings
 
-| File | Path | Granularity |
+- **Five interpretable roles.** A full-covariance Gaussian mixture model (GMM) found five components in 4,568 player-season-team observations from 19 EuroLeague seasons (E2007–E2025). We named them from their feature profiles:
+
+  | Role | Observations | Main profile |
+  |---|---:|---|
+  | Playmaking guards | 1,054 | High assists and turnovers; shorter; little rebounding |
+  | Low-post centers | 756 | Almost no three-point attempts; very narrow shot locations; tallest; most rebounds and blocks |
+  | Low-usage forwards | 976 | Flattest profile; few turnovers and fouls drawn |
+  | Perimeter shooters | 1,162 | Longest shot distance; most three-point attempts; fewest two-point attempts |
+  | Mobile stretch bigs | 620 | Tall, with high rebounding and blocks, but wider shot locations and some three-point shooting |
+
+- **Distinctions beyond positions.**
+  - Centers divided between two roles: 69% were low-post centers and 24% were mobile stretch bigs.
+  - Point Guards and Shooting Guards split between the same two roles in reversed proportions. Point Guards were 54% playmaking guards and 40% perimeter shooters; Shooting Guards were 36% and 44%.
+  - Two roles each combined two positions:
+    - Low-usage forwards were 38% Small Forwards and 37% Power Forwards.
+    - Mobile stretch bigs were 50% Power Forwards and 31% Centers.
+- **Limited agreement with positions.** The adjusted Rand index (ARI) between the roles and the five positions was 0.210. A low ARI alone does not show that the roles are better than positions. Together with the cross-tabulations above, it shows that the roles and the positions divide players differently.
+
+![Position mix within each discovered role](outputs/figures/role_vs_position_reconciled.png)
+
+## Why a five-component GMM
+
+- **Baseline.** K-Means, with k = 2–12, served as the baseline. Silhouette scores were low at every k (0.299 at k = 2, falling to 0.081 at k = 12). This, along with the PCA projection, showed overlapping groups along a continuum rather than well-separated clusters. Membership probabilities from a GMM suit that kind of structure better than hard assignments.
+- **Covariance collapse.** With the default covariance regularization, the BIC appeared to favour k = 10. That solution included collapsed components built on legitimate point masses, such as the 443 rows with no three-point attempts and the 865 rows with no blocks. These are artifacts of the Gaussian likelihood, not extra roles.
+- **Selected model.** With `reg_covar = 0.01` and with `0.1`, nothing collapsed, and the BIC was lowest at k = 5 under both settings. Under `0.01`, the five-component model had the lowest BIC (155,866). k = 6 was a close second (ΔBIC = 23), and k = 4 was well behind (ΔBIC = 884). We report the k = 5 choice as conditional on this regularization.
+
+## Robustness
+
+- **Random initializations.** We refitted the model with ten random states. The mean pairwise ARI was 0.978 (minimum 0.929), and at least 96.8% of observations kept their component after label matching.
+- **Stricter sample.** We repeated the full pipeline on a stricter participation threshold: at least 10 games and 200 minutes, which left 3,679 rows. The BIC again chose k = 5. On the shared rows, the ARI with the main model was 0.887, with 94.9% matched agreement.
+
+## Limitations
+
+- **No ground truth.** There is no independent ground truth for player roles. The analysis shows that the roles are interpretable and differ from positions. It does not show that they are more *accurate* than positions.
+- **Analysis choices.** The participation threshold (5 games and 100 minutes), the 17-feature representation, the shrinkage of shooting percentages and the choice of k all shape the result.
+- **Shot data.** Shot-coordinate units are undocumented, and we could not establish that coordinates were recorded consistently across all seasons. The A–J zone labels change meaning after E2008, so we excluded them.
+- **Overlapping roles.** 3.5% of observations have a maximum membership probability below 0.6.
+- **Repeated players.** The same player appears once per season and team, so role sizes count observations, not distinct players.
+- **Position labels.** The labels are imperfect references. Where both sources gave a position, 365scores and Wikipedia disagreed for 383 of 1,141 players. Each player has one label for all seasons, and 2.2% of eligible observations have no five-category label.
+
+## Data and provenance
+
+| File | Origin | In repository |
 |---|---|---|
-| `euroleague_players.csv` | `data/raw/` | one row per player-season-team |
-| `euroleague_points.csv` | `data/raw/` | one row per recorded shot/action event |
-| `players_bio.csv` | `data/raw/` | one row per player |
-| `merged_euroleague_players.csv` | `data/processed/` | one row per enriched event (derived) |
-| `player_season_team_features_with_position.csv` | `data/processed/` | one row per player-season-team: all features, eligibility flag, and position labels (derived by the main notebook) |
+| `data/raw/euroleague_players.csv` | [EuroLeague & EuroCup Datasets (Kaggle)](https://www.kaggle.com/datasets/babissamothrakis/euroleague-datasets): season totals per player-season-team | Yes |
+| `data/raw/euroleague_points.csv` | Same Kaggle dataset: shot events with coordinates | **No** (over GitHub's 100 MB file limit) |
+| `data/raw/players_bio.csv` | Retrieved by the authors from the EuroLeague API: height and three-category position | Yes |
+| `data/processed/height_overrides.csv` | Heights we verified by hand for players recorded with a missing or zero height. The sources for the zero-height cases are in `zero_height_player_research.csv`. | Yes |
+| `data/processed/player_positions_365scores.csv` | Five-category positions collected from 365scores by web scraping. The collection script is not in this repository. | Yes |
+| `data/processed/wikipedia_position_lookup/wikipedia_position_lookup.csv` | Wikipedia positions, built by `scripts/wikipedia_position_lookup.py` | Yes |
+| `data/processed/player_season_team_features_with_position.csv` | Output of the main notebook: the full feature table with position labels (not the scaled modeling matrix) | Yes |
 
-`data/raw/euroleague_points.csv` and `data/processed/merged_euroleague_players.csv` are
-excluded from this repository (`.gitignore`) because they exceed GitHub's 100MB file-size
-limit; Doron and Yuval share them directly.
+**Data rights.** We have not verified the licensing or redistribution terms of the data in this repository:
+- the Kaggle dataset and the EuroLeague API data it was compiled from;
+- `players_bio.csv`;
+- the 365scores positions. These were scraped, and the 365scores terms of use may restrict reuse.
+
+Wikipedia text is available under CC BY-SA. The lookup table keeps the source URL for each player. Third-party data in this repository is included only to document how the analysis was done; anyone reusing it should check the original terms. The repository has no code license.
+
+## Reproducing the analysis
+
+The notebook **cannot be run from a fresh clone alone**, because `data/raw/euroleague_points.csv` is not in the repository. To reproduce it:
+
+1. Download `euroleague_points.csv` from the [Kaggle dataset](https://www.kaggle.com/datasets/babissamothrakis/euroleague-datasets) and place it in `data/raw/`. We have not checked that the current Kaggle version is byte-identical to the file we used, so row counts may differ if the dataset has been updated.
+2. Install the dependencies (we developed the project with Python 3.14):
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. From the repository root, run the notebook top to bottom:
+   ```bash
+   python -m nbconvert --to notebook --execute --inplace notebooks/EuroLeague_Player_Roles_Project.ipynb
+   ```
+   The run rewrites `data/processed/player_season_team_features_with_position.csv`. Expect last-digit floating-point differences in the three `*_std` shot-location columns. The GMM sweeps take about a minute. Random seeds are fixed (`RANDOM_STATE = 42`).
+
+The position-enrichment files are committed, so a rerun does not query 365scores or Wikipedia.
 
 ## Repository structure
 
 ```text
-euroleague-player-roles/
-├── data/
-│   ├── raw/                  # Source-of-truth CSVs (never modified)
-│   └── processed/            # Derived datasets
-├── scripts/                  # Wikipedia position lookup used for position enrichment
 ├── notebooks/
-│   ├── EuroLeague_Unsupervised_Roles.ipynb        # Original feasibility analysis
-│   ├── EuroLeague_Player_Roles_Project.ipynb      # Main project notebook (start here)
-│   ├── 01_data_audit.ipynb                        # Internal source material
-│   └── 02_coordinate_system_analysis.ipynb        # Internal source material
+│   ├── EuroLeague_Player_Roles_Project.ipynb   # Final analysis (start here)
+│   ├── 01_data_audit.ipynb                     # Supporting data audit
+│   ├── 02_coordinate_system_analysis.ipynb     # Supporting shot-coordinate analysis
+│   └── archive/
+│       └── EuroLeague_Unsupervised_Roles.ipynb # Early feasibility notebook (superseded)
 ├── outputs/
-│   ├── figures/               # Exported charts (.png)
-│   └── tables/                # Exported analysis tables (.csv)
-├── README.md
-├── CLAUDE.md                  # Working instructions for Claude Code
-├── CheckList.md               # Stage-by-stage project roadmap
+│   ├── EuroLeague_Player_Roles_Project.html    # Rendered final report
+│   ├── figures/                                # Figure exports (main and supporting notebooks)
+│   └── tables/                                 # Supporting audit and position-provenance tables
+├── data/raw/                                   # Source data (never modified)
+├── data/processed/                             # Derived and enrichment data
+├── scripts/wikipedia_position_lookup.py
+├── RESEARCH_ROADMAP.md                         # Research stages, decisions and evidence
+├── CLAUDE.md                                   # Maintenance notes for AI-assisted editing
 └── requirements.txt
 ```
 
-`notebooks/EuroLeague_Player_Roles_Project.ipynb` is the main project notebook — read this
-one first. `01_data_audit.ipynb` and `02_coordinate_system_analysis.ipynb` hold the fuller
-diagnostic work behind it and are kept as internal reference material.
+The notebook and its HTML rendering are the authoritative results. The files in `outputs/figures/` and `outputs/tables/` were exported at earlier points:
+- `01_data_audit.ipynb` writes most of the audit tables and the missing-value and height figures;
+- `02_coordinate_system_analysis.ipynb` writes the `coordinates/` subfolders;
+- the remaining figures are higher-resolution copies of figures in the main notebook;
+- `player_season_team_feature_dictionary.csv` documents every column of the processed feature table.
 
-## Running the notebook
+The two supporting notebooks also read `data/processed/merged_euroleague_players.csv`, which is not in the repository (it exceeds the file limit).
 
-```bash
-pip install -r requirements.txt
-```
+## Authorship and AI assistance
 
-Then open `notebooks/EuroLeague_Player_Roles_Project.ipynb` in Jupyter or PyCharm and run it
-from the repository root (Restart Kernel + Run All), or:
+Doron and Yuval designed and carried out this research. They chose the research question and made the methodological decisions: the participation threshold, the features, the preprocessing, the model and its regularization, and the number of components. They also interpreted the results and wrote the conclusions.
 
-```bash
-python -m nbconvert --to notebook --execute --inplace notebooks/EuroLeague_Player_Roles_Project.ipynb
-```
-
-## Status
-
-The research stages of `CheckList.md` are complete: understanding the three raw datasets, building the
-player-season-team feature table, defining the eligible modeling sample (4,568 of 6,307 rows,
-at least 5 games and 100 minutes), resolving missing values in that sample, selecting the
-final clustering features, preparing the modeling matrix (stabilizing shooting percentages
-based on few attempts, then standardizing all features), exploring the matrix with PCA,
-establishing a K-Means baseline (k = 4), selecting the clustering model (a full-covariance
-Gaussian mixture model with five components and covariance regularization `reg_covar = 0.01`),
-checking the robustness of that result against different random initializations and the
-stricter `10 games / 200 minutes` participation rule, and interpreting the five components as playmaking guards, low-post centers, low-usage
-forwards, perimeter shooters, and mobile stretch bigs. PCA is used only for exploration and
-visualization; clustering uses the 17 standardized features.
-
-The roles were then compared with the five traditional positions: agreement is limited
-(adjusted Rand index 0.210 against `position_reconciled`), with Centers splitting into low-post
-centers and mobile stretch bigs and two roles combining positions the labels keep separate. The
-notebook ends with a discussion that answers the research question without claiming the roles
-are more accurate than positions, and a limitations section. Stages 1-15 are complete, including a
-final editorial review and the rendered HTML version of the notebook,
-`outputs/EuroLeague_Player_Roles_Project.html`. The only remaining stage is a 20-minute recorded
-Hebrew walkthrough of the notebook (stage 16).
-
-Rate features are expressed per 40 minutes, the length of a EuroLeague regulation game. The
-final clustering feature set has 17 features: two- and three-point attempts per 40, the three
-shooting percentages, assists, turnovers, offensive and defensive rebounds, steals, blocks,
-fouls committed, and fouls received per 40, height, and three shot-location summaries (median
-shot distance, variation in shot distance, and lateral spread of shots).
-
-Important data limitations handled in the notebook:
-
-- `players_bio.csv` marks a missing height with either `NaN` or `0`; the heights of the
-  affected players in the modeling sample were verified externally and are listed in
-  `data/processed/height_overrides.csv` (provenance in
-  `data/processed/zero_height_player_research.csv`).
-- The recorded shot-zone letters A-J are undocumented and refer to different court areas in
-  E2007-E2008 than in later seasons, so zone shares are kept only as descriptive fields and
-  shot location is described from the recorded coordinates.
-- The EuroLeague biography data records only three broad positions, so the five-category
-  position used for the main comparison was built from 365scores and Wikipedia. Both are used
-  only to interpret the discovered roles, never as clustering inputs.
-
-See `CheckList.md` for the full roadmap and `CLAUDE.md` for the current work state and working
-rules.
+AI-assisted tools, mainly Claude Code, helped with implementation, debugging, documentation and editorial review of the notebook text. The authors reviewed this work and are responsible for the final content.

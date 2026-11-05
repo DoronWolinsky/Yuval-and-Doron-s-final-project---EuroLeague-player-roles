@@ -1,13 +1,15 @@
 """
-Temporary side-task utility (not part of the CheckList pipeline).
+Builds the Wikipedia position lookup used for position enrichment.
 
 Looks up the standard five-position basketball classification (Point Guard,
 Shooting Guard, Small Forward, Power Forward, Center) for unique EuroLeague
 players from Wikipedia, using player_id (from data/raw/players_bio.csv) as the
 authoritative identifier and player names only to locate the Wikipedia page.
 
-Not yet wired into the main notebook or merged into the project feature table.
-See the side-task instructions for scope and open decisions.
+Output: data/processed/wikipedia_position_lookup/wikipedia_position_lookup.csv,
+which the main notebook reads as the fallback source for position_reconciled.
+Running it again sends live requests to the Wikipedia API, and the results can
+differ from the committed lookup table.
 
 Usage:
     python scripts/wikipedia_position_lookup.py --pilot
