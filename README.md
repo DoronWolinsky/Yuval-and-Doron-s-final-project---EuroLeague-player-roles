@@ -13,7 +13,7 @@ GitHub shows the HTML as source code, so download it to view it in a browser. Th
 ## Data
 
 - **Season statistics:** 6,307 player-season-team observations, covering 19 EuroLeague seasons (E2007–E2025).
-- **Shot events:** 755,145 recorded shots with court coordinates.
+- **Shot events:** 755,145 records, including 614,219 field-goal attempts and 140,926 free throws. Shot-location features were derived from field-goal attempts.
 - **Biographies:** 2,363 players, with height and the league's three broad position categories.
 
 The season statistics and shot events come from the [EuroLeague & EuroCup Datasets](https://www.kaggle.com/datasets/babissamothrakis/euroleague-datasets) on Kaggle, and the biographies from the EuroLeague API. The shot-event file exceeds GitHub's size limit, so it is not included.
